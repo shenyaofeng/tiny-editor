@@ -77,8 +77,16 @@ const ICONS_CONFIG: { [key: string]: any } = {
   'screenshot': SCREENSHOT_ICON,
   'format-painter': FORMAT_PAINTER_ICON,
   'divider': DIVIDER_ICON,
+<<<<<<< HEAD
   'mind-map': MIND_MAP_ICON,
+<<<<<<< HEAD
   'flow-chart': FLOW_CHART_ICON,
+=======
+=======
+  'flow': FLOW_ICON,
+  'mind': MIND_ICON,
+>>>>>>> d9b8b61 (feat: add insert flowChart and mindChart)
+>>>>>>> 61664d6 (feat: add insert flowChart and mindChart)
 }
 
 const Icons = FluentEditor.import('ui/icons')

@@ -127,12 +127,15 @@ importers:
         specifier: ^0.0.5
         version: 0.0.5(quill@2.0.3)
     devDependencies:
+<<<<<<< HEAD
       '@emoji-mart/data':
         specifier: ^1.2.1
         version: 1.2.1
       '@floating-ui/dom':
         specifier: ^1.7.2
         version: 1.7.2
+=======
+>>>>>>> d9b8b61 (feat: add insert flowChart and mindChart)
       '@logicflow/core':
         specifier: ^2.0.16
         version: 2.0.16
@@ -160,6 +163,9 @@ importers:
       jest:
         specifier: ^26.6.3
         version: 26.6.3(ts-node@9.1.1(typescript@4.9.5))
+      jsmind:
+        specifier: ^0.8.7
+        version: 0.8.7
       mathlive:
         specifier: ^0.101.0
         version: 0.101.2
@@ -3334,6 +3340,9 @@ packages:
     resolution: {integrity: sha512-/sM3dO2FOzXjKQhJuo0Q173wf2KOo8t4I8vHy6lF9poUp7bKT0/NHE8fPX23PwfhnykfqnC2xRxOnVw5XuGIaA==}
     engines: {node: '>=6'}
     hasBin: true
+
+  jsmind@0.8.7:
+    resolution: {integrity: sha512-sEoYSEmugKPaPPXh0byA2/WhFZqfe4lu2iaMAHmMc4c8GoEkrER+htTmnMmXza0l9iwOPMnm31zPSqdQdcjXSw==}
 
   json-buffer@3.0.1:
     resolution: {integrity: sha512-4bV5BfR2mqfQTJm+V5tPPdf+ZpuhiIvTuAB5g8kcrXOZpTT/QwwVRWBywX1ozr6lEuPdbHxwaJlm9G6mI2sfSQ==}
@@ -8876,6 +8885,8 @@ snapshots:
   jsesc@0.5.0: {}
 
   jsesc@3.1.0: {}
+
+  jsmind@0.8.7: {}
 
   json-buffer@3.0.1: {}
 

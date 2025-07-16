@@ -10,7 +10,11 @@ import { FileUploader } from './modules/custom-uploader' // 上传
 import { DividerBlot } from './modules/divider' // 分割线
 import { EmojiModule } from './modules/emoji'
 import { FileModule } from './modules/file' // 文件
+<<<<<<< HEAD
 import { FlowChartModule } from './modules/flow-chart' // 流程图
+=======
+import { FlowchartModule } from './modules/flowchart'
+>>>>>>> 61664d6 (feat: add insert flowChart and mindChart)
 import I18N from './modules/i18n'
 import { LinkBlot } from './modules/link' // 超链接
 import { MathliveModule } from './modules/mathlive' // latex公式
@@ -59,8 +63,16 @@ FluentEditor.register(
     'modules/toolbar': BetterToolbar,
     'modules/uploader': FileUploader,
     'modules/shortcut-key': ShortCutKey,
+<<<<<<< HEAD
     'modules/mind-map': MindMapModule,
+<<<<<<< HEAD
     'modules/flow-chart': FlowChartModule,
+=======
+=======
+    'modules/flow': FlowchartModule,
+    'modules/mind': MindModule,
+>>>>>>> d9b8b61 (feat: add insert flowChart and mindChart)
+>>>>>>> 61664d6 (feat: add insert flowChart and mindChart)
 
     'themes/snow': SnowTheme,
 

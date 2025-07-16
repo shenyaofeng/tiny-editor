@@ -5,7 +5,11 @@ export * from './custom-uploader'
 export * from './divider'
 export * from './emoji'
 export * from './file'
+<<<<<<< HEAD
 export * from './flow-chart'
+=======
+export * from './flowchart'
+>>>>>>> 61664d6 (feat: add insert flowChart and mindChart)
 export * from './i18n'
 export * from './link'
 export * from './mathlive'
