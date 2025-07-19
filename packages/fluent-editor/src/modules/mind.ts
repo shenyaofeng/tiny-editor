@@ -67,9 +67,18 @@ class MindmapPlaceholderBlot extends BlockEmbed {
       mousewheelAction: 'zoom',
       disableMouseWheelZoom: true,
       data: this.data,
-      exportPadding: 20,
-      exportScale: window.devicePixelRatio || 2,
     } as any)
+
+    const handleScroll = () => {
+      this.mm.getElRectInfo()
+    }
+
+    window.addEventListener('scroll', handleScroll)
+
+    this.domNode.addEventListener('remove', () => {
+      window.removeEventListener('scroll', handleScroll)
+    })
+
     this.createControlPanel()
     this.initContextMenu() // 初始化右键菜单
     this.mm.on('node_tree_render_end', () => {
@@ -269,7 +278,8 @@ class MindmapPlaceholderBlot extends BlockEmbed {
   }
 
   private handleExport(): void {
-    this.mm.export('png', true, '思维导图')
+    this.mm.getElRectInfo()
+    this.mm.export('png', true, 'mindMapExport')
   }
 
   private handleZoomIn(): void {
