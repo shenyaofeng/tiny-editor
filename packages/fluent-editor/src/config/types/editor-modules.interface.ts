@@ -44,6 +44,5 @@ export interface IEditorModules {
   'file'?: boolean
   'mathlive'?: boolean
   'image'?: boolean | Partial<BlotFormatterOptionsInput>
-  'flow'?: boolean
   'mind'?: boolean
 }

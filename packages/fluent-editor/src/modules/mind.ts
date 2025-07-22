@@ -17,13 +17,6 @@ class MindmapPlaceholderBlot extends BlockEmbed {
   private zoomCount = 0
   private contextMenu: HTMLElement | null = null
   private currentNode: any = null
-  private resizingHandle: HTMLElement | null = null
-  private resizeStartX = 0
-  private resizeStartY = 0
-  private originalWidth = 0
-  private originalHeight = 0
-  private resizeHandles: Record<string, HTMLElement> = {}
-  private maxWidth = 0
 
   constructor(scroll: Root, domNode: HTMLElement) {
     super(scroll, domNode)
@@ -62,10 +55,22 @@ class MindmapPlaceholderBlot extends BlockEmbed {
     }
   }
 
+  private debounce(func: Function, wait: number) {
+    let timeout: number | null = null
+    return function (this: any, ...args: any[]) {
+      const context = this
+      if (timeout !== null) {
+        clearTimeout(timeout)
+      }
+      timeout = window.setTimeout(() => {
+        func.apply(context, args)
+      }, wait)
+    }
+  }
+
   private insertMindMapEditor(): void {
     this.domNode.style.width = '100%'
     this.domNode.style.height = '500px'
-    this.maxWidth = this.domNode.offsetWidth
 
     MindMap.usePlugin(Drag).usePlugin(Export)
     this.mm = new MindMap({
@@ -75,13 +80,13 @@ class MindmapPlaceholderBlot extends BlockEmbed {
       data: this.data,
     } as any)
 
-    const handleScroll = () => {
+    const handleScroll = this.debounce(() => {
       if (this.mm && this.domNode && this.domNode.isConnected) {
         this.mm.getElRectInfo()
       }
-    }
+    }, 100)
 
-    window.addEventListener('scroll', handleScroll)
+    window.addEventListener('scroll', handleScroll, { passive: true })
 
     this.domNode.addEventListener('remove', () => {
       window.removeEventListener('scroll', handleScroll)
@@ -89,7 +94,6 @@ class MindmapPlaceholderBlot extends BlockEmbed {
 
     this.createControlPanel() // 创建控制面板
     this.initContextMenu() // 初始化右键菜单
-    this.initResizeHandles() // 初始化调整大小的手柄
     this.mm.on('node_tree_render_end', () => {
       this.data = this.mm.getData({})
       this.domNode.setAttribute('data-mm', JSON.stringify(this.data))
@@ -368,116 +372,6 @@ class MindmapPlaceholderBlot extends BlockEmbed {
       }
     }
     this.zoomCount = 0
-  }
-
-  private initResizeHandles(): void {
-  // 创建调整大小的手柄
-    this.resizeHandles = {
-      bottomRight: this.createResizeHandle('bottom-right', 'nwse-resize'),
-      bottomLeft: this.createResizeHandle('bottom-left', 'nesw-resize'),
-      topRight: this.createResizeHandle('top-right', 'nesw-resize'),
-      topLeft: this.createResizeHandle('top-left', 'nwse-resize'),
-    }
-
-    // 将手柄添加到容器
-    Object.values(this.resizeHandles).forEach((handle) => {
-      this.domNode.appendChild(handle)
-    })
-  }
-
-  private createResizeHandle(position: string, cursor: string): HTMLElement {
-    const handle = document.createElement('div')
-    handle.className = 'mindmap-resize-handle'
-    handle.style.position = 'absolute'
-    handle.style.width = '10px'
-    handle.style.height = '10px'
-    handle.style.background = '#CCCCCC'
-    handle.style.cursor = cursor
-    handle.style.zIndex = '10'
-    handle.style.userSelect = 'none'
-
-    // 设置手柄位置
-    switch (position) {
-      case 'bottom-right':
-        handle.style.bottom = '0'
-        handle.style.right = '0'
-        break
-      case 'bottom-left':
-        handle.style.bottom = '0'
-        handle.style.left = '0'
-        break
-      case 'top-right':
-        handle.style.top = '0'
-        handle.style.right = '0'
-        break
-      case 'top-left':
-        handle.style.top = '0'
-        handle.style.left = '0'
-        break
-    }
-
-    handle.addEventListener('mousedown', this.onResizeStart)
-    return handle
-  }
-
-  private onResizeStart = (e: MouseEvent) => {
-    if (!(e.target instanceof HTMLElement)) return
-
-    this.resizingHandle = e.target
-    this.resizeStartX = e.clientX
-    this.resizeStartY = e.clientY
-    this.originalWidth = this.domNode.offsetWidth
-    this.originalHeight = this.domNode.offsetHeight
-
-    document.addEventListener('mousemove', this.onResizing)
-    document.addEventListener('mouseup', this.onResizeEnd)
-    e.preventDefault()
-  }
-
-  private onResizing = (e: MouseEvent) => {
-    if (!this.resizingHandle) return
-
-    const deltaX = e.clientX - this.resizeStartX
-    const deltaY = e.clientY - this.resizeStartY
-    let newWidth = this.originalWidth
-    let newHeight = this.originalHeight
-
-    // 根据手柄位置计算新的尺寸
-    switch (this.resizingHandle.style.cursor) {
-      case 'nwse-resize':
-        newWidth = this.originalWidth + deltaX
-        newHeight = this.originalHeight + deltaY
-        break
-      case 'nesw-resize':
-        newWidth = this.originalWidth - deltaX
-        newHeight = this.originalHeight + deltaY
-        break
-    }
-
-    // 限制最小尺寸
-    newWidth = Math.max(newWidth, 200)
-    newHeight = Math.max(newHeight, 200)
-    // 限制最大宽度不超过父容器宽度
-    newWidth = Math.min(newWidth, this.maxWidth)
-
-    // 应用新尺寸
-    this.domNode.style.width = `${newWidth}px`
-    this.domNode.style.height = `${newHeight}px`
-    if (this.mm && this.mm.view) {
-      this.mm.getElRectInfo()
-      const svgElement = this.domNode.querySelector('svg')
-      if (svgElement) {
-        svgElement.style.width = '100%'
-        svgElement.style.height = '100%'
-        this.mm.getElRectInfo()
-      }
-    }
-  }
-
-  private onResizeEnd = () => {
-    this.resizingHandle = null
-    document.removeEventListener('mousemove', this.onResizing)
-    document.removeEventListener('mouseup', this.onResizeEnd)
   }
 
   value(): any {
