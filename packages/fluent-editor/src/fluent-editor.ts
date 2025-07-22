@@ -11,10 +11,13 @@ import { DividerBlot } from './modules/divider' // 分割线
 import { EmojiModule } from './modules/emoji'
 import { FileModule } from './modules/file' // 文件
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { FlowChartModule } from './modules/flow-chart' // 流程图
 =======
 import { FlowchartModule } from './modules/flowchart'
 >>>>>>> 61664d6 (feat: add insert flowChart and mindChart)
+=======
+>>>>>>> 3895259 (fix:node content delete)
 import I18N from './modules/i18n'
 import { LinkBlot } from './modules/link' // 超链接
 import { MathliveModule } from './modules/mathlive' // latex公式
@@ -65,12 +68,15 @@ FluentEditor.register(
     'modules/shortcut-key': ShortCutKey,
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     'modules/mind-map': MindMapModule,
 <<<<<<< HEAD
     'modules/flow-chart': FlowChartModule,
 =======
 =======
     'modules/flow': FlowchartModule,
+=======
+>>>>>>> 2f4d886 (fix:node content delete)
     'modules/mind': MindModule,
 >>>>>>> d9b8b61 (feat: add insert flowChart and mindChart)
 <<<<<<< HEAD

@@ -56,11 +56,29 @@ class MindmapPlaceholderBlot extends BlockEmbed {
     }
   }
 
+  private debounce(func: Function, wait: number) {
+    let timeout: number | null = null
+    return function (this: any, ...args: any[]) {
+      const context = this
+      if (timeout !== null) {
+        clearTimeout(timeout)
+      }
+      timeout = window.setTimeout(() => {
+        func.apply(context, args)
+      }, wait)
+    }
+  }
+
   private insertMindMapEditor(): void {
     this.domNode.style.width = '100%'
     this.domNode.style.height = '500px'
+<<<<<<< HEAD
     MindMap.usePlugin(Drag)
     MindMap.usePlugin(Export)
+=======
+
+    MindMap.usePlugin(Drag).usePlugin(Export)
+>>>>>>> 3895259 (fix:node content delete)
     this.mm = new MindMap({
       el: this.domNode,
       enableFreeDrag: false,
@@ -69,11 +87,19 @@ class MindmapPlaceholderBlot extends BlockEmbed {
       data: this.data,
     } as any)
 
+<<<<<<< HEAD
     const handleScroll = () => {
       this.mm.getElRectInfo()
     }
+=======
+    const handleScroll = this.debounce(() => {
+      if (this.mm && this.domNode && this.domNode.isConnected) {
+        this.mm.getElRectInfo()
+      }
+    }, 100)
+>>>>>>> 3895259 (fix:node content delete)
 
-    window.addEventListener('scroll', handleScroll)
+    window.addEventListener('scroll', handleScroll, { passive: true })
 
     this.domNode.addEventListener('remove', () => {
       window.removeEventListener('scroll', handleScroll)

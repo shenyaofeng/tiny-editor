@@ -6,10 +6,13 @@ export * from './divider'
 export * from './emoji'
 export * from './file'
 <<<<<<< HEAD
+<<<<<<< HEAD
 export * from './flow-chart'
 =======
 export * from './flowchart'
 >>>>>>> 61664d6 (feat: add insert flowChart and mindChart)
+=======
+>>>>>>> 3895259 (fix:node content delete)
 export * from './i18n'
 export * from './link'
 export * from './mathlive'

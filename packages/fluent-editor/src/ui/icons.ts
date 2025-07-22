@@ -79,12 +79,15 @@ const ICONS_CONFIG: { [key: string]: any } = {
   'divider': DIVIDER_ICON,
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   'mind-map': MIND_MAP_ICON,
 <<<<<<< HEAD
   'flow-chart': FLOW_CHART_ICON,
 =======
 =======
   'flow': FLOW_ICON,
+=======
+>>>>>>> 2f4d886 (fix:node content delete)
   'mind': MIND_ICON,
 >>>>>>> d9b8b61 (feat: add insert flowChart and mindChart)
 <<<<<<< HEAD
