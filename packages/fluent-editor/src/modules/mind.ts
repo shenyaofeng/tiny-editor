@@ -17,6 +17,13 @@ class MindmapPlaceholderBlot extends BlockEmbed {
   private zoomCount = 0
   private contextMenu: HTMLElement | null = null
   private currentNode: any = null
+  private resizingHandle: HTMLElement | null = null
+  private resizeStartX = 0
+  private resizeStartY = 0
+  private originalWidth = 0
+  private originalHeight = 0
+  private resizeHandles: Record<string, HTMLElement> = {}
+  private maxWidth = 0
 
   constructor(scroll: Root, domNode: HTMLElement) {
     super(scroll, domNode)
@@ -35,7 +42,6 @@ class MindmapPlaceholderBlot extends BlockEmbed {
   static create(value: any): HTMLElement {
     const node = super.create() as HTMLElement
     if (value) {
-      console.warn(value)
       node.setAttribute('data-mm', JSON.stringify(value))
     }
     return node
@@ -59,18 +65,20 @@ class MindmapPlaceholderBlot extends BlockEmbed {
   private insertMindMapEditor(): void {
     this.domNode.style.width = '100%'
     this.domNode.style.height = '500px'
-    MindMap.usePlugin(Drag)
-    MindMap.usePlugin(Export)
+    this.maxWidth = this.domNode.offsetWidth
+
+    MindMap.usePlugin(Drag).usePlugin(Export)
     this.mm = new MindMap({
       el: this.domNode,
-      enableFreeDrag: false,
       mousewheelAction: 'zoom',
       disableMouseWheelZoom: true,
       data: this.data,
     } as any)
 
     const handleScroll = () => {
-      this.mm.getElRectInfo()
+      if (this.mm && this.domNode && this.domNode.isConnected) {
+        this.mm.getElRectInfo()
+      }
     }
 
     window.addEventListener('scroll', handleScroll)
@@ -79,8 +87,9 @@ class MindmapPlaceholderBlot extends BlockEmbed {
       window.removeEventListener('scroll', handleScroll)
     })
 
-    this.createControlPanel()
+    this.createControlPanel() // 创建控制面板
     this.initContextMenu() // 初始化右键菜单
+    this.initResizeHandles() // 初始化调整大小的手柄
     this.mm.on('node_tree_render_end', () => {
       this.data = this.mm.getData({})
       this.domNode.setAttribute('data-mm', JSON.stringify(this.data))
@@ -91,6 +100,7 @@ class MindmapPlaceholderBlot extends BlockEmbed {
     }
   }
 
+  // 右键菜单
   private initContextMenu(): void {
     this.contextMenu = document.createElement('div')
     this.contextMenu.className = 'mindmap-context-menu'
@@ -125,9 +135,6 @@ class MindmapPlaceholderBlot extends BlockEmbed {
         }
       })
     }
-    else {
-      console.warn('错误: this.mm 为 null')
-    }
 
     // 隐藏菜单的逻辑
     const hideMenu = () => {
@@ -155,7 +162,6 @@ class MindmapPlaceholderBlot extends BlockEmbed {
     item.style.cursor = 'pointer'
     item.style.whiteSpace = 'nowrap'
     item.addEventListener('click', onClick)
-    // 鼠标悬停效果
     item.addEventListener('mouseenter', () => {
       item.style.background = '#f5f5f5'
     })
@@ -189,7 +195,7 @@ class MindmapPlaceholderBlot extends BlockEmbed {
   private createControlPanel(): void {
     let isStart = true
     let isEnd = true
-    // 左上的控制面板
+    // 右上的控制面板
     const controlPanel = document.createElement('div')
     controlPanel.className = 'mindmap-control'
     // 左下的控制面板
@@ -201,17 +207,18 @@ class MindmapPlaceholderBlot extends BlockEmbed {
     const zoomOutBtn = this.createControlItem('zoomOut', '缩小', '缩小思维导图', () => this.handleZoomOut())
     const zoomInBtn = this.createControlItem('zoomIn', '放大', '放大思维导图', () => this.handleZoomIn())
     const resetBtn = this.createControlItem('fit', '适应', '恢复逻辑原有尺寸', () => this.handleResetZoom())
-    const backBtn = this.createControlItem('back', '回退', '回退到上一步', () => {
+    const backBtn = this.createControlItem('back', '上一步', '回退到上一步', () => {
       if (!isStart) {
         this.mm.execCommand('BACK')
       }
     })
-    const forwardBtn = this.createControlItem('forward', '前进', '前进到下一步', () => {
+    const forwardBtn = this.createControlItem('forward', '下一步', '前进到下一步', () => {
       if (!isEnd) {
         this.mm.execCommand('FORWARD')
       }
     })
-    const exportImage = this.createControlItem('export', '导出', '导出思维导图', () => this.handleExport())
+    const exportJSON = this.createControlItem('export', '导出', '导出JSON文件', () => this.handleExport())
+    const importJSON = this.createControlItem('import', '导入', '导入JSON文件', () => this.handleImport())
     const insertChildNode = this.createControlItem('inserChildNode', '子节点', '插入子节点', () => this.handleInsertChildNode())
     const insertNode = this.createControlItem('inserNode', '同级节点', '插入同级节点', () => this.handleInsertNode())
     const insertParentNode = this.createControlItem('inserParentNode', '父节点', '插入父节点', () => this.handleInsertParentNode())
@@ -231,7 +238,7 @@ class MindmapPlaceholderBlot extends BlockEmbed {
     })
     controlPanel.append(zoomOutBtn, zoomInBtn, resetBtn, backBtn, forwardBtn)
     this.domNode.appendChild(controlPanel)
-    controlLeftDownPanel.append(exportImage)
+    controlLeftDownPanel.append(exportJSON, importJSON)
     this.domNode.appendChild(controlLeftDownPanel)
     controlLeftUpPanel.append(insertChildNode, insertNode, insertParentNode, removeNode)
     this.domNode.appendChild(controlLeftUpPanel)
@@ -279,7 +286,50 @@ class MindmapPlaceholderBlot extends BlockEmbed {
 
   private handleExport(): void {
     this.mm.getElRectInfo()
-    this.mm.export('png', true, 'mindMapExport')
+    if (this.mm) {
+      this.mm.export('json', true, '思维导图')
+    }
+  }
+
+  private handleImport(): void {
+    const fileInput = document.createElement('input')
+    fileInput.type = 'file'
+    fileInput.accept = '.json'
+    fileInput.style.display = 'none'
+
+    // 监听文件选择事件
+    fileInput.addEventListener('change', (e) => {
+      const file = (e.target as HTMLInputElement).files?.[0]
+      if (!file) return
+
+      const reader = new FileReader()
+      reader.onload = (event) => {
+        try {
+          const jsonData = JSON.parse(event.target?.result as string)
+          if (this.mm) {
+            if (jsonData.root) {
+              this.mm.setFullData(jsonData)
+            }
+            else {
+              this.mm.setData(jsonData)
+            }
+            this.mm.view.reset()
+            this.data = this.mm.getData({})
+            this.domNode.setAttribute('data-mm', JSON.stringify(this.data))
+            this.scroll.update([], {})
+          }
+        }
+        catch (error) {
+          alert('文件解析错误，请确保选择的是有效的JSON文件')
+        }
+      }
+      reader.readAsText(file)
+    })
+
+    // 触发文件选择对话框
+    document.body.appendChild(fileInput)
+    fileInput.click()
+    document.body.removeChild(fileInput)
   }
 
   private handleZoomIn(): void {
@@ -318,6 +368,116 @@ class MindmapPlaceholderBlot extends BlockEmbed {
       }
     }
     this.zoomCount = 0
+  }
+
+  private initResizeHandles(): void {
+  // 创建调整大小的手柄
+    this.resizeHandles = {
+      bottomRight: this.createResizeHandle('bottom-right', 'nwse-resize'),
+      bottomLeft: this.createResizeHandle('bottom-left', 'nesw-resize'),
+      topRight: this.createResizeHandle('top-right', 'nesw-resize'),
+      topLeft: this.createResizeHandle('top-left', 'nwse-resize'),
+    }
+
+    // 将手柄添加到容器
+    Object.values(this.resizeHandles).forEach((handle) => {
+      this.domNode.appendChild(handle)
+    })
+  }
+
+  private createResizeHandle(position: string, cursor: string): HTMLElement {
+    const handle = document.createElement('div')
+    handle.className = 'mindmap-resize-handle'
+    handle.style.position = 'absolute'
+    handle.style.width = '10px'
+    handle.style.height = '10px'
+    handle.style.background = '#CCCCCC'
+    handle.style.cursor = cursor
+    handle.style.zIndex = '10'
+    handle.style.userSelect = 'none'
+
+    // 设置手柄位置
+    switch (position) {
+      case 'bottom-right':
+        handle.style.bottom = '0'
+        handle.style.right = '0'
+        break
+      case 'bottom-left':
+        handle.style.bottom = '0'
+        handle.style.left = '0'
+        break
+      case 'top-right':
+        handle.style.top = '0'
+        handle.style.right = '0'
+        break
+      case 'top-left':
+        handle.style.top = '0'
+        handle.style.left = '0'
+        break
+    }
+
+    handle.addEventListener('mousedown', this.onResizeStart)
+    return handle
+  }
+
+  private onResizeStart = (e: MouseEvent) => {
+    if (!(e.target instanceof HTMLElement)) return
+
+    this.resizingHandle = e.target
+    this.resizeStartX = e.clientX
+    this.resizeStartY = e.clientY
+    this.originalWidth = this.domNode.offsetWidth
+    this.originalHeight = this.domNode.offsetHeight
+
+    document.addEventListener('mousemove', this.onResizing)
+    document.addEventListener('mouseup', this.onResizeEnd)
+    e.preventDefault()
+  }
+
+  private onResizing = (e: MouseEvent) => {
+    if (!this.resizingHandle) return
+
+    const deltaX = e.clientX - this.resizeStartX
+    const deltaY = e.clientY - this.resizeStartY
+    let newWidth = this.originalWidth
+    let newHeight = this.originalHeight
+
+    // 根据手柄位置计算新的尺寸
+    switch (this.resizingHandle.style.cursor) {
+      case 'nwse-resize':
+        newWidth = this.originalWidth + deltaX
+        newHeight = this.originalHeight + deltaY
+        break
+      case 'nesw-resize':
+        newWidth = this.originalWidth - deltaX
+        newHeight = this.originalHeight + deltaY
+        break
+    }
+
+    // 限制最小尺寸
+    newWidth = Math.max(newWidth, 200)
+    newHeight = Math.max(newHeight, 200)
+    // 限制最大宽度不超过父容器宽度
+    newWidth = Math.min(newWidth, this.maxWidth)
+
+    // 应用新尺寸
+    this.domNode.style.width = `${newWidth}px`
+    this.domNode.style.height = `${newHeight}px`
+    if (this.mm && this.mm.view) {
+      this.mm.getElRectInfo()
+      const svgElement = this.domNode.querySelector('svg')
+      if (svgElement) {
+        svgElement.style.width = '100%'
+        svgElement.style.height = '100%'
+        this.mm.getElRectInfo()
+      }
+    }
+  }
+
+  private onResizeEnd = () => {
+    this.resizingHandle = null
+    document.removeEventListener('mousemove', this.onResizing)
+    document.removeEventListener('mouseup', this.onResizeEnd)
   }
 
   value(): any {
