@@ -45,6 +45,7 @@ const TOOLBAR_CONFIG = [
   ['link', 'blockquote', 'code', 'code-block'],
   ['image', 'file'],
   ['emoji', 'video', 'formula', 'screenshot'],
+  ['mind'],
 ]
 
 const articleRef = ref<HTMLElement>()
@@ -66,6 +67,7 @@ onMounted(() => {
         'syntax': { hljs },
         'emoji-toolbar': true,
         'file': true,
+        'mind': true,
         'mention': {
           itemKey: 'cn',
           searchKey,
