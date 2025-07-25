@@ -57,18 +57,18 @@ class MindmapPlaceholderBlot extends BlockEmbed {
     }
   }
 
-  debounce(func: Function, wait: number) {
-    let timeout: number | null = null
-    return function (this: any, ...args: any[]) {
-      const context = this
-      if (timeout !== null) {
-        clearTimeout(timeout)
-      }
-      timeout = window.setTimeout(() => {
-        func.apply(context, args)
-      }, wait)
-    }
-  }
+  // debounce(func: Function, wait: number) {
+  //   let timeout: number | null = null
+  //   return function (this: any, ...args: any[]) {
+  //     const context = this
+  //     if (timeout !== null) {
+  //       clearTimeout(timeout)
+  //     }
+  //     timeout = window.setTimeout(() => {
+  //       func.apply(context, args)
+  //     }, wait)
+  //   }
+  // }
 
   insertMindMapEditor(): void {
     this.domNode.style.width = '100%'
@@ -82,11 +82,11 @@ class MindmapPlaceholderBlot extends BlockEmbed {
       data: this.data,
     } as any)
 
-    const handleScroll = this.debounce(() => {
+    const handleScroll = () => {
       if (this.mm && this.domNode && this.domNode.isConnected) {
         this.mm.getElRectInfo()
       }
-    }, 100)
+    }
 
     window.addEventListener('scroll', handleScroll, { passive: true })
 

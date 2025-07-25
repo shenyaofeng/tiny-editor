@@ -17,7 +17,11 @@ export * from './i18n'
 export * from './link'
 export * from './mathlive'
 export * from './mention'
+<<<<<<< HEAD
 export * from './mind-map'
+=======
+export * from './mind/index'
+>>>>>>> 2f84edb (fix:删除防抖函数)
 export * from './shortcut-key'
 export * from './syntax'
 export * from './table-up'

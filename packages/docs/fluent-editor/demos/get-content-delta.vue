@@ -45,6 +45,7 @@ const TOOLBAR_CONFIG = [
   ['link', 'blockquote', 'code', 'code-block'],
   ['image', 'file'],
   ['emoji', 'video', 'formula', 'screenshot'],
+  ['mind'],
 ]
 
 const articleRef = ref<HTMLElement>()
@@ -62,11 +63,20 @@ onMounted(() => {
     editor = new FluentEditor('#editor-get-content-delta', {
       theme: 'snow',
       modules: {
+<<<<<<< HEAD
         toolbar: TOOLBAR_CONFIG,
         syntax: { hljs },
         emoji: true,
         file: true,
         mention: {
+=======
+        'toolbar': TOOLBAR_CONFIG,
+        'syntax': { hljs },
+        'emoji-toolbar': true,
+        'file': true,
+        'mind': true,
+        'mention': {
+>>>>>>> 2f84edb (fix:删除防抖函数)
           itemKey: 'cn',
           searchKey,
           search(term) {
