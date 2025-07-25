@@ -7,7 +7,7 @@ import Quill from 'quill'
 import '@logicflow/core/lib/style/index.css'
 import '@logicflow/extension/lib/style/index.css'
 
-const BlockEmbed = Quill.import('blots/block/embed') as typeof TypeBlockEmbed
+const BlockEmbed = Quill.import('blots/embed') as typeof TypeBlockEmbed
 // 定义 flowchart-placeholder blot
 class FlowchartBlot extends BlockEmbed {
   static blotName = 'flowchart'
