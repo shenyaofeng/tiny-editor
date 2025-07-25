@@ -6,7 +6,7 @@ import Drag from 'simple-mind-map/src/plugins/Drag.js'
 import Export from 'simple-mind-map/src/plugins/Export.js'
 import '../assets/mindmap.scss'
 
-const BlockEmbed = Quill.import('blots/embed') as typeof TypeBlockEmbed
+const BlockEmbed = Quill.import('blots/block/embed') as typeof TypeBlockEmbed
 
 class MindmapPlaceholderBlot extends BlockEmbed {
   static blotName = 'mindmap-placeholder'
