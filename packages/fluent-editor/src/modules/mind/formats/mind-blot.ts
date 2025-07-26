@@ -8,7 +8,7 @@ import { initContextMenu } from '../modules/context-menu'
 import { createControlPanel } from '../modules/control-panel'
 import '../../../assets/mindmap.scss'
 
-const BlockEmbed = Quill.import('blots/embed') as typeof TypeBlockEmbed
+const BlockEmbed = Quill.import('blots/block/embed') as typeof TypeBlockEmbed
 
 class MindmapPlaceholderBlot extends BlockEmbed {
   static blotName = 'mindmap-placeholder'
