@@ -20,6 +20,7 @@ export function initContextMenu(blot: MindmapPlaceholderBlot): void {
   addContextMenuItem(blot, '复制', () => handleCopy(blot))
   addContextMenuItem(blot, '剪切', () => handleCut(blot))
   addContextMenuItem(blot, '粘贴', () => handlePaste(blot))
+  addContextMenuItem(blot, '删除内容', () => handleDeleteContent(blot))
 
   // 监听节点右键点击事件
   if (blot.mm) {
@@ -82,6 +83,16 @@ function handleCut(blot: MindmapPlaceholderBlot): void {
 
 function handlePaste(blot: MindmapPlaceholderBlot): void {
   blot.mm.renderer.paste()
+  hideContextMenu(blot)
+}
+
+function handleDeleteContent(blot: MindmapPlaceholderBlot): void {
+  if (blot.currentNode) {
+    blot.currentNode.setText('')
+    blot.data = blot.mm.getData({})
+    blot.domNode.setAttribute('data-mm', JSON.stringify(blot.data))
+    blot.scroll.update([], {})
+  }
   hideContextMenu(blot)
 }
 

@@ -8,7 +8,7 @@ import { initContextMenu } from '../modules/context-menu'
 import { createControlPanel } from '../modules/control-panel'
 import '../../../assets/mindmap.scss'
 
-const BlockEmbed = Quill.import('blots/block/embed') as typeof TypeBlockEmbed
+const BlockEmbed = Quill.import('blots/embed') as typeof TypeBlockEmbed
 
 class MindmapPlaceholderBlot extends BlockEmbed {
   static blotName = 'mindmap-placeholder'
@@ -73,7 +73,9 @@ class MindmapPlaceholderBlot extends BlockEmbed {
   insertMindMapEditor(): void {
     this.domNode.style.width = '100%'
     this.domNode.style.height = '500px'
-
+    while (this.domNode.firstChild) {
+      this.domNode.removeChild(this.domNode.firstChild)
+    }
     MindMap.usePlugin(Drag).usePlugin(Export)
     this.mm = new MindMap({
       el: this.domNode,
