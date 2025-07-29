@@ -20,7 +20,7 @@ export class MindModule {
     }
   }
 
-  private insertMindMapEditor(): void {
+  public insertMindMapEditor(): void {
     const range = this.quill.getSelection()
     if (range) {
       const defaultData = {
