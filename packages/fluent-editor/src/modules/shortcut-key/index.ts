@@ -204,6 +204,7 @@ export class ShortCutKey extends QuillShortcutKey {
       {
         type: 'item' as const,
         name: 'sldt',
+<<<<<<< HEAD
         alias: ['mind-map'],
         icon: icons['mind-map'],
         title: this.quill.getLangText('mind-map'),
@@ -212,6 +213,16 @@ export class ShortCutKey extends QuillShortcutKey {
           const MindMapModule = this.getModule('mind-map')
           if (MindMapModule && typeof (MindMapModule as any).insertMindMapEditor === 'function') {
             (MindMapModule as any).insertMindMapEditor()
+=======
+        alias: ['mind'],
+        icon: icons.file,
+        title: this.quill.getLangText('mind'),
+        onClick(this: Quill, range: Range | null, _: any) {
+          if (!range) return
+          const mindModule = this.getModule('mind')
+          if (mindModule && typeof (mindModule as any).insertMindMapEditor === 'function') {
+            (mindModule as any).insertMindMapEditor()
+>>>>>>> 3e4e33f (fix：快捷键添加思维导图)
           }
         },
       },

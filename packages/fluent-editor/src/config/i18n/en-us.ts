@@ -72,7 +72,11 @@ export const EN_US = {
   'strike': 'Strikethrough',
   'image': 'Image',
   'file': 'File',
+<<<<<<< HEAD
   'mind-map': 'Mind Map',
+=======
+  'mind': 'Mind Map',
+>>>>>>> 3e4e33f (fix：快捷键添加思维导图)
   'link': 'Hyperlink',
   'code': 'Inline Code',
   'table': 'Table',
