@@ -215,7 +215,7 @@ export class ShortCutKey extends QuillShortcutKey {
             (MindMapModule as any).insertMindMapEditor()
 =======
         alias: ['mind'],
-        icon: icons.file,
+        icon: icons.mind,
         title: this.quill.getLangText('mind'),
         onClick(this: Quill, range: Range | null, _: any) {
           if (!range) return
