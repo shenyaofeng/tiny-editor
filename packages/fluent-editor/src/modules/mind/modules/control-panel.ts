@@ -1,5 +1,7 @@
 import type MindmapPlaceholderBlot from '../formats/mind-blot'
 
+const DISABLED_OPACITY = '0.5'
+const ENABLED_OPACITY = '1'
 export function createControlPanel(blot: MindmapPlaceholderBlot): void {
   let isStart = true
   let isEnd = true
@@ -36,9 +38,9 @@ export function createControlPanel(blot: MindmapPlaceholderBlot): void {
     isStart = index <= 0
     isEnd = index >= len - 1
     backBtn.style.cursor = isStart ? 'not-allowed' : 'pointer'
-    backBtn.style.opacity = isStart ? '0.5' : '1'
+    backBtn.style.opacity = isStart ? DISABLED_OPACITY : ENABLED_OPACITY
     forwardBtn.style.cursor = isEnd ? 'not-allowed' : 'pointer'
-    forwardBtn.style.opacity = isEnd ? '0.5' : '1'
+    forwardBtn.style.opacity = isEnd ? DISABLED_OPACITY : ENABLED_OPACITY
   }
 
   blot.mm.on('back_forward', (index: number, len: number) => {
@@ -57,7 +59,7 @@ function createControlItem(iconClass: string, text: string, title: string, onCli
   controlItem.className = 'mindmap-control-item'
   controlItem.title = title
   controlItem.style.cursor = disabled ? 'not-allowed' : 'pointer'
-  controlItem.style.opacity = disabled ? '0.5' : '1'
+  controlItem.style.opacity = disabled ? DISABLED_OPACITY : ENABLED_OPACITY
 
   const icon = document.createElement('i')
   icon.className = `mindmap-control-${iconClass}`
