@@ -1,6 +1,50 @@
+import type FluentEditor from '../../../core/fluent-editor'
 import type MindmapPlaceholderBlot from '../formats/mind-blot'
+import { CHANGE_LANGUAGE_EVENT } from '../../../config'
+import { I18N } from '../../../modules/i18n'
 
-export function initContextMenu(blot: MindmapPlaceholderBlot): void {
+class MindContextMenuHandler {
+  private texts: Record<string, string>
+  private lang: string
+  getText(key: keyof Record<string, string>): string {
+    return this.texts[key]
+  }
+
+  constructor(private quill: FluentEditor, private blot: MindmapPlaceholderBlot) {
+    this.lang = 'en-US'
+    this.texts = this.resolveTexts()
+    this.quill.emitter.on(CHANGE_LANGUAGE_EVENT, (lang: string) => {
+      this.lang = lang
+      this.texts = this.resolveTexts()
+      this.updateContextMenuItems()
+    })
+  }
+
+  resolveTexts() {
+    return {
+      copy: I18N.parserText('mindmap.contextMenu.copy', this.lang),
+      cut: I18N.parserText('mindmap.contextMenu.cut', this.lang),
+      paste: I18N.parserText('mindmap.contextMenu.paste', this.lang),
+      delete: I18N.parserText('mindmap.contextMenu.deleteContent', this.lang),
+    }
+  }
+
+  updateContextMenuItems() {
+    if (!this.blot.contextMenu) return
+
+    const menuItems = this.blot.contextMenu.querySelectorAll('.mindmap-context-menu-item')
+    if (menuItems.length >= 4) {
+      menuItems[0].textContent = this.texts.copy
+      menuItems[1].textContent = this.texts.cut
+      menuItems[2].textContent = this.texts.paste
+      menuItems[3].textContent = this.texts.delete
+    }
+  }
+}
+
+const contextMenuHandlers = new WeakMap<MindmapPlaceholderBlot, MindContextMenuHandler>()
+
+export function initContextMenu(blot: MindmapPlaceholderBlot, quill: FluentEditor): void {
   blot.contextMenu = document.createElement('div')
   blot.contextMenu.className = 'mindmap-context-menu'
   blot.contextMenu.style.position = 'fixed'
@@ -16,10 +60,20 @@ export function initContextMenu(blot: MindmapPlaceholderBlot): void {
   blot.contextMenu.style.height = 'auto'
   document.body.appendChild(blot.contextMenu)
 
+<<<<<<< HEAD
   // 添加菜单项
   addContextMenuItem(blot, '复制', () => handleCopy(blot))
   addContextMenuItem(blot, '剪切', () => handleCut(blot))
   addContextMenuItem(blot, '粘贴', () => handlePaste(blot))
+=======
+  const handler = new MindContextMenuHandler(quill, blot)
+  contextMenuHandlers.set(blot, handler)
+
+  addContextMenuItem(blot, handler.getText('copy'), () => handleCopy(blot))
+  addContextMenuItem(blot, handler.getText('cut'), () => handleCut(blot))
+  addContextMenuItem(blot, handler.getText('paste'), () => handlePaste(blot))
+  addContextMenuItem(blot, handler.getText('delete'), () => handleDeleteContent(blot))
+>>>>>>> 95fbfdb (fix(mind):完善国际化)
 
   // 监听节点右键点击事件
   if (blot.mm) {

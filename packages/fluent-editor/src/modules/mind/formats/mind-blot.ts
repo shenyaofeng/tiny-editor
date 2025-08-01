@@ -1,5 +1,6 @@
 import type { Root } from 'parchment'
 import type { BlockEmbed as TypeBlockEmbed } from 'quill/blots/block'
+import type FluentEditor from '../../../core/fluent-editor'
 import Quill from 'quill'
 import MindMap from 'simple-mind-map'
 import Drag from 'simple-mind-map/src/plugins/Drag.js'
@@ -80,9 +81,9 @@ class MindmapPlaceholderBlot extends BlockEmbed {
     this.domNode.addEventListener('remove', () => {
       window.removeEventListener('scroll', handleScroll)
     })
-
-    createControlPanel(this) // 创建控制面板
-    initContextMenu(this) // 初始化右键菜单
+    const quill = this.scroll as unknown as FluentEditor
+    createControlPanel(this, quill) // 创建控制面板
+    initContextMenu(this, quill) // 初始化右键菜单
     this.mm.on('node_tree_render_end', () => {
       this.data = this.mm.getData({})
       this.domNode.setAttribute('data-mm', JSON.stringify(this.data))
