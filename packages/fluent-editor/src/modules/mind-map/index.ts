@@ -11,7 +11,7 @@ export class MindModule {
   constructor(quill: Quill, options: any) {
     this.quill = quill
     this.toolbar = quill.getModule('toolbar')
-    const domNode = document.querySelector('.ql-mind')
+    const domNode = document.querySelector('.ql-mind-map')
 
     if (domNode) {
       domNode.addEventListener('click', () => {

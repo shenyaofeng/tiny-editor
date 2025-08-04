@@ -2,6 +2,7 @@ import type FluentEditor from '../../../core/fluent-editor'
 import type MindmapPlaceholderBlot from '../formats/mind-blot'
 import { CHANGE_LANGUAGE_EVENT } from '../../../config'
 import { I18N } from '../../../modules/i18n'
+import { registerMindI18N } from '../i18n/index'
 
 class MindContextMenuHandler {
   private texts: Record<string, string>
@@ -11,6 +12,7 @@ class MindContextMenuHandler {
   }
 
   constructor(private quill: FluentEditor, private blot: MindmapPlaceholderBlot) {
+    registerMindI18N(I18N)
     this.lang = 'en-US'
     this.texts = this.resolveTexts()
     this.quill.emitter.on(CHANGE_LANGUAGE_EVENT, (lang: string) => {
