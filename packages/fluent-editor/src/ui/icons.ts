@@ -80,6 +80,7 @@ const ICONS_CONFIG: { [key: string]: any } = {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   'mind-map': MIND_MAP_ICON,
 <<<<<<< HEAD
   'flow-chart': FLOW_CHART_ICON,
@@ -96,7 +97,13 @@ const ICONS_CONFIG: { [key: string]: any } = {
 =======
   'flow-chart': FLOW_ICON,
 >>>>>>> ce33623 (feature(flow-chart):流程图)
+<<<<<<< HEAD
 >>>>>>> 1be5b5c (feature(flow-chart):流程图)
+=======
+=======
+  'mind-map': MIND_MAP_ICON,
+>>>>>>> ad38183 (fix(mind-map):更新模块名称与将国际化和样式放入mind-map文件夹中)
+>>>>>>> 7ccbb9c (fix(mind-map):更新模块名称与将国际化和样式放入mind-map文件夹中)
 }
 
 const Icons = FluentEditor.import('ui/icons')

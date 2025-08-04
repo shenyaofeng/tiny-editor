@@ -23,10 +23,14 @@ import { LinkBlot } from './modules/link' // 超链接
 import { MathliveModule } from './modules/mathlive' // latex公式
 import { Mention } from './modules/mention' // @提醒
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { MindMapModule } from './modules/mind-map' // 思维导图
 =======
 import { MindModule } from './modules/mind/index' // 思维导图
 >>>>>>> ef86d9a (fix(mind): 调整思维导图文件结构)
+=======
+import { MindModule } from './modules/mind-map' // 思维导图
+>>>>>>> ad38183 (fix(mind-map):更新模块名称与将国际化和样式放入mind-map文件夹中)
 import { ShortCutKey } from './modules/shortcut-key'
 import Syntax from './modules/syntax' // 代码块高亮
 import { BetterToolbar } from './modules/toolbar' // 工具栏
@@ -73,6 +77,7 @@ FluentEditor.register(
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     'modules/mind-map': MindMapModule,
 <<<<<<< HEAD
     'modules/flow-chart': FlowChartModule,
@@ -89,7 +94,13 @@ FluentEditor.register(
 =======
     'modules/flow-chart': FlowchartModule,
 >>>>>>> ce33623 (feature(flow-chart):流程图)
+<<<<<<< HEAD
 >>>>>>> 1be5b5c (feature(flow-chart):流程图)
+=======
+=======
+    'modules/mind-map': MindModule,
+>>>>>>> ad38183 (fix(mind-map):更新模块名称与将国际化和样式放入mind-map文件夹中)
+>>>>>>> 7ccbb9c (fix(mind-map):更新模块名称与将国际化和样式放入mind-map文件夹中)
 
     'themes/snow': SnowTheme,
 
