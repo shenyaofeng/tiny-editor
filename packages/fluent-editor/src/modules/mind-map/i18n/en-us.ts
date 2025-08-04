@@ -1,4 +1,5 @@
 export const MIND_MAP_EN_US = {
+<<<<<<< HEAD
   'mindMap.contextMenu.copy': 'Copy',
   'mindMap.contextMenu.cut': 'Cut',
   'mindMap.contextMenu.paste': 'Paste',
@@ -25,4 +26,32 @@ export const MIND_MAP_EN_US = {
   'mindMap.controlPanel.inserNodeTitle': 'Insert Sibling Node',
   'mindMap.controlPanel.inserParentNodeTitle': 'Insert Parent Node',
   'mindMap.controlPanel.removeNodeTitle': 'Delete Current Node',
+=======
+  'mindmap.contextMenu.copy': 'Copy',
+  'mindmap.contextMenu.cut': 'Cut',
+  'mindmap.contextMenu.paste': 'Paste',
+  'mindmap.contextMenu.deleteContent': 'Delete',
+  'mindmap.controlPanel.zoomOut': 'Out',
+  'mindmap.controlPanel.zoomIn': 'In',
+  'mindmap.controlPanel.fit': 'Fit',
+  'mindmap.controlPanel.back': 'Back',
+  'mindmap.controlPanel.forward': 'Forward',
+  'mindmap.controlPanel.export': 'Export',
+  'mindmap.controlPanel.import': 'Import',
+  'mindmap.controlPanel.inserChildNode': 'Child',
+  'mindmap.controlPanel.inserNode': 'Node',
+  'mindmap.controlPanel.inserParentNode': 'Parent',
+  'mindmap.controlPanel.removeNode': 'Remove',
+  'mindmap.controlPanel.zoomOutTitle': 'Zoom Out View',
+  'mindmap.controlPanel.zoomInTitle': 'Zoom In View',
+  'mindmap.controlPanel.fitTitle': 'Fit View Size',
+  'mindmap.controlPanel.backTitle': 'Step Back',
+  'mindmap.controlPanel.forwardTitle': 'Step Forward',
+  'mindmap.controlPanel.exportTitle': 'Export Mind Map',
+  'mindmap.controlPanel.importTitle': 'Import Mind Map',
+  'mindmap.controlPanel.inserChildNodeTitle': 'Insert Child Node',
+  'mindmap.controlPanel.inserNodeTitle': 'Insert Sibling Node',
+  'mindmap.controlPanel.inserParentNodeTitle': 'Insert Parent Node',
+  'mindmap.controlPanel.removeNodeTitle': 'Delete Current Node',
+>>>>>>> 9450055 (fix(mind-map):规范思维导图相关变量名称)
 }

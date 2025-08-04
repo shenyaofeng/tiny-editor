@@ -44,7 +44,11 @@ class MindMapContextMenuHandler {
   }
 }
 
+<<<<<<< HEAD
 const contextMenuHandlers = new WeakMap<MindMapPlaceholderBlot, MindMapContextMenuHandler>()
+=======
+const contextMenuHandlers = new WeakMap<MindMapPlaceholderBlot, MindContextMenuHandler>()
+>>>>>>> 9450055 (fix(mind-map):规范思维导图相关变量名称)
 
 export function initContextMenu(blot: MindMapPlaceholderBlot, quill: FluentEditor): void {
   blot.contextMenu = document.createElement('div')

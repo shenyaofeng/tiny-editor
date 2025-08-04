@@ -73,10 +73,14 @@ export const EN_US = {
   'image': 'Image',
   'file': 'File',
 <<<<<<< HEAD
+<<<<<<< HEAD
   'mind-map': 'Mind Map',
 =======
   'mind': 'Mind Map',
 >>>>>>> 3e4e33f (fix：快捷键添加思维导图)
+=======
+  'mind-map': 'Mind Map',
+>>>>>>> 9450055 (fix(mind-map):规范思维导图相关变量名称)
   'link': 'Hyperlink',
   'code': 'Inline Code',
   'table': 'Table',

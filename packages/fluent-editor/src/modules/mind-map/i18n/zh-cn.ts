@@ -1,4 +1,5 @@
 export const MIND_MAP_ZH_CN = {
+<<<<<<< HEAD
   'mindMap.contextMenu.copy': '复制',
   'mindMap.contextMenu.cut': '剪切',
   'mindMap.contextMenu.paste': '粘贴',
@@ -25,4 +26,32 @@ export const MIND_MAP_ZH_CN = {
   'mindMap.controlPanel.inserNodeTitle': '插入同级节点',
   'mindMap.controlPanel.inserParentNodeTitle': '插入父节点',
   'mindMap.controlPanel.removeNodeTitle': '删除当前节点',
+=======
+  'mindmap.contextMenu.copy': '复制',
+  'mindmap.contextMenu.cut': '剪切',
+  'mindmap.contextMenu.paste': '粘贴',
+  'mindmap.contextMenu.deleteContent': '删除',
+  'mindmap.controlPanel.zoomOut': '缩小',
+  'mindmap.controlPanel.zoomIn': '放大',
+  'mindmap.controlPanel.fit': '适应',
+  'mindmap.controlPanel.back': '上一步',
+  'mindmap.controlPanel.forward': '下一步',
+  'mindmap.controlPanel.export': '导出',
+  'mindmap.controlPanel.import': '导入',
+  'mindmap.controlPanel.inserChildNode': '子节点',
+  'mindmap.controlPanel.inserNode': '同级节点',
+  'mindmap.controlPanel.inserParentNode': '父节点',
+  'mindmap.controlPanel.removeNode': '删除',
+  'mindmap.controlPanel.zoomOutTitle': '缩小视图',
+  'mindmap.controlPanel.zoomInTitle': '放大视图',
+  'mindmap.controlPanel.fitTitle': '适应视图大小',
+  'mindmap.controlPanel.backTitle': '后退一步',
+  'mindmap.controlPanel.forwardTitle': '前进一步',
+  'mindmap.controlPanel.exportTitle': '导出思维导图',
+  'mindmap.controlPanel.importTitle': '导入思维导图',
+  'mindmap.controlPanel.inserChildNodeTitle': '插入子节点',
+  'mindmap.controlPanel.inserNodeTitle': '插入同级节点',
+  'mindmap.controlPanel.inserParentNodeTitle': '插入父节点',
+  'mindmap.controlPanel.removeNodeTitle': '删除当前节点',
+>>>>>>> 9450055 (fix(mind-map):规范思维导图相关变量名称)
 }
