@@ -63,6 +63,7 @@ export class ShortCutKey extends QuillShortcutKey {
         const toolbarModule = this.getModule('toolbar') as TypeToolbar
         if (!toolbarModule) return
         toolbarModule.handlers[format].call(toolbarModule, true)
+        console.warn('toolbarModule', toolbarModule)
       }
     }
     const formatHandler = (format: string, value: any) => {
@@ -204,14 +205,14 @@ export class ShortCutKey extends QuillShortcutKey {
       {
         type: 'item' as const,
         name: 'sldt',
-        alias: ['mind'],
-        icon: icons.mind,
-        title: this.quill.getLangText('mind'),
+        alias: ['mind-map'],
+        icon: icons['mind-map'],
+        title: this.quill.getLangText('mind-map'),
         onClick(this: Quill, range: Range | null, _: any) {
           if (!range) return
-          const mindModule = this.getModule('mind')
-          if (mindModule && typeof (mindModule as any).insertMindMapEditor === 'function') {
-            (mindModule as any).insertMindMapEditor()
+          const MindMapModule = this.getModule('mind-map')
+          if (MindMapModule && typeof (MindMapModule as any).insertMindMapEditor === 'function') {
+            (MindMapModule as any).insertMindMapEditor()
           }
         },
       },

@@ -1,12 +1,9 @@
 import type Quill from 'quill'
-import './formats/mind-blot'
+import './formats/mind-map-blot'
 
-export class MindModule {
+export class MindMapModule {
   quill: Quill
   toolbar: any
-  mmContainer: HTMLElement | null = null
-  mm: any = null
-  tempDiv: HTMLElement | null = null
 
   constructor(quill: Quill, options: any) {
     this.quill = quill
@@ -44,7 +41,7 @@ export class MindModule {
         ],
         smmVersion: '0.14.0-fix.1',
       }
-      this.quill.insertEmbed(range.index, 'mindmap-placeholder', defaultData, 'user')
+      this.quill.insertEmbed(range.index, 'mind-map-placeholder', defaultData, 'user')
       this.quill.setSelection(range.index + 1, 0)
     }
   }

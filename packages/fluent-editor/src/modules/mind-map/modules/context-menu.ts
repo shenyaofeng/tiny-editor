@@ -1,8 +1,8 @@
 import type FluentEditor from '../../../core/fluent-editor'
-import type MindmapPlaceholderBlot from '../formats/mind-blot'
+import type MindMapPlaceholderBlot from '../formats/mind-map-blot'
 import { CHANGE_LANGUAGE_EVENT } from '../../../config'
 import { I18N } from '../../../modules/i18n'
-import { registerMindI18N } from '../i18n/index'
+import { registerMindMapI18N } from '../i18n/index'
 
 class MindContextMenuHandler {
   private texts: Record<string, string>
@@ -11,8 +11,8 @@ class MindContextMenuHandler {
     return this.texts[key]
   }
 
-  constructor(private quill: FluentEditor, private blot: MindmapPlaceholderBlot) {
-    registerMindI18N(I18N)
+  constructor(private quill: FluentEditor, private blot: MindMapPlaceholderBlot) {
+    registerMindMapI18N(I18N)
     this.lang = 'en-US'
     this.texts = this.resolveTexts()
     this.quill.emitter.on(CHANGE_LANGUAGE_EVENT, (lang: string) => {
@@ -44,9 +44,9 @@ class MindContextMenuHandler {
   }
 }
 
-const contextMenuHandlers = new WeakMap<MindmapPlaceholderBlot, MindContextMenuHandler>()
+const contextMenuHandlers = new WeakMap<MindMapPlaceholderBlot, MindContextMenuHandler>()
 
-export function initContextMenu(blot: MindmapPlaceholderBlot, quill: FluentEditor): void {
+export function initContextMenu(blot: MindMapPlaceholderBlot, quill: FluentEditor): void {
   blot.contextMenu = document.createElement('div')
   blot.contextMenu.className = 'mindmap-context-menu'
   blot.contextMenu.style.position = 'fixed'
@@ -71,8 +71,8 @@ export function initContextMenu(blot: MindmapPlaceholderBlot, quill: FluentEdito
   addContextMenuItem(blot, handler.getText('delete'), () => handleDeleteContent(blot))
 
   // 监听节点右键点击事件
-  if (blot.mm) {
-    blot.mm.on('node_contextmenu', (e: any, node: any) => {
+  if (blot.mindMap) {
+    blot.mindMap.on('node_contextmenu', (e: any, node: any) => {
       e.preventDefault()
       e.stopPropagation()
       blot.currentNode = node
@@ -92,9 +92,9 @@ export function initContextMenu(blot: MindmapPlaceholderBlot, quill: FluentEdito
     }
   }
 
-  blot.mm.on('node_click', hideMenu)
-  blot.mm.on('draw_click', hideMenu)
-  blot.mm.on('expand_btn_click', hideMenu)
+  blot.mindMap.on('node_click', hideMenu)
+  blot.mindMap.on('draw_click', hideMenu)
+  blot.mindMap.on('expand_btn_click', hideMenu)
   document.addEventListener('click', (e) => {
     if (blot.contextMenu && !blot.contextMenu.contains(e.target as Node)) {
       hideMenu()
@@ -102,7 +102,7 @@ export function initContextMenu(blot: MindmapPlaceholderBlot, quill: FluentEdito
   })
 }
 
-function addContextMenuItem(blot: MindmapPlaceholderBlot, text: string, onClick: () => void): void {
+function addContextMenuItem(blot: MindMapPlaceholderBlot, text: string, onClick: () => void): void {
   const item = document.createElement('div')
   item.className = 'mindmap-context-menu-item'
   item.textContent = text
@@ -119,32 +119,32 @@ function addContextMenuItem(blot: MindmapPlaceholderBlot, text: string, onClick:
   blot.contextMenu!.appendChild(item)
 }
 
-function handleCopy(blot: MindmapPlaceholderBlot): void {
-  blot.mm.renderer.copy()
+function handleCopy(blot: MindMapPlaceholderBlot): void {
+  blot.mindMap.renderer.copy()
   hideContextMenu(blot)
 }
 
-function handleCut(blot: MindmapPlaceholderBlot): void {
-  blot.mm.renderer.cut()
+function handleCut(blot: MindMapPlaceholderBlot): void {
+  blot.mindMap.renderer.cut()
   hideContextMenu(blot)
 }
 
-function handlePaste(blot: MindmapPlaceholderBlot): void {
-  blot.mm.renderer.paste()
+function handlePaste(blot: MindMapPlaceholderBlot): void {
+  blot.mindMap.renderer.paste()
   hideContextMenu(blot)
 }
 
-function handleDeleteContent(blot: MindmapPlaceholderBlot): void {
+function handleDeleteContent(blot: MindMapPlaceholderBlot): void {
   if (blot.currentNode) {
     blot.currentNode.setText('')
-    blot.data = blot.mm.getData({})
-    blot.domNode.setAttribute('data-mm', JSON.stringify(blot.data))
+    blot.data = blot.mindMap.getData({})
+    blot.domNode.setAttribute('data-mind-map', JSON.stringify(blot.data))
     blot.scroll.update([], {})
   }
   hideContextMenu(blot)
 }
 
-function hideContextMenu(blot: MindmapPlaceholderBlot): void {
+function hideContextMenu(blot: MindMapPlaceholderBlot): void {
   if (blot.contextMenu) {
     blot.contextMenu.style.display = 'none'
   }

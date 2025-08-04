@@ -1,4 +1,4 @@
-export const MIND_ZH_CN = {
+export const MIND_MAP_ZH_CN = {
   'mindmap.contextMenu.copy': '复制',
   'mindmap.contextMenu.cut': '剪切',
   'mindmap.contextMenu.paste': '粘贴',

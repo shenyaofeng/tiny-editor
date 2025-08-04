@@ -1,4 +1,4 @@
-export const MIND_EN_US = {
+export const MIND_MAP_EN_US = {
   'mindmap.contextMenu.copy': 'Copy',
   'mindmap.contextMenu.cut': 'Cut',
   'mindmap.contextMenu.paste': 'Paste',

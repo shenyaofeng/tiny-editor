@@ -70,7 +70,7 @@ export const ZH_CN = {
   'strike': '删除线',
   'image': '图片',
   'file': '文件',
-  'mind': '思维导图',
+  'mind-map': '思维导图',
   'link': '超链接',
   'divider': '分割线',
   'code': '行内代码',

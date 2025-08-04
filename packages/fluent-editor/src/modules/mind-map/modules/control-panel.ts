@@ -1,8 +1,8 @@
 import type FluentEditor from '../../../core/fluent-editor'
-import type MindmapPlaceholderBlot from '../formats/mind-blot'
+import type MindMapPlaceholderBlot from '../formats/mind-map-blot'
 import { CHANGE_LANGUAGE_EVENT } from '../../../config'
 import { I18N } from '../../../modules/i18n'
-import { registerMindI18N } from '../i18n'
+import { registerMindMapI18N } from '../i18n'
 
 class ControlPanelHandler {
   private texts: Record<string, string>
@@ -11,8 +11,8 @@ class ControlPanelHandler {
     return this.texts[key]
   }
 
-  constructor(private quill: FluentEditor, private blot: MindmapPlaceholderBlot) {
-    registerMindI18N(I18N)
+  constructor(private quill: FluentEditor, private blot: MindMapPlaceholderBlot) {
+    registerMindMapI18N(I18N)
     this.lang = 'en-US'
     this.texts = this.resolveTexts()
     this.quill.emitter.on(CHANGE_LANGUAGE_EVENT, (lang: string) => {
@@ -68,11 +68,11 @@ class ControlPanelHandler {
   }
 }
 
-const controlPanelHandlers = new WeakMap<MindmapPlaceholderBlot, ControlPanelHandler>()
+const controlPanelHandlers = new WeakMap<MindMapPlaceholderBlot, ControlPanelHandler>()
 
 const DISABLED_OPACITY = '0.5'
 const ENABLED_OPACITY = '1'
-export function createControlPanel(blot: MindmapPlaceholderBlot, quill: FluentEditor): void {
+export function createControlPanel(blot: MindMapPlaceholderBlot, quill: FluentEditor): void {
   let isStart = true
   let isEnd = true
   // 右上的控制面板
@@ -93,12 +93,12 @@ export function createControlPanel(blot: MindmapPlaceholderBlot, quill: FluentEd
   const resetBtn = createControlItem('fit', handler.getText('fit'), handler.getText('fitTitle'), () => handleResetZoom(blot))
   const backBtn = createControlItem('back', handler.getText('back'), handler.getText('backTitle'), () => {
     if (!isStart) {
-      blot.mm.execCommand('BACK')
+      blot.mindMap.execCommand('BACK')
     }
   })
   const forwardBtn = createControlItem('forward', handler.getText('forward'), handler.getText('forwardTitle'), () => {
     if (!isEnd) {
-      blot.mm.execCommand('FORWARD')
+      blot.mindMap.execCommand('FORWARD')
     }
   })
   const exportJSON = createControlItem('export', handler.getText('export'), handler.getText('exportTitle'), () => handleExport(blot))
@@ -117,7 +117,7 @@ export function createControlPanel(blot: MindmapPlaceholderBlot, quill: FluentEd
     forwardBtn.style.opacity = isEnd ? DISABLED_OPACITY : ENABLED_OPACITY
   }
 
-  blot.mm.on('back_forward', (index: number, len: number) => {
+  blot.mindMap.on('back_forward', (index: number, len: number) => {
     updateButtonState(index, len)
   })
   controlPanel.append(zoomOutBtn, zoomInBtn, resetBtn, backBtn, forwardBtn)
@@ -152,30 +152,30 @@ function createControlItem(iconClass: string, text: string, title: string, onCli
   return controlItem
 }
 
-function handleInsertChildNode(blot: MindmapPlaceholderBlot): void {
-  blot.mm.execCommand('INSERT_CHILD_NODE')
+function handleInsertChildNode(blot: MindMapPlaceholderBlot): void {
+  blot.mindMap.execCommand('INSERT_CHILD_NODE')
 }
 
-function handleInsertNode(blot: MindmapPlaceholderBlot): void {
-  blot.mm.execCommand('INSERT_NODE')
+function handleInsertNode(blot: MindMapPlaceholderBlot): void {
+  blot.mindMap.execCommand('INSERT_NODE')
 }
 
-function handleInsertParentNode(blot: MindmapPlaceholderBlot): void {
-  blot.mm.execCommand('INSERT_PARENT_NODE')
+function handleInsertParentNode(blot: MindMapPlaceholderBlot): void {
+  blot.mindMap.execCommand('INSERT_PARENT_NODE')
 }
 
-function handleRemoveNode(blot: MindmapPlaceholderBlot): void {
-  blot.mm.execCommand('REMOVE_CURRENT_NODE')
+function handleRemoveNode(blot: MindMapPlaceholderBlot): void {
+  blot.mindMap.execCommand('REMOVE_CURRENT_NODE')
 }
 
-function handleExport(blot: MindmapPlaceholderBlot): void {
-  blot.mm.getElRectInfo()
-  if (blot.mm) {
-    blot.mm.export('json', true, '思维导图')
+function handleExport(blot: MindMapPlaceholderBlot): void {
+  blot.mindMap.getElRectInfo()
+  if (blot.mindMap) {
+    blot.mindMap.export('json', true, '思维导图')
   }
 }
 
-function handleImport(blot: MindmapPlaceholderBlot): void {
+function handleImport(blot: MindMapPlaceholderBlot): void {
   const fileInput = document.createElement('input')
   fileInput.type = 'file'
   fileInput.accept = '.json'
@@ -190,16 +190,16 @@ function handleImport(blot: MindmapPlaceholderBlot): void {
     reader.onload = (event) => {
       try {
         const jsonData = JSON.parse(event.target?.result as string)
-        if (blot.mm) {
+        if (blot.mindMap) {
           if (jsonData.root) {
-            blot.mm.setFullData(jsonData)
+            blot.mindMap.setFullData(jsonData)
           }
           else {
-            blot.mm.setData(jsonData)
+            blot.mindMap.setData(jsonData)
           }
-          blot.mm.view.reset()
-          blot.data = blot.mm.getData({})
-          blot.domNode.setAttribute('data-mm', JSON.stringify(blot.data))
+          blot.mindMap.view.reset()
+          blot.data = blot.mindMap.getData({})
+          blot.domNode.setAttribute('data-mindMap', JSON.stringify(blot.data))
           blot.scroll.update([], {})
         }
       }
@@ -216,39 +216,39 @@ function handleImport(blot: MindmapPlaceholderBlot): void {
   document.body.removeChild(fileInput)
 }
 
-function handleZoomIn(blot: MindmapPlaceholderBlot): void {
-  if (blot.mm && blot.mm.view) {
-    const containerRect = blot.mm.el.getBoundingClientRect()
+function handleZoomIn(blot: MindMapPlaceholderBlot): void {
+  if (blot.mindMap && blot.mindMap.view) {
+    const containerRect = blot.mindMap.el.getBoundingClientRect()
     const cx = containerRect.width / 2
     const cy = containerRect.height / 2
-    blot.mm.view.enlarge(cx, cy, false)
+    blot.mindMap.view.enlarge(cx, cy, false)
     blot.zoomCount++
   }
 }
 
-function handleZoomOut(blot: MindmapPlaceholderBlot): void {
-  if (blot.mm && blot.mm.view) {
-    const containerRect = blot.mm.el.getBoundingClientRect()
+function handleZoomOut(blot: MindMapPlaceholderBlot): void {
+  if (blot.mindMap && blot.mindMap.view) {
+    const containerRect = blot.mindMap.el.getBoundingClientRect()
     const cx = containerRect.width / 2
     const cy = containerRect.height / 2
-    blot.mm.view.narrow(cx, cy, false)
+    blot.mindMap.view.narrow(cx, cy, false)
     blot.zoomCount--
   }
 }
 
-function handleResetZoom(blot: MindmapPlaceholderBlot): void {
-  if (!blot.mm || !blot.mm.view || blot.zoomCount === 0) return
-  const containerRect = blot.mm.el.getBoundingClientRect()
+function handleResetZoom(blot: MindMapPlaceholderBlot): void {
+  if (!blot.mindMap || !blot.mindMap.view || blot.zoomCount === 0) return
+  const containerRect = blot.mindMap.el.getBoundingClientRect()
   const centerX = containerRect.width / 2
   const centerY = containerRect.height / 2
   const operationCount = Math.abs(blot.zoomCount)
   const isEnlarge = blot.zoomCount < 0
   for (let i = 0; i < operationCount; i++) {
     if (isEnlarge) {
-      blot.mm.view.enlarge(centerX, centerY, false)
+      blot.mindMap.view.enlarge(centerX, centerY, false)
     }
     else {
-      blot.mm.view.narrow(centerX, centerY, false)
+      blot.mindMap.view.narrow(centerX, centerY, false)
     }
   }
   blot.zoomCount = 0
