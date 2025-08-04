@@ -26,7 +26,6 @@ import {
   LIST_CHECK_ICON,
   LIST_ORDERED_ICON,
   LIST_UNORDERED_ICON,
-  MIND_ICON,
   REDO_ICON,
   SCREENSHOT_ICON,
   STRIKE_ICON,
@@ -77,8 +76,7 @@ const ICONS_CONFIG: { [key: string]: any } = {
   'screenshot': SCREENSHOT_ICON,
   'format-painter': FORMAT_PAINTER_ICON,
   'divider': DIVIDER_ICON,
-  'flow': FLOW_ICON,
-  'mind': MIND_ICON,
+  'flow-chart': FLOW_ICON,
 }
 
 const Icons = FluentEditor.import('ui/icons')

@@ -76,7 +76,7 @@ class FlowchartBlot extends BlockEmbed {
       },
       plugins: [DndPanel, SelectionSelect, Control, Menu],
     })
-    const self = this // 保存this引用
+    const self = this
     this.lf.addMenuConfig({
       nodeMenu: [
         {
@@ -170,12 +170,8 @@ class FlowchartBlot extends BlockEmbed {
   }
 }
 
-// 注册 flowchart-placeholder blo
 Quill.register(FlowchartBlot)
 
-/**
- * HHModule 类用于在 Quill 编辑器中集成 LogicFlow 流程图功能
- */
 export class FlowchartModule {
   quill: Quill
   toolbar: any
@@ -186,7 +182,7 @@ export class FlowchartModule {
   constructor(quill: Quill, options: any) {
     this.quill = quill
     this.toolbar = quill.getModule('toolbar')
-    const domNode = document.querySelector('.ql-flow')
+    const domNode = document.querySelector('.ql-flow-chart')
 
     if (domNode) {
       domNode.addEventListener('click', () => {
