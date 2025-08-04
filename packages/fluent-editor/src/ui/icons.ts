@@ -78,6 +78,7 @@ const ICONS_CONFIG: { [key: string]: any } = {
   'format-painter': FORMAT_PAINTER_ICON,
   'divider': DIVIDER_ICON,
 <<<<<<< HEAD
+<<<<<<< HEAD
   'mind-map': MIND_MAP_ICON,
 <<<<<<< HEAD
   'flow-chart': FLOW_CHART_ICON,
@@ -86,7 +87,13 @@ const ICONS_CONFIG: { [key: string]: any } = {
   'flow': FLOW_ICON,
   'mind': MIND_ICON,
 >>>>>>> d9b8b61 (feat: add insert flowChart and mindChart)
+<<<<<<< HEAD
 >>>>>>> 61664d6 (feat: add insert flowChart and mindChart)
+=======
+=======
+  'flow-chart': FLOW_ICON,
+>>>>>>> ce33623 (feature(flow-chart):流程图)
+>>>>>>> 1be5b5c (feature(flow-chart):流程图)
 }
 
 const Icons = FluentEditor.import('ui/icons')

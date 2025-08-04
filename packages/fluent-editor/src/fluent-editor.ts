@@ -64,6 +64,7 @@ FluentEditor.register(
     'modules/uploader': FileUploader,
     'modules/shortcut-key': ShortCutKey,
 <<<<<<< HEAD
+<<<<<<< HEAD
     'modules/mind-map': MindMapModule,
 <<<<<<< HEAD
     'modules/flow-chart': FlowChartModule,
@@ -72,7 +73,13 @@ FluentEditor.register(
     'modules/flow': FlowchartModule,
     'modules/mind': MindModule,
 >>>>>>> d9b8b61 (feat: add insert flowChart and mindChart)
+<<<<<<< HEAD
 >>>>>>> 61664d6 (feat: add insert flowChart and mindChart)
+=======
+=======
+    'modules/flow-chart': FlowchartModule,
+>>>>>>> ce33623 (feature(flow-chart):流程图)
+>>>>>>> 1be5b5c (feature(flow-chart):流程图)
 
     'themes/snow': SnowTheme,
 
