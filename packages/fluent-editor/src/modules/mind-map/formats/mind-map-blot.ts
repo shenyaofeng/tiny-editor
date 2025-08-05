@@ -8,10 +8,14 @@ import Export from 'simple-mind-map/src/plugins/Export.js'
 import { initContextMenu } from '../modules/context-menu'
 import { createControlPanel } from '../modules/control-panel'
 <<<<<<< HEAD
+<<<<<<< HEAD
 import '../style/mind-map.scss'
 =======
 import '../style/mindmap.scss'
 >>>>>>> 9450055 (fix(mind-map):规范思维导图相关变量名称)
+=======
+import '../style/mind-map.scss'
+>>>>>>> f127b1b (fix(mind-map):规范思维导图样式文件名称)
 
 const BlockEmbed = Quill.import('blots/embed') as typeof TypeBlockEmbed
 
