@@ -63,7 +63,6 @@ export class ShortCutKey extends QuillShortcutKey {
         const toolbarModule = this.getModule('toolbar') as TypeToolbar
         if (!toolbarModule) return
         toolbarModule.handlers[format].call(toolbarModule, true)
-        console.warn('toolbarModule', toolbarModule)
       }
     }
     const formatHandler = (format: string, value: any) => {

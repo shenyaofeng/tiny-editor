@@ -4,7 +4,7 @@ import { CHANGE_LANGUAGE_EVENT } from '../../../config'
 import { I18N } from '../../../modules/i18n'
 import { registerMindMapI18N } from '../i18n'
 
-class ControlPanelHandler {
+class MindMapControlPanelHandler {
   private texts: Record<string, string>
   private lang: string
   getText(key: keyof Record<string, string>): string {
@@ -68,7 +68,7 @@ class ControlPanelHandler {
   }
 }
 
-const controlPanelHandlers = new WeakMap<MindMapPlaceholderBlot, ControlPanelHandler>()
+const controlPanelHandlers = new WeakMap<MindMapPlaceholderBlot, MindMapControlPanelHandler>()
 
 const DISABLED_OPACITY = '0.5'
 const ENABLED_OPACITY = '1'
@@ -85,7 +85,7 @@ export function createControlPanel(blot: MindMapPlaceholderBlot, quill: FluentEd
   const controlLeftUpPanel = document.createElement('div')
   controlLeftUpPanel.className = 'mind-map-left-up-control'
 
-  const handler = new ControlPanelHandler(quill, blot)
+  const handler = new MindMapControlPanelHandler(quill, blot)
   controlPanelHandlers.set(blot, handler)
 
   const zoomOutBtn = createControlItem('zoomOut', handler.getText('zoomOut'), handler.getText('zoomOutTitle'), () => handleZoomOut(blot))
