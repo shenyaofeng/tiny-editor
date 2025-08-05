@@ -4,7 +4,7 @@ import { CHANGE_LANGUAGE_EVENT } from '../../../config'
 import { I18N } from '../../../modules/i18n'
 import { registerMindMapI18N } from '../i18n/index'
 
-class MindContextMenuHandler {
+class MindMapContextMenuHandler {
   private texts: Record<string, string>
   private lang: string
   getText(key: keyof Record<string, string>): string {
@@ -44,7 +44,7 @@ class MindContextMenuHandler {
   }
 }
 
-const contextMenuHandlers = new WeakMap<MindMapPlaceholderBlot, MindContextMenuHandler>()
+const contextMenuHandlers = new WeakMap<MindMapPlaceholderBlot, MindMapContextMenuHandler>()
 
 export function initContextMenu(blot: MindMapPlaceholderBlot, quill: FluentEditor): void {
   blot.contextMenu = document.createElement('div')
@@ -62,7 +62,7 @@ export function initContextMenu(blot: MindMapPlaceholderBlot, quill: FluentEdito
   blot.contextMenu.style.height = 'auto'
   document.body.appendChild(blot.contextMenu)
 
-  const handler = new MindContextMenuHandler(quill, blot)
+  const handler = new MindMapContextMenuHandler(quill, blot)
   contextMenuHandlers.set(blot, handler)
 
   addContextMenuItem(blot, handler.getText('copy'), () => handleCopy(blot))
