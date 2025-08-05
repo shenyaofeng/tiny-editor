@@ -7,7 +7,7 @@ import Drag from 'simple-mind-map/src/plugins/Drag.js'
 import Export from 'simple-mind-map/src/plugins/Export.js'
 import { initContextMenu } from '../modules/context-menu'
 import { createControlPanel } from '../modules/control-panel'
-import '../style/mindmap.scss'
+import '../style/mind-map.scss'
 
 const BlockEmbed = Quill.import('blots/embed') as typeof TypeBlockEmbed
 
