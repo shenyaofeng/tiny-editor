@@ -13,12 +13,12 @@ class FlowchartBlot extends BlockEmbed {
   static blotName = 'flowchart'
   static tagName = 'div'
   static className = 'ql-flow-chart'
-  private lf: LogicFlow | null = null
+  private flowChart: LogicFlow | null = null
   private data: any
 
   constructor(scroll: Root, domNode: HTMLElement) {
     super(scroll, domNode)
-    this.domNode.classList.add('ql-flowchart-container')
+    this.domNode.classList.add('ql-flow-chart-container')
     this.domNode.style.height = '500px'
     this.domNode.style.border = '1px solid #e8e8e8'
     this.domNode.style.margin = '10px 0'
@@ -27,14 +27,14 @@ class FlowchartBlot extends BlockEmbed {
   }
 
   static value(domNode: HTMLElement): any {
-    const dataStr = JSON.parse(domNode.getAttribute('data-flow'))
+    const dataStr = JSON.parse(domNode.getAttribute('data-flow-chart'))
     return dataStr.root ? dataStr.root : dataStr
   }
 
   static create(value: any): HTMLElement {
     const node = super.create() as HTMLElement
     if (value) {
-      node.setAttribute('data-flow', JSON.stringify(value))
+      node.setAttribute('data-flow-chart', JSON.stringify(value))
     }
     return node
   }
@@ -57,7 +57,7 @@ class FlowchartBlot extends BlockEmbed {
   private insertLogicFlowInstance(): void {
     this.domNode.style.width = '100%'
     this.domNode.style.height = '100%'
-    this.lf = new LogicFlow({
+    this.flowChart = new LogicFlow({
       container: this.domNode,
       stopScrollGraph: true,
       stopZoomGraph: true,
@@ -72,12 +72,12 @@ class FlowchartBlot extends BlockEmbed {
       plugins: [DndPanel, SelectionSelect, Control, Menu],
     })
     const self = this
-    this.lf.addMenuConfig({
+    this.flowChart.addMenuConfig({
       nodeMenu: [
         {
           text: '删除文本',
           callback(node: any) {
-            self.lf.updateText(node.id, '')
+            self.flowChart.updateText(node.id, '')
           },
         },
       ],
@@ -85,19 +85,19 @@ class FlowchartBlot extends BlockEmbed {
         {
           text: '删除文本',
           callback(node: any) {
-            self.lf.updateText(node.id, '')
+            self.flowChart.updateText(node.id, '')
           },
         },
       ],
     });
-    (this.lf.extension.dndPanel as any).setPatternItems([
+    (this.flowChart.extension.dndPanel as any).setPatternItems([
       {
         label: '选区',
         icon: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAAAXNSR0IArs4c6QAAASVJREFUOE+1VFEOgjAMpQvcA/9IGGeQo+hJjCdRb6JngCX8yT0gVN5CyUQJzCA/28r62tfXjoKNPwJekiRxGIYx9m3b1lVV1WJbOrs+2FvANE0vQRDkRFT3tnNZlnet9Qm2pTMzx0qpc1EU1zdApdRDjD5VQDKu75jhpoBZlh2YuQZVn+xwd+prM9zys4Ba61zU9AWf+v6nhlOlfLL8qjLSBoiPKEOfPiS4+P4sSg/I6AxjzM5lZAEhfdM0d4zcGrrDWD5nAdfWEDQxakSEuc8B2K+2d4noBtpeKoPmHIM+0NUYcxwBERURJRLK0HXdXs7yKkVRZAVkZjwoyOyIVUo2NvZAY/wB5WH7VtvFGq4Rwr3jAFqaHyr7Agp9rNPO+LkP55J4AUBcASTXtDeAAAAAAElFTkSuQmCC',
         callback: () => {
-          (this.lf.extension.selectionSelect as any).openSelectionSelect()
-          this.lf.once('selection:selected', () => {
-            (this.lf.extension.selectionSelect as any).closeSelectionSelect()
+          (this.flowChart.extension.selectionSelect as any).openSelectionSelect()
+          this.flowChart.once('selection:selected', () => {
+            (this.flowChart.extension.selectionSelect as any).closeSelectionSelect()
           })
         },
       },
@@ -130,8 +130,8 @@ class FlowchartBlot extends BlockEmbed {
     let timer = null
     let content = ''
     let id = ''
-    this.lf.render(this.data)
-    this.lf.on('node:dbclick', (data) => {
+    this.flowChart.render(this.data)
+    this.flowChart.on('node:dbclick', (data) => {
       id = data.data.id
       timer = setInterval(() => {
         const textInputElement = document.querySelector('.lf-text-input')
@@ -140,7 +140,7 @@ class FlowchartBlot extends BlockEmbed {
         }
       }, 100)
     })
-    this.lf.on('edge:dbclick', (data) => {
+    this.flowChart.on('edge:dbclick', (data) => {
       id = data.data.id
       timer = setInterval(() => {
         const textInputElement = document.querySelector('.lf-text-input')
@@ -150,16 +150,16 @@ class FlowchartBlot extends BlockEmbed {
       }, 100)
     })
 
-    this.lf.on('blank:mousedown', () => {
+    this.flowChart.on('blank:mousedown', () => {
       timer && clearInterval(timer)
-      this.lf.updateText(id, content)
+      this.flowChart.updateText(id, content)
       content = ''
       id = ''
     })
 
-    this.lf.on('graph:updated', () => {
-      this.data = this.lf.getGraphData()
-      this.domNode.setAttribute('data-flow', JSON.stringify(this.data))
+    this.flowChart.on('graph:updated', () => {
+      this.data = this.flowChart.getGraphData()
+      this.domNode.setAttribute('data-flow-chart', JSON.stringify(this.data))
       this.scroll.update([], {})
     })
   }
