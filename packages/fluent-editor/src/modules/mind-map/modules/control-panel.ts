@@ -24,40 +24,40 @@ class ControlPanelHandler {
 
   resolveTexts() {
     return {
-      zoomOut: I18N.parserText('mindmap.controlPanel.zoomOut', this.lang),
-      zoomIn: I18N.parserText('mindmap.controlPanel.zoomIn', this.lang),
-      fit: I18N.parserText('mindmap.controlPanel.fit', this.lang),
-      back: I18N.parserText('mindmap.controlPanel.back', this.lang),
-      forward: I18N.parserText('mindmap.controlPanel.forward', this.lang),
-      export: I18N.parserText('mindmap.controlPanel.export', this.lang),
-      import: I18N.parserText('mindmap.controlPanel.import', this.lang),
-      inserChildNode: I18N.parserText('mindmap.controlPanel.inserChildNode', this.lang),
-      inserNode: I18N.parserText('mindmap.controlPanel.inserNode', this.lang),
-      inserParentNode: I18N.parserText('mindmap.controlPanel.inserParentNode', this.lang),
-      removeNode: I18N.parserText('mindmap.controlPanel.removeNode', this.lang),
+      zoomOut: I18N.parserText('mindMap.controlPanel.zoomOut', this.lang),
+      zoomIn: I18N.parserText('mindMap.controlPanel.zoomIn', this.lang),
+      fit: I18N.parserText('mindMap.controlPanel.fit', this.lang),
+      back: I18N.parserText('mindMap.controlPanel.back', this.lang),
+      forward: I18N.parserText('mindMap.controlPanel.forward', this.lang),
+      export: I18N.parserText('mindMap.controlPanel.export', this.lang),
+      import: I18N.parserText('mindMap.controlPanel.import', this.lang),
+      inserChildNode: I18N.parserText('mindMap.controlPanel.inserChildNode', this.lang),
+      inserNode: I18N.parserText('mindMap.controlPanel.inserNode', this.lang),
+      inserParentNode: I18N.parserText('mindMap.controlPanel.inserParentNode', this.lang),
+      removeNode: I18N.parserText('mindMap.controlPanel.removeNode', this.lang),
 
-      zoomOutTitle: I18N.parserText('mindmap.controlPanel.zoomOutTitle', this.lang),
-      zoomInTitle: I18N.parserText('mindmap.controlPanel.zoomInTitle', this.lang),
-      fitTitle: I18N.parserText('mindmap.controlPanel.fitTitle', this.lang),
-      backTitle: I18N.parserText('mindmap.controlPanel.backTitle', this.lang),
-      forwardTitle: I18N.parserText('mindmap.controlPanel.forwardTitle', this.lang),
-      exportTitle: I18N.parserText('mindmap.controlPanel.exportTitle', this.lang),
-      importTitle: I18N.parserText('mindmap.controlPanel.importTitle', this.lang),
-      inserChildNodeTitle: I18N.parserText('mindmap.controlPanel.inserChildNodeTitle', this.lang),
-      inserNodeTitle: I18N.parserText('mindmap.controlPanel.inserNodeTitle', this.lang),
-      inserParentNodeTitle: I18N.parserText('mindmap.controlPanel.inserParentNodeTitle', this.lang),
-      removeNodeTitle: I18N.parserText('mindmap.controlPanel.removeNodeTitle', this.lang),
+      zoomOutTitle: I18N.parserText('mindMap.controlPanel.zoomOutTitle', this.lang),
+      zoomInTitle: I18N.parserText('mindMap.controlPanel.zoomInTitle', this.lang),
+      fitTitle: I18N.parserText('mindMap.controlPanel.fitTitle', this.lang),
+      backTitle: I18N.parserText('mindMap.controlPanel.backTitle', this.lang),
+      forwardTitle: I18N.parserText('mindMap.controlPanel.forwardTitle', this.lang),
+      exportTitle: I18N.parserText('mindMap.controlPanel.exportTitle', this.lang),
+      importTitle: I18N.parserText('mindMap.controlPanel.importTitle', this.lang),
+      inserChildNodeTitle: I18N.parserText('mindMap.controlPanel.inserChildNodeTitle', this.lang),
+      inserNodeTitle: I18N.parserText('mindMap.controlPanel.inserNodeTitle', this.lang),
+      inserParentNodeTitle: I18N.parserText('mindMap.controlPanel.inserParentNodeTitle', this.lang),
+      removeNodeTitle: I18N.parserText('mindMap.controlPanel.removeNodeTitle', this.lang),
     }
   }
 
   updateControlPanelTexts() {
-    const controlItems = this.blot.domNode.querySelectorAll('.mindmap-control-item')
+    const controlItems = this.blot.domNode.querySelectorAll('.mind-map-control-item')
     controlItems.forEach((item) => {
       const icon = item.querySelector('i')
       if (icon) {
-        const iconClass = icon.className.split('-')[2]
+        const iconClass = icon.className.split('-')[3]
         if (this.texts[iconClass]) {
-          const textSpan = item.querySelector('.mindmap-control-text')
+          const textSpan = item.querySelector('.mind-map-control-text')
           if (textSpan) {
             textSpan.textContent = this.texts[iconClass]
           }
@@ -77,13 +77,13 @@ export function createControlPanel(blot: MindMapPlaceholderBlot, quill: FluentEd
   let isEnd = true
   // 右上的控制面板
   const controlPanel = document.createElement('div')
-  controlPanel.className = 'mindmap-control'
+  controlPanel.className = 'mind-map-control'
   // 左下的控制面板
   const controlLeftDownPanel = document.createElement('div')
-  controlLeftDownPanel.className = 'mindmap-left-down-control'
+  controlLeftDownPanel.className = 'mind-map-left-down-control'
   // 左上的控制面板
   const controlLeftUpPanel = document.createElement('div')
-  controlLeftUpPanel.className = 'mindmap-left-up-control'
+  controlLeftUpPanel.className = 'mind-map-left-up-control'
 
   const handler = new ControlPanelHandler(quill, blot)
   controlPanelHandlers.set(blot, handler)
@@ -130,16 +130,16 @@ export function createControlPanel(blot: MindMapPlaceholderBlot, quill: FluentEd
 
 function createControlItem(iconClass: string, text: string, title: string, onClick: () => void, disabled = false) {
   const controlItem = document.createElement('div')
-  controlItem.className = 'mindmap-control-item'
+  controlItem.className = 'mind-map-control-item'
   controlItem.title = title
   controlItem.style.cursor = disabled ? 'not-allowed' : 'pointer'
   controlItem.style.opacity = disabled ? DISABLED_OPACITY : ENABLED_OPACITY
 
   const icon = document.createElement('i')
-  icon.className = `mindmap-control-${iconClass}`
+  icon.className = `mind-map-control-${iconClass}`
 
   const textSpan = document.createElement('span')
-  textSpan.className = 'mindmap-control-text'
+  textSpan.className = 'mind-map-control-text'
   textSpan.textContent = text
 
   controlItem.appendChild(icon)
@@ -199,7 +199,7 @@ function handleImport(blot: MindMapPlaceholderBlot): void {
           }
           blot.mindMap.view.reset()
           blot.data = blot.mindMap.getData({})
-          blot.domNode.setAttribute('data-mindMap', JSON.stringify(blot.data))
+          blot.domNode.setAttribute('data-mind-map', JSON.stringify(blot.data))
           blot.scroll.update([], {})
         }
       }

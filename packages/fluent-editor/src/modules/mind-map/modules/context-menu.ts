@@ -24,17 +24,17 @@ class MindContextMenuHandler {
 
   resolveTexts() {
     return {
-      copy: I18N.parserText('mindmap.contextMenu.copy', this.lang),
-      cut: I18N.parserText('mindmap.contextMenu.cut', this.lang),
-      paste: I18N.parserText('mindmap.contextMenu.paste', this.lang),
-      delete: I18N.parserText('mindmap.contextMenu.deleteContent', this.lang),
+      copy: I18N.parserText('mindMap.contextMenu.copy', this.lang),
+      cut: I18N.parserText('mindMap.contextMenu.cut', this.lang),
+      paste: I18N.parserText('mindMap.contextMenu.paste', this.lang),
+      delete: I18N.parserText('mindMap.contextMenu.deleteContent', this.lang),
     }
   }
 
   updateContextMenuItems() {
     if (!this.blot.contextMenu) return
 
-    const menuItems = this.blot.contextMenu.querySelectorAll('.mindmap-context-menu-item')
+    const menuItems = this.blot.contextMenu.querySelectorAll('.mind-map-context-menu-item')
     if (menuItems.length >= 4) {
       menuItems[0].textContent = this.texts.copy
       menuItems[1].textContent = this.texts.cut
@@ -48,7 +48,7 @@ const contextMenuHandlers = new WeakMap<MindMapPlaceholderBlot, MindContextMenuH
 
 export function initContextMenu(blot: MindMapPlaceholderBlot, quill: FluentEditor): void {
   blot.contextMenu = document.createElement('div')
-  blot.contextMenu.className = 'mindmap-context-menu'
+  blot.contextMenu.className = 'mind-map-context-menu'
   blot.contextMenu.style.position = 'fixed'
   blot.contextMenu.style.background = 'white'
   blot.contextMenu.style.borderRadius = '4px'
@@ -104,7 +104,7 @@ export function initContextMenu(blot: MindMapPlaceholderBlot, quill: FluentEdito
 
 function addContextMenuItem(blot: MindMapPlaceholderBlot, text: string, onClick: () => void): void {
   const item = document.createElement('div')
-  item.className = 'mindmap-context-menu-item'
+  item.className = 'mind-map-context-menu-item'
   item.textContent = text
   item.style.padding = '5px 15px'
   item.style.cursor = 'pointer'
