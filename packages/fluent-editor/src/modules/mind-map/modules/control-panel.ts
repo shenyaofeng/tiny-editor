@@ -204,10 +204,14 @@ function handleImport(blot: MindMapPlaceholderBlot): void {
           blot.mindMap.view.reset()
           blot.data = blot.mindMap.getData({})
 <<<<<<< HEAD
+<<<<<<< HEAD
           blot.domNode.setAttribute('data-mind-map', JSON.stringify(blot.data))
 =======
           blot.domNode.setAttribute('data-mindMap', JSON.stringify(blot.data))
 >>>>>>> 9450055 (fix(mind-map):规范思维导图相关变量名称)
+=======
+          blot.domNode.setAttribute('data-mind-map', JSON.stringify(blot.data))
+>>>>>>> f4aacc5 (fix(mind-map):规范思维导图相关变量名称)
           blot.scroll.update([], {})
         }
       }

@@ -1,5 +1,8 @@
 export const MIND_MAP_ZH_CN = {
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> f4aacc5 (fix(mind-map):规范思维导图相关变量名称)
   'mindMap.contextMenu.copy': '复制',
   'mindMap.contextMenu.cut': '剪切',
   'mindMap.contextMenu.paste': '粘贴',
@@ -26,6 +29,7 @@ export const MIND_MAP_ZH_CN = {
   'mindMap.controlPanel.inserNodeTitle': '插入同级节点',
   'mindMap.controlPanel.inserParentNodeTitle': '插入父节点',
   'mindMap.controlPanel.removeNodeTitle': '删除当前节点',
+<<<<<<< HEAD
 =======
   'mindmap.contextMenu.copy': '复制',
   'mindmap.contextMenu.cut': '剪切',
@@ -54,4 +58,6 @@ export const MIND_MAP_ZH_CN = {
   'mindmap.controlPanel.inserParentNodeTitle': '插入父节点',
   'mindmap.controlPanel.removeNodeTitle': '删除当前节点',
 >>>>>>> 9450055 (fix(mind-map):规范思维导图相关变量名称)
+=======
+>>>>>>> f4aacc5 (fix(mind-map):规范思维导图相关变量名称)
 }
