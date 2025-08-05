@@ -1,20 +1,21 @@
 import type { Root } from 'parchment'
 import type { BlockEmbed as TypeBlockEmbed } from 'quill/blots/block'
+import type FluentEditor from '../../../core/fluent-editor'
 import LogicFlow from '@logicflow/core'
 import { Control, DndPanel, Menu, SelectionSelect } from '@logicflow/extension'
 import Quill from 'quill'
-import './flowChart.scss'
-import '@logicflow/core/lib/style/index.css'
-import '@logicflow/extension/lib/style/index.css'
+import { createControlPanel } from '../modules/control-panel'
+import '../style/flowchart.scss'
 
 const BlockEmbed = Quill.import('blots/embed') as typeof TypeBlockEmbed
+
 // 定义 flowchart-placeholder blot
 class FlowchartBlot extends BlockEmbed {
   static blotName = 'flowchart'
   static tagName = 'div'
   static className = 'ql-flow-chart'
-  private flowChart: LogicFlow | null = null
-  private data: any
+  flowChart: LogicFlow | null = null
+  data: any
 
   constructor(scroll: Root, domNode: HTMLElement) {
     super(scroll, domNode)
@@ -27,7 +28,7 @@ class FlowchartBlot extends BlockEmbed {
   }
 
   static value(domNode: HTMLElement): any {
-    const dataStr = JSON.parse(domNode.getAttribute('data-flow-chart'))
+    const dataStr = JSON.parse(domNode.getAttribute('data-flow-chart') || '{}')
     return dataStr.root ? dataStr.root : dataStr
   }
 
@@ -77,7 +78,7 @@ class FlowchartBlot extends BlockEmbed {
         {
           text: '删除文本',
           callback(node: any) {
-            self.flowChart.updateText(node.id, '')
+            self.flowChart?.updateText(node.id, '')
           },
         },
       ],
@@ -85,7 +86,7 @@ class FlowchartBlot extends BlockEmbed {
         {
           text: '删除文本',
           callback(node: any) {
-            self.flowChart.updateText(node.id, '')
+            self.flowChart?.updateText(node.id, '')
           },
         },
       ],
@@ -126,12 +127,13 @@ class FlowchartBlot extends BlockEmbed {
         icon: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAAAXNSR0IArs4c6QAAAjNJREFUOE+t1E2rElEYB/BnbkKCY9FnaHzBOSfaBIEiI1SroE2gGCqKuyAQIXAUTVoFLWx8QXCTXohA0KRNcGklhaC48cyIRNFCUsSP4MzUSF6uqTNyaZbnPM+PM3P+81Dwnx/qGI9lWR9FUSZCyJlRvSGIELoJAF0AoCiKco9Gox96qC7IcZxpuVx2E4nE3dVqBcVi8QshxHNpECH03u/3+zOZzNrIZrPQbrdPCSHhQ+jBE2KMX3k8nueVSmWrNxqNwmAweEEIye9D94Isyz612WylRqMBVqt1q282m0E4HIb5fB4mhJz+i+6ACKGHFovlY71eB4fDsffN+v0+xGIxbc9NCPl6sWgLxBhjVVW7giBc9/l8uglptVqQy+W+K4rikSRpvik+BxmGuWY2m7upVOpWMBg0itt6XxAEqNVqZ39O+WAHxBjf0PLG8zwbCASOAkulElSr1c+iKN7bAbUFl8t1++TkpFsul2mv16uLdjodSKfTP1erlXsymfzaC2qLGONHNE1/0G6YYZi96HA4hEgkAoqieCVJ0v6i82dvbBBCz+x2+xvtpmma3kIXiwWEQiGYTqdRSZLeGsZmU4AQes1xXLJYLG71xONx6PV6L0VRzB4d7E0hxrgZCAQe8zy/Xsrn89BsNt+Jovjk0AfWHQ4Mw1zVopRMJu/IsgyFQqH3dzjIlwK1JqfTaTeZTOvxJcuyezwef9O7fsN5qDUjhO6rqnpFFMVPRgE9CjRCLu7/BivoyhX8YXObAAAAAElFTkSuQmCC',
       },
     ])
-
-    let timer = null
+    const quill = this.scroll as unknown as FluentEditor
+    createControlPanel(this, quill)
+    let timer: any = null
     let content = ''
     let id = ''
     this.flowChart.render(this.data)
-    this.flowChart.on('node:dbclick', (data) => {
+    this.flowChart.on('node:dbclick', (data: any) => {
       id = data.data.id
       timer = setInterval(() => {
         const textInputElement = document.querySelector('.lf-text-input')
@@ -140,7 +142,7 @@ class FlowchartBlot extends BlockEmbed {
         }
       }, 100)
     })
-    this.flowChart.on('edge:dbclick', (data) => {
+    this.flowChart.on('edge:dbclick', (data: any) => {
       id = data.data.id
       timer = setInterval(() => {
         const textInputElement = document.querySelector('.lf-text-input')
@@ -152,51 +154,19 @@ class FlowchartBlot extends BlockEmbed {
 
     this.flowChart.on('blank:mousedown', () => {
       timer && clearInterval(timer)
-      this.flowChart.updateText(id, content)
+      this.flowChart?.updateText(id, content)
       content = ''
       id = ''
     })
 
     this.flowChart.on('graph:updated', () => {
-      this.data = this.flowChart.getGraphData()
-      this.domNode.setAttribute('data-flow-chart', JSON.stringify(this.data))
-      this.scroll.update([], {})
+      if (this.flowChart) {
+        this.data = this.flowChart.getGraphData()
+        this.domNode.setAttribute('data-flow-chart', JSON.stringify(this.data))
+        this.scroll.update([], {})
+      }
     })
   }
 }
 
-Quill.register(FlowchartBlot)
-
-export class FlowchartModule {
-  quill: Quill
-  toolbar: any
-
-  constructor(quill: Quill, options: any) {
-    this.quill = quill
-    this.toolbar = quill.getModule('toolbar')
-    const domNode = document.querySelector('.ql-flow-chart')
-
-    if (domNode) {
-      domNode.addEventListener('click', () => {
-        this.insertFlowChartEditor()
-      })
-    }
-  }
-
-  private insertFlowChartEditor(): void {
-    const range = this.quill.getSelection()
-    if (range) {
-      const defaultData = {
-        nodes: [
-          { id: 'node1', type: 'rect', x: 100, y: 150, text: '开始' },
-          { id: 'node2', type: 'rect', x: 300, y: 150, text: '结束' },
-        ],
-        edges: [
-          { id: 'edge1', sourceNodeId: 'node1', targetNodeId: 'node2', type: 'polyline' },
-        ],
-      }
-      this.quill.insertEmbed(range.index, 'flowchart', defaultData, 'user')
-      this.quill.setSelection(range.index + 1, 0)
-    }
-  }
-}
+export default FlowchartBlot
