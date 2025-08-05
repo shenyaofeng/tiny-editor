@@ -69,10 +69,14 @@ class MindMapControlPanelHandler {
 }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 const controlPanelHandlers = new WeakMap<MindMapPlaceholderBlot, MindMapControlPanelHandler>()
 =======
 const controlPanelHandlers = new WeakMap<MindMapPlaceholderBlot, ControlPanelHandler>()
 >>>>>>> 9450055 (fix(mind-map):规范思维导图相关变量名称)
+=======
+const controlPanelHandlers = new WeakMap<MindMapPlaceholderBlot, MindMapControlPanelHandler>()
+>>>>>>> a7c759a (fix(mind-map):规范思维导图相关类名称)
 
 const DISABLED_OPACITY = '0.5'
 const ENABLED_OPACITY = '1'
