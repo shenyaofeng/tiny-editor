@@ -2,14 +2,13 @@ import type { Root } from 'parchment'
 import type { BlockEmbed as TypeBlockEmbed } from 'quill/blots/block'
 import type FluentEditor from '../../../core/fluent-editor'
 import LogicFlow from '@logicflow/core'
-import { Control, DndPanel, Menu, SelectionSelect } from '@logicflow/extension'
+import { DndPanel, Menu, SelectionSelect } from '@logicflow/extension'
 import Quill from 'quill'
 import { createControlPanel } from '../modules/control-panel'
 import '../style/flowchart.scss'
 
 const BlockEmbed = Quill.import('blots/embed') as typeof TypeBlockEmbed
 
-// 定义 flowchart-placeholder blot
 class FlowchartBlot extends BlockEmbed {
   static blotName = 'flowchart'
   static tagName = 'div'
@@ -70,7 +69,7 @@ class FlowchartBlot extends BlockEmbed {
         type: 'dot',
         size: 20,
       },
-      plugins: [DndPanel, SelectionSelect, Control, Menu],
+      plugins: [DndPanel, SelectionSelect, Menu],
     })
     const self = this
     this.flowChart.addMenuConfig({

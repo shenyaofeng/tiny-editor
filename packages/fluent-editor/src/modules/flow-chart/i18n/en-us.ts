@@ -8,4 +8,9 @@ export const FLOW_CHART_EN_US = {
   'flowChart.dndPanel.circle': 'Circle',
   'flowChart.dndPanel.ellipse': 'Ellipse',
   'flowChart.dndPanel.diamond': 'Diamond',
+  'flowChart.controlPanel.zoomOut': 'Out',
+  'flowChart.controlPanel.zoomIn': 'In',
+  'flowChart.controlPanel.fit': 'Fit',
+  'flowChart.controlPanel.back': 'Back',
+  'flowChart.controlPanel.forward': 'Forward',
 }

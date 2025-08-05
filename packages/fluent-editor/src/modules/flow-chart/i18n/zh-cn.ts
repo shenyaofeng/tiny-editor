@@ -8,4 +8,9 @@ export const FLOW_CHART_ZH_CN = {
   'flowChart.dndPanel.circle': '圆形',
   'flowChart.dndPanel.ellipse': '椭圆',
   'flowChart.dndPanel.diamond': '菱形',
+  'flowChart.controlPanel.zoomOut': '缩小',
+  'flowChart.controlPanel.zoomIn': '放大',
+  'flowChart.controlPanel.fit': '适应',
+  'flowChart.controlPanel.back': '上一步',
+  'flowChart.controlPanel.forward': '下一步',
 }

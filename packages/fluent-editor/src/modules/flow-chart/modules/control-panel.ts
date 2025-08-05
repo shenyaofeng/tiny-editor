@@ -28,15 +28,23 @@ class ControlPanelHandler {
     return {
       export: I18N.parserText('flowChart.controlPanel.export', this.lang),
       import: I18N.parserText('flowChart.controlPanel.import', this.lang),
-
       exportTitle: I18N.parserText('flowChart.controlPanel.exportTitle', this.lang),
       importTitle: I18N.parserText('flowChart.controlPanel.importTitle', this.lang),
-
       selection: I18N.parserText('flowChart.dndPanel.selection', this.lang),
       rectangle: I18N.parserText('flowChart.dndPanel.rectangle', this.lang),
       circle: I18N.parserText('flowChart.dndPanel.circle', this.lang),
       ellipse: I18N.parserText('flowChart.dndPanel.ellipse', this.lang),
       diamond: I18N.parserText('flowChart.dndPanel.diamond', this.lang),
+      zoomOut: I18N.parserText('flowChart.controlPanel.zoomOut', this.lang),
+      zoomIn: I18N.parserText('flowChart.controlPanel.zoomIn', this.lang),
+      fit: I18N.parserText('flowChart.controlPanel.fit', this.lang),
+      back: I18N.parserText('flowChart.controlPanel.back', this.lang),
+      forward: I18N.parserText('flowChart.controlPanel.forward', this.lang),
+      zoomOutTitle: I18N.parserText('flowChart.controlPanel.zoomOutTitle', this.lang),
+      zoomInTitle: I18N.parserText('flowChart.controlPanel.zoomInTitle', this.lang),
+      fitTitle: I18N.parserText('flowChart.controlPanel.fitTitle', this.lang),
+      backTitle: I18N.parserText('flowChart.controlPanel.backTitle', this.lang),
+      forwardTitle: I18N.parserText('flowChart.controlPanel.forwardTitle', this.lang),
     }
   }
 
@@ -108,18 +116,56 @@ class ControlPanelHandler {
 const controlPanelHandlers = new WeakMap<FlowchartBlot, ControlPanelHandler>()
 
 export function createControlPanel(blot: FlowchartBlot, quill: FluentEditor): void {
+  // 右上的控制面板
+  const controlPanel = document.createElement('div')
+  controlPanel.className = 'flow-chart-control'
   // 左下的控制面板
   const controlLeftDownPanel = document.createElement('div')
   controlLeftDownPanel.className = 'flow-chart-left-down-control'
 
   const handler = new ControlPanelHandler(quill, blot)
   controlPanelHandlers.set(blot, handler)
-
+  const zoomOutBtn = createControlItem('zoomOut', handler.getText('zoomOut'), handler.getText('zoomOutTitle'), () => handleZoomOut(blot))
+  const zoomInBtn = createControlItem('zoomIn', handler.getText('zoomIn'), handler.getText('zoomInTitle'), () => handleZoomIn(blot))
+  const resetBtn = createControlItem('fit', handler.getText('fit'), handler.getText('fitTitle'), () => handleResetZoom(blot))
+  const backBtn = createControlItem('back', handler.getText('back'), handler.getText('backTitle'), () => handleUndo(blot))
+  const forwardBtn = createControlItem('forward', handler.getText('forward'), handler.getText('forwardTitle'), () => handleRedo(blot))
   const exportJSON = createControlItem('export', handler.getText('export'), handler.getText('exportTitle'), () => handleExport(blot))
   const importJSON = createControlItem('import', handler.getText('import'), handler.getText('importTitle'), () => handleImport(blot))
-
+  controlPanel.append(zoomOutBtn, zoomInBtn, resetBtn, backBtn, forwardBtn)
   controlLeftDownPanel.append(exportJSON, importJSON)
+  blot.domNode.appendChild(controlPanel)
   blot.domNode.appendChild(controlLeftDownPanel)
+}
+
+function handleUndo(blot: FlowchartBlot): void {
+  if (blot.flowChart) {
+    blot.flowChart.undo()
+  }
+}
+
+function handleRedo(blot: FlowchartBlot): void {
+  if (blot.flowChart) {
+    blot.flowChart.redo()
+  }
+}
+
+function handleZoomIn(blot: FlowchartBlot): void {
+  if (blot.flowChart) {
+    blot.flowChart.zoom(true)
+  }
+}
+
+function handleZoomOut(blot: FlowchartBlot): void {
+  if (blot.flowChart) {
+    blot.flowChart.zoom(false)
+  }
+}
+
+function handleResetZoom(blot: FlowchartBlot): void {
+  if (blot.flowChart) {
+    blot.flowChart.resetZoom()
+  }
 }
 
 function createControlItem(iconClass: string, text: string, title: string, onClick: () => void, disabled = false) {
