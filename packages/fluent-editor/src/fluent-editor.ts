@@ -12,12 +12,16 @@ import { EmojiModule } from './modules/emoji'
 import { FileModule } from './modules/file' // 文件
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { FlowChartModule } from './modules/flow-chart' // 流程图
 =======
 import { FlowchartModule } from './modules/flowchart'
 >>>>>>> 61664d6 (feat: add insert flowChart and mindChart)
 =======
 >>>>>>> 3895259 (fix:node content delete)
+=======
+import { FlowchartModule } from './modules/flowchart' // 流程图
+>>>>>>> 1d7d045 (fix(flow-chart):规范流程图相关变量名称)
 import I18N from './modules/i18n'
 import { LinkBlot } from './modules/link' // 超链接
 import { MathliveModule } from './modules/mathlive' // latex公式
@@ -85,8 +89,11 @@ FluentEditor.register(
 <<<<<<< HEAD
     'modules/mind-map': MindMapModule,
 <<<<<<< HEAD
+<<<<<<< HEAD
     'modules/flow-chart': FlowChartModule,
 =======
+=======
+>>>>>>> 1d7d045 (fix(flow-chart):规范流程图相关变量名称)
 =======
     'modules/flow': FlowchartModule,
 =======
@@ -111,7 +118,13 @@ FluentEditor.register(
 =======
     'modules/mind-map': MindMapModule,
 >>>>>>> 9450055 (fix(mind-map):规范思维导图相关变量名称)
+<<<<<<< HEAD
 >>>>>>> e23748b (fix(mind-map):规范思维导图相关变量名称)
+=======
+=======
+    'modules/flow-chart': FlowchartModule,
+>>>>>>> 186eb33 (fix(flow-chart):规范流程图相关变量名称)
+>>>>>>> 1d7d045 (fix(flow-chart):规范流程图相关变量名称)
 
     'themes/snow': SnowTheme,
 
