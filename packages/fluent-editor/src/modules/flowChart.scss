@@ -1,0 +1,29 @@
+.ql-flow-chart {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+.flow-chart-left-down-control {
+  position: absolute;
+  bottom: 6px;
+  left: 6px;
+  background-color: rgba(255, 255, 255, 0.85);
+  border-radius: 8px;
+  box-shadow: 0 3px 15px rgba(0, 0, 0, 0.15);
+  display: inline-flex;
+  gap: 6px;
+  white-space: nowrap;
+  pointer-events: auto;
+  align-items: center;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 5px 5px;
+  transition: all 0.2s ease;
+  .flow-chart-control-text {
+    font-size: 12px;
+    margin-top: 5px;
+  }
+}

@@ -1,9 +1,9 @@
 import type { Root } from 'parchment'
 import type { BlockEmbed as TypeBlockEmbed } from 'quill/blots/block'
-import LogicFlow, { } from '@logicflow/core'
+import LogicFlow from '@logicflow/core'
 import { Control, DndPanel, Menu, SelectionSelect } from '@logicflow/extension'
-
 import Quill from 'quill'
+import './flowChart.scss'
 import '@logicflow/core/lib/style/index.css'
 import '@logicflow/extension/lib/style/index.css'
 
@@ -12,7 +12,7 @@ const BlockEmbed = Quill.import('blots/embed') as typeof TypeBlockEmbed
 class FlowchartBlot extends BlockEmbed {
   static blotName = 'flowchart'
   static tagName = 'div'
-  static className = 'ql-flowchart'
+  static className = 'ql-flow-chart'
   private lf: LogicFlow | null = null
   private data: any
 
@@ -39,16 +39,11 @@ class FlowchartBlot extends BlockEmbed {
     return node
   }
 
-  /**
-   * 初始化LogicFlow实例
-   */
   private initLogicFlow(): void {
-    // 确保DOM已挂载
     if (this.domNode.isConnected) {
       this.insertLogicFlowInstance()
     }
     else {
-      // 如果尚未挂载，则监听挂载事件
       const observer = new MutationObserver(() => {
         if (this.domNode.isConnected) {
           this.insertLogicFlowInstance()
@@ -175,9 +170,6 @@ Quill.register(FlowchartBlot)
 export class FlowchartModule {
   quill: Quill
   toolbar: any
-  lfContainer: HTMLElement | null = null
-  lf: LogicFlow | null = null
-  tempDiv: HTMLElement | null = null
 
   constructor(quill: Quill, options: any) {
     this.quill = quill
