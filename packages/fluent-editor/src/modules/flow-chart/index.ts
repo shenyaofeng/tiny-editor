@@ -1,9 +1,9 @@
 import Quill from 'quill'
-import FlowchartBlot from './formats/flow-chart-blot'
+import FlowChartPlaceholderBlot from './formats/flow-chart-blot'
 import '@logicflow/core/lib/style/index.css'
 import '@logicflow/extension/lib/style/index.css'
 
-Quill.register(FlowchartBlot)
+Quill.register(FlowChartPlaceholderBlot)
 
 export class FlowchartModule {
   quill: Quill

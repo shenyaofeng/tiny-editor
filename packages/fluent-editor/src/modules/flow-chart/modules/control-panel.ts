@@ -1,5 +1,5 @@
 import type FluentEditor from '../../../core/fluent-editor'
-import type FlowchartBlot from '../formats/flow-chart-blot'
+import type FlowChartPlaceholderBlot from '../formats/flow-chart-blot'
 import { CHANGE_LANGUAGE_EVENT } from '../../../config'
 import { I18N } from '../../../modules/i18n'
 import { registerFlowChartI18N } from '../i18n'
@@ -11,7 +11,7 @@ class ControlPanelHandler {
     return this.texts[key]
   }
 
-  constructor(private quill: FluentEditor, private blot: FlowchartBlot) {
+  constructor(private quill: FluentEditor, private blot: FlowChartPlaceholderBlot) {
     registerFlowChartI18N(I18N)
     this.lang = 'en-US'
     this.texts = this.resolveTexts()
@@ -113,11 +113,11 @@ class ControlPanelHandler {
   }
 }
 
-const controlPanelHandlers = new WeakMap<FlowchartBlot, ControlPanelHandler>()
+const controlPanelHandlers = new WeakMap<FlowChartPlaceholderBlot, ControlPanelHandler>()
 
 const DISABLED_OPACITY = '0.5'
 const ENABLED_OPACITY = '1'
-export function createControlPanel(blot: FlowchartBlot, quill: FluentEditor): void {
+export function createControlPanel(blot: FlowChartPlaceholderBlot, quill: FluentEditor): void {
   // 右上的控制面板
   const controlPanel = document.createElement('div')
   controlPanel.className = 'flow-chart-control'
@@ -167,31 +167,31 @@ export function createControlPanel(blot: FlowchartBlot, quill: FluentEditor): vo
   blot.domNode.appendChild(controlLeftDownPanel)
 }
 
-function handleUndo(blot: FlowchartBlot): void {
+function handleUndo(blot: FlowChartPlaceholderBlot): void {
   if (blot.flowChart) {
     blot.flowChart.undo()
   }
 }
 
-function handleRedo(blot: FlowchartBlot): void {
+function handleRedo(blot: FlowChartPlaceholderBlot): void {
   if (blot.flowChart) {
     blot.flowChart.redo()
   }
 }
 
-function handleZoomIn(blot: FlowchartBlot): void {
+function handleZoomIn(blot: FlowChartPlaceholderBlot): void {
   if (blot.flowChart) {
     blot.flowChart.zoom(true)
   }
 }
 
-function handleZoomOut(blot: FlowchartBlot): void {
+function handleZoomOut(blot: FlowChartPlaceholderBlot): void {
   if (blot.flowChart) {
     blot.flowChart.zoom(false)
   }
 }
 
-function handleResetZoom(blot: FlowchartBlot): void {
+function handleResetZoom(blot: FlowChartPlaceholderBlot): void {
   if (blot.flowChart) {
     blot.flowChart.resetZoom()
   }
@@ -219,7 +219,7 @@ function createControlItem(iconClass: string, text: string, title: string, onCli
   return controlItem
 }
 
-function handleExport(blot: FlowchartBlot): void {
+function handleExport(blot: FlowChartPlaceholderBlot): void {
   if (blot.flowChart) {
     const data = blot.flowChart.getGraphData()
     const jsonString = JSON.stringify(data, null, 2)
@@ -233,7 +233,7 @@ function handleExport(blot: FlowchartBlot): void {
   }
 }
 
-function handleImport(blot: FlowchartBlot): void {
+function handleImport(blot: FlowChartPlaceholderBlot): void {
   const fileInput = document.createElement('input')
   fileInput.type = 'file'
   fileInput.accept = '.json'

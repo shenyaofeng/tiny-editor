@@ -9,7 +9,7 @@ import '../style/flow-chart.scss'
 
 const BlockEmbed = Quill.import('blots/embed') as typeof TypeBlockEmbed
 
-class FlowchartBlot extends BlockEmbed {
+class FlowChartPlaceholderBlot extends BlockEmbed {
   static blotName = 'flowchart'
   static tagName = 'div'
   static className = 'ql-flow-chart'
@@ -22,8 +22,8 @@ class FlowchartBlot extends BlockEmbed {
     this.domNode.style.height = '500px'
     this.domNode.style.border = '1px solid #e8e8e8'
     this.domNode.style.margin = '10px 0'
-    this.data = FlowchartBlot.value(this.domNode)
-    this.initLogicFlow()
+    this.data = FlowChartPlaceholderBlot.value(this.domNode)
+    this.initFlowChart()
   }
 
   static value(domNode: HTMLElement): any {
@@ -39,14 +39,14 @@ class FlowchartBlot extends BlockEmbed {
     return node
   }
 
-  private initLogicFlow(): void {
+  private initFlowChart(): void {
     if (this.domNode.isConnected) {
-      this.insertLogicFlowInstance()
+      this.insertFlowChartEditor()
     }
     else {
       const observer = new MutationObserver(() => {
         if (this.domNode.isConnected) {
-          this.insertLogicFlowInstance()
+          this.insertFlowChartEditor()
           observer.disconnect()
         }
       })
@@ -54,7 +54,7 @@ class FlowchartBlot extends BlockEmbed {
     }
   }
 
-  private insertLogicFlowInstance(): void {
+  private insertFlowChartEditor(): void {
     this.domNode.style.width = '100%'
     this.domNode.style.height = '100%'
     this.flowChart = new LogicFlow({
@@ -132,4 +132,4 @@ class FlowchartBlot extends BlockEmbed {
   }
 }
 
-export default FlowchartBlot
+export default FlowChartPlaceholderBlot
