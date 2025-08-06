@@ -5,7 +5,7 @@ import LogicFlow from '@logicflow/core'
 import { DndPanel, Menu, SelectionSelect } from '@logicflow/extension'
 import Quill from 'quill'
 import { createControlPanel } from '../modules/control-panel'
-import '../style/flowchart.scss'
+import '../style/flow-chart.scss'
 
 const BlockEmbed = Quill.import('blots/embed') as typeof TypeBlockEmbed
 
@@ -91,7 +91,7 @@ class FlowchartBlot extends BlockEmbed {
       ],
     })
     const quill = this.scroll as unknown as FluentEditor
-    createControlPanel(this, quill)
+    createControlPanel(this, quill) // 创建控制面板
     let timer: any = null
     let content = ''
     let id = ''
