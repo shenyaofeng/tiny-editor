@@ -13,4 +13,9 @@ export const FLOW_CHART_EN_US = {
   'flowChart.controlPanel.fit': 'Fit',
   'flowChart.controlPanel.back': 'Back',
   'flowChart.controlPanel.forward': 'Forward',
+  'flowChart.controlPanel.zoomOutTitle': 'Zoom Out View',
+  'flowChart.controlPanel.zoomInTitle': 'Zoom In View',
+  'flowChart.controlPanel.fitTitle': 'Fit View Size',
+  'flowChart.controlPanel.backTitle': 'Step Back',
+  'flowChart.controlPanel.forwardTitle': 'Step Forward',
 }

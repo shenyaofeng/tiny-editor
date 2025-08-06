@@ -13,4 +13,9 @@ export const FLOW_CHART_ZH_CN = {
   'flowChart.controlPanel.fit': '适应',
   'flowChart.controlPanel.back': '上一步',
   'flowChart.controlPanel.forward': '下一步',
+  'flowChart.controlPanel.zoomOutTitle': '缩小视图',
+  'flowChart.controlPanel.zoomInTitle': '放大视图',
+  'flowChart.controlPanel.fitTitle': '适应视图大小',
+  'flowChart.controlPanel.backTitle': '上一步',
+  'flowChart.controlPanel.forwardTitle': '下一步',
 }

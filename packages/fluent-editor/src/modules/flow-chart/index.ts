@@ -3,7 +3,6 @@ import FlowchartBlot from './formats/flow-chart-blot'
 import '@logicflow/core/lib/style/index.css'
 import '@logicflow/extension/lib/style/index.css'
 
-// 注册 blot
 Quill.register(FlowchartBlot)
 
 export class FlowchartModule {

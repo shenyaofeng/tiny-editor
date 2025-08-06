@@ -115,6 +115,8 @@ class ControlPanelHandler {
 
 const controlPanelHandlers = new WeakMap<FlowchartBlot, ControlPanelHandler>()
 
+const DISABLED_OPACITY = '0.5'
+const ENABLED_OPACITY = '1'
 export function createControlPanel(blot: FlowchartBlot, quill: FluentEditor): void {
   // 右上的控制面板
   const controlPanel = document.createElement('div')
@@ -132,6 +134,33 @@ export function createControlPanel(blot: FlowchartBlot, quill: FluentEditor): vo
   const forwardBtn = createControlItem('forward', handler.getText('forward'), handler.getText('forwardTitle'), () => handleRedo(blot))
   const exportJSON = createControlItem('export', handler.getText('export'), handler.getText('exportTitle'), () => handleExport(blot))
   const importJSON = createControlItem('import', handler.getText('import'), handler.getText('importTitle'), () => handleImport(blot))
+
+  const updateButtonState = (historyData: any) => {
+    if (!historyData.data) {
+      backBtn.style.opacity = DISABLED_OPACITY
+      backBtn.style.cursor = 'not-allowed'
+      forwardBtn.style.opacity = DISABLED_OPACITY
+      forwardBtn.style.cursor = 'not-allowed'
+      return
+    }
+    const isUndoAvailable = historyData.data.undoAble || historyData.data.undos.length > 0
+    const isRedoAvailable = historyData.data.redoAble || historyData.data.redos.length > 0
+
+    if (backBtn) {
+      backBtn.style.opacity = isUndoAvailable ? ENABLED_OPACITY : DISABLED_OPACITY
+      backBtn.style.cursor = isUndoAvailable ? 'pointer' : 'not-allowed'
+    }
+
+    if (forwardBtn) {
+      forwardBtn.style.opacity = isRedoAvailable ? ENABLED_OPACITY : DISABLED_OPACITY
+      forwardBtn.style.cursor = isRedoAvailable ? 'pointer' : 'not-allowed'
+    }
+  }
+  updateButtonState(blot.flowChart.history)
+  blot.flowChart.on('history:change', (data: any) => {
+    updateButtonState(data)
+  })
+
   controlPanel.append(zoomOutBtn, zoomInBtn, resetBtn, backBtn, forwardBtn)
   controlLeftDownPanel.append(exportJSON, importJSON)
   blot.domNode.appendChild(controlPanel)
