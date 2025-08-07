@@ -18,4 +18,8 @@ export const FLOW_CHART_ZH_CN = {
   'flowChart.controlPanel.fitTitle': '适应视图大小',
   'flowChart.controlPanel.backTitle': '上一步',
   'flowChart.controlPanel.forwardTitle': '下一步',
+  'flowChart.contextMenu.copy': '复制',
+  'flowChart.contextMenu.deleteContent': '删除',
+  'flowChart.contextMenu.deleteNode': '删除节点',
+  'flowChart.contextMenu.deleteEdge': '删除边',
 }

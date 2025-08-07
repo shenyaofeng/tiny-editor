@@ -2,8 +2,9 @@ import type { Root } from 'parchment'
 import type { BlockEmbed as TypeBlockEmbed } from 'quill/blots/block'
 import type FluentEditor from '../../../core/fluent-editor'
 import LogicFlow from '@logicflow/core'
-import { DndPanel, Menu, SelectionSelect } from '@logicflow/extension'
+import { DndPanel, SelectionSelect } from '@logicflow/extension'
 import Quill from 'quill'
+import { initContextMenu } from '../modules/context-menu'
 import { createControlPanel } from '../modules/control-panel'
 import '../style/flow-chart.scss'
 
@@ -15,6 +16,8 @@ class FlowChartPlaceholderBlot extends BlockEmbed {
   static className = 'ql-flow-chart'
   flowChart: LogicFlow | null = null
   data: any
+  contextMenu: HTMLElement | null = null
+  currentElement: any = null
 
   constructor(scroll: Root, domNode: HTMLElement) {
     super(scroll, domNode)
@@ -69,29 +72,11 @@ class FlowChartPlaceholderBlot extends BlockEmbed {
         type: 'dot',
         size: 20,
       },
-      plugins: [DndPanel, SelectionSelect, Menu],
-    })
-    const self = this
-    this.flowChart.addMenuConfig({
-      nodeMenu: [
-        {
-          text: '删除文本',
-          callback(node: any) {
-            self.flowChart?.updateText(node.id, '')
-          },
-        },
-      ],
-      edgeMenu: [
-        {
-          text: '删除文本',
-          callback(node: any) {
-            self.flowChart?.updateText(node.id, '')
-          },
-        },
-      ],
+      plugins: [DndPanel, SelectionSelect],
     })
     const quill = this.scroll as unknown as FluentEditor
     createControlPanel(this, quill) // 创建控制面板
+    initContextMenu(this, quill) // 初始化右键菜单
     let timer: any = null
     let content = ''
     let id = ''

@@ -18,4 +18,8 @@ export const FLOW_CHART_EN_US = {
   'flowChart.controlPanel.fitTitle': 'Fit View Size',
   'flowChart.controlPanel.backTitle': 'Step Back',
   'flowChart.controlPanel.forwardTitle': 'Step Forward',
+  'flowChart.contextMenu.copy': 'Copy',
+  'flowChart.contextMenu.deleteContent': 'Delete',
+  'flowChart.contextMenu.deleteNode': 'Delete Node',
+  'flowChart.contextMenu.deleteEdge': 'Delete Edge',
 }
