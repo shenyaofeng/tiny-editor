@@ -77,43 +77,102 @@ class FlowChartPlaceholderBlot extends BlockEmbed {
     const quill = this.scroll as unknown as FluentEditor
     createControlPanel(this, quill) // 创建控制面板
     initContextMenu(this, quill) // 初始化右键菜单
-    let timer: any = null
-    let content = ''
-    let id = ''
     this.flowChart.render(this.data)
-    this.flowChart.on('node:dbclick', (data: any) => {
-      id = data.data.id
-      timer = setInterval(() => {
-        const textInputElement = document.querySelector('.lf-text-input')
-        if (textInputElement) {
-          content = textInputElement.textContent || ''
+    this.flowChart.on('node:dbclick', this.handleNodeDblClick.bind(this))
+    this.flowChart.on('edge:dbclick', this.handleNodeDblClick.bind(this))
+  }
+
+  // 处理节点双击事件
+  handleNodeDblClick(event: any) {
+    const { data, position, e } = event
+    if (data && data.id) {
+      this.createEditInput(data, position, e)
+    }
+  }
+
+  // 创建编辑输入框
+  createEditInput(nodeData: any, position: any, e: any) {
+    const timer = setInterval(() => {
+      const textInput = document.querySelector('.lf-text-input') as HTMLElement | null
+      if (textInput) {
+        const existingInput = document.querySelector('.lf-text-input')
+        if (existingInput) {
+          existingInput.remove()
         }
-      }, 100)
+        clearInterval(timer)
+      }
+    }, 10)
+
+    const input = document.createElement('textarea')
+    input.className = 'lf-node-edit-input'
+    input.value = nodeData.text?.value || ''
+
+    Object.assign(input.style, {
+      position: 'absolute',
+      boxSizing: 'border-box',
+      width: '100px',
+      height: '35px',
+      padding: '5px',
+      lineHeight: '1.2',
+      whiteSpace: 'pre',
+      textAlign: 'center',
+      background: '#fff',
+      border: '1px solid #edefed',
+      borderRadius: '3px',
+      outline: 'none',
+      transform: 'translate(-50%, -50%)',
+      resize: 'none',
+      zIndex: '1000',
+      left: `${e.pageX}px`,
+      top: `${e.pageY}px`,
     })
-    this.flowChart.on('edge:dbclick', (data: any) => {
-      id = data.data.id
-      timer = setInterval(() => {
-        const textInputElement = document.querySelector('.lf-text-input')
-        if (textInputElement) {
-          content = textInputElement.textContent || ''
-        }
-      }, 100)
-    })
+
+    document.body.appendChild(input)
+
+    input.focus()
 
     this.flowChart.on('blank:mousedown', () => {
-      timer && clearInterval(timer)
-      this.flowChart?.updateText(id, content)
-      content = ''
-      id = ''
+      this.flowChart.updateText(nodeData.id, input.value)
+      input.remove()
     })
 
-    this.flowChart.on('graph:updated', () => {
-      if (this.flowChart) {
-        this.data = this.flowChart.getGraphData()
-        this.domNode.setAttribute('data-flow-chart', JSON.stringify(this.data))
-        this.scroll.update([], {})
+    this.flowChart.on('node:click', () => {
+      this.flowChart.updateText(nodeData.id, input.value)
+      input.remove()
+    })
+
+    this.flowChart.on('edge:click', () => {
+      this.flowChart.updateText(nodeData.id, input.value)
+      input.remove()
+    })
+
+    input.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault()
+        this.flowChart.updateText(nodeData.id, input.value)
+        input.remove()
       }
     })
+  }
+
+  updateText(nodeId: string, text: string) {
+    this.flowChart.updateNode(nodeId, {
+      text: { value: text },
+    })
+  }
+
+  destroyFlowChart() {
+    if (this.flowChart) {
+      this.flowChart.destroy()
+      this.flowChart = null
+    }
+    const editInputs = document.querySelectorAll('.lf-node-edit-input')
+    editInputs.forEach(input => input.remove())
+  }
+
+  remove() {
+    this.destroyFlowChart()
+    super.remove()
   }
 }
 
