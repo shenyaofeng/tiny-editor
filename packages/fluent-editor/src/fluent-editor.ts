@@ -13,6 +13,7 @@ import { FileModule } from './modules/file' // 文件
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { FlowChartModule } from './modules/flow-chart' // 流程图
 =======
 import { FlowchartModule } from './modules/flowchart'
@@ -22,6 +23,9 @@ import { FlowchartModule } from './modules/flowchart'
 =======
 import { FlowchartModule } from './modules/flowchart' // 流程图
 >>>>>>> 1d7d045 (fix(flow-chart):规范流程图相关变量名称)
+=======
+import { FlowChartModule } from './modules/flow-chart' // 流程图
+>>>>>>> 16d673b (fix(flow-chart):完善流程图)
 import I18N from './modules/i18n'
 import { LinkBlot } from './modules/link' // 超链接
 import { MathliveModule } from './modules/mathlive' // latex公式
@@ -90,10 +94,13 @@ FluentEditor.register(
     'modules/mind-map': MindMapModule,
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     'modules/flow-chart': FlowChartModule,
 =======
 =======
 >>>>>>> 1d7d045 (fix(flow-chart):规范流程图相关变量名称)
+=======
+>>>>>>> 16d673b (fix(flow-chart):完善流程图)
 =======
     'modules/flow': FlowchartModule,
 =======
@@ -124,7 +131,13 @@ FluentEditor.register(
 =======
     'modules/flow-chart': FlowchartModule,
 >>>>>>> 186eb33 (fix(flow-chart):规范流程图相关变量名称)
+<<<<<<< HEAD
 >>>>>>> 1d7d045 (fix(flow-chart):规范流程图相关变量名称)
+=======
+=======
+    'modules/flow-chart': FlowChartModule,
+>>>>>>> 01cd12a (fix(flow-chart):完善流程图)
+>>>>>>> 16d673b (fix(flow-chart):完善流程图)
 
     'themes/snow': SnowTheme,
 
