@@ -52,7 +52,7 @@ const contextMenuHandlers = new WeakMap<FlowChartPlaceholderBlot, FlowChartConte
 
 export function initContextMenu(blot: FlowChartPlaceholderBlot, quill: FluentEditor): void {
   blot.contextMenu = document.createElement('div')
-  blot.contextMenu.className = 'mind-map-context-menu'
+  blot.contextMenu.className = 'flow-chart-context-menu'
   blot.contextMenu.style.position = 'fixed'
   blot.contextMenu.style.background = 'white'
   blot.contextMenu.style.borderRadius = '4px'
