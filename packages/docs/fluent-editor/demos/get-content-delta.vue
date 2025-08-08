@@ -45,7 +45,6 @@ const TOOLBAR_CONFIG = [
   ['link', 'blockquote', 'code', 'code-block'],
   ['image', 'file'],
   ['emoji', 'video', 'formula', 'screenshot'],
-  ['mind'],
 ]
 
 const articleRef = ref<HTMLElement>()
