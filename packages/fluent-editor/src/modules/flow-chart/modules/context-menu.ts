@@ -64,14 +64,14 @@ export function initContextMenu(blot: FlowChartPlaceholderBlot, quill: FluentEdi
   blot.contextMenu.style.opacity = '1'
   blot.contextMenu.style.width = '120px'
   blot.contextMenu.style.height = 'auto'
-  document.body.appendChild(blot.contextMenu)
+  blot.domNode.appendChild(blot.contextMenu)
 
   const handler = new FlowChartContextMenuHandler(quill, blot)
   contextMenuHandlers.set(blot, handler)
 
   if (blot.flowChart) {
     blot.flowChart.on('node:contextmenu', (event: any) => {
-      const { data, e, position } = event
+      const { data, e } = event
       e.preventDefault()
       e.stopPropagation()
       blot.currentElement = { type: 'node', data }
@@ -79,7 +79,7 @@ export function initContextMenu(blot: FlowChartPlaceholderBlot, quill: FluentEdi
     })
 
     blot.flowChart.on('edge:contextmenu', (event: any) => {
-      const { data, e, position } = event
+      const { data, e } = event
       e.preventDefault()
       e.stopPropagation()
       blot.currentElement = { type: 'edge', data }

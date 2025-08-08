@@ -1,11 +1,9 @@
-import Quill from 'quill'
-import FlowChartPlaceholderBlot from './formats/flow-chart-blot'
+import type Quill from 'quill'
+import './formats/flow-chart-blot'
 import '@logicflow/core/lib/style/index.css'
 import '@logicflow/extension/lib/style/index.css'
 
-Quill.register(FlowChartPlaceholderBlot)
-
-export class FlowchartModule {
+export class FlowChartModule {
   quill: Quill
   toolbar: any
 
@@ -21,7 +19,7 @@ export class FlowchartModule {
     }
   }
 
-  private insertFlowChartEditor(): void {
+  public insertFlowChartEditor(): void {
     const range = this.quill.getSelection()
     if (range) {
       const defaultData = {
@@ -38,5 +36,3 @@ export class FlowchartModule {
     }
   }
 }
-
-export default FlowchartModule

@@ -4,7 +4,7 @@ import { CHANGE_LANGUAGE_EVENT } from '../../../config'
 import { I18N } from '../../../modules/i18n'
 import { registerFlowChartI18N } from '../i18n'
 
-class ControlPanelHandler {
+class FlowChartControlPanelHandler {
   private texts: Record<string, string>
   private lang: string
   getText(key: keyof Record<string, string>): string {
@@ -113,7 +113,7 @@ class ControlPanelHandler {
   }
 }
 
-const controlPanelHandlers = new WeakMap<FlowChartPlaceholderBlot, ControlPanelHandler>()
+const controlPanelHandlers = new WeakMap<FlowChartPlaceholderBlot, FlowChartControlPanelHandler>()
 
 const DISABLED_OPACITY = '0.5'
 const ENABLED_OPACITY = '1'
@@ -125,7 +125,7 @@ export function createControlPanel(blot: FlowChartPlaceholderBlot, quill: Fluent
   const controlLeftDownPanel = document.createElement('div')
   controlLeftDownPanel.className = 'flow-chart-left-down-control'
 
-  const handler = new ControlPanelHandler(quill, blot)
+  const handler = new FlowChartControlPanelHandler(quill, blot)
   controlPanelHandlers.set(blot, handler)
   const zoomOutBtn = createControlItem('zoomOut', handler.getText('zoomOut'), handler.getText('zoomOutTitle'), () => handleZoomOut(blot))
   const zoomInBtn = createControlItem('zoomIn', handler.getText('zoomIn'), handler.getText('zoomInTitle'), () => handleZoomIn(blot))
@@ -227,7 +227,7 @@ function handleExport(blot: FlowChartPlaceholderBlot): void {
     const url = URL.createObjectURL(blob)
     const a = document.createElement('a')
     a.href = url
-    a.download = 'flowchart.json'
+    a.download = '流程图.json'
     a.click()
     URL.revokeObjectURL(url)
   }
@@ -255,7 +255,7 @@ function handleImport(blot: FlowChartPlaceholderBlot): void {
         }
       }
       catch (error) {
-        console.error('Failed to import flowchart data:', error)
+        alert('文件解析错误，请确保选择的是有效的JSON文件')
       }
     }
     reader.readAsText(file)

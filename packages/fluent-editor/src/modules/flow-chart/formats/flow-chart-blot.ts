@@ -24,13 +24,12 @@ class FlowChartPlaceholderBlot extends BlockEmbed {
     this.domNode.classList.add('ql-flow-chart-container')
     this.domNode.style.height = '500px'
     this.domNode.style.border = '1px solid #e8e8e8'
-    this.domNode.style.margin = '10px 0'
     this.data = FlowChartPlaceholderBlot.value(this.domNode)
     this.initFlowChart()
   }
 
   static value(domNode: HTMLElement): any {
-    const dataStr = JSON.parse(domNode.getAttribute('data-flow-chart') || '{}')
+    const dataStr = JSON.parse(domNode.getAttribute('data-flow-chart'))
     return dataStr.root ? dataStr.root : dataStr
   }
 
@@ -42,7 +41,7 @@ class FlowChartPlaceholderBlot extends BlockEmbed {
     return node
   }
 
-  private initFlowChart(): void {
+  initFlowChart(): void {
     if (this.domNode.isConnected) {
       this.insertFlowChartEditor()
     }
@@ -57,7 +56,7 @@ class FlowChartPlaceholderBlot extends BlockEmbed {
     }
   }
 
-  private insertFlowChartEditor(): void {
+  insertFlowChartEditor(): void {
     this.domNode.style.width = '100%'
     this.domNode.style.height = '100%'
     this.flowChart = new LogicFlow({
@@ -78,6 +77,16 @@ class FlowChartPlaceholderBlot extends BlockEmbed {
     createControlPanel(this, quill) // 创建控制面板
     initContextMenu(this, quill) // 初始化右键菜单
     this.flowChart.render(this.data)
+    this.flowChart.on('graph:updated', () => {
+      this.data = this.flowChart.getGraphData()
+      this.domNode.setAttribute('data-flow-chart', JSON.stringify(this.data))
+      this.scroll.update([], {})
+    })
+    this.flowChart.on('history:change', () => {
+      this.data = this.flowChart.getGraphData()
+      this.domNode.setAttribute('data-flow-chart', JSON.stringify(this.data))
+      this.scroll.update([], {})
+    })
     this.flowChart.on('node:dbclick', this.handleNodeDblClick.bind(this))
     this.flowChart.on('edge:dbclick', this.handleNodeDblClick.bind(this))
   }
@@ -125,6 +134,7 @@ class FlowChartPlaceholderBlot extends BlockEmbed {
       zIndex: '1000',
       left: `${e.pageX}px`,
       top: `${e.pageY}px`,
+      overflow: 'hidden',
     })
 
     document.body.appendChild(input)
@@ -175,5 +185,7 @@ class FlowChartPlaceholderBlot extends BlockEmbed {
     super.remove()
   }
 }
+
+Quill.register(FlowChartPlaceholderBlot)
 
 export default FlowChartPlaceholderBlot
