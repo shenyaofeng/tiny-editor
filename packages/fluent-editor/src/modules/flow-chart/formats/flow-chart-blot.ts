@@ -11,7 +11,7 @@ import '../style/flow-chart.scss'
 const BlockEmbed = Quill.import('blots/embed') as typeof TypeBlockEmbed
 
 class FlowChartPlaceholderBlot extends BlockEmbed {
-  static blotName = 'flowchart'
+  static blotName = 'flow-chart-placeholder'
   static tagName = 'div'
   static className = 'ql-flow-chart'
   flowChart: LogicFlow | null = null
