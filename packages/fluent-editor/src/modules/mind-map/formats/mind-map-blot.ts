@@ -1,6 +1,7 @@
 import type { Root } from 'parchment'
 import type { BlockEmbed as TypeBlockEmbed } from 'quill/blots/block'
 import type FluentEditor from '../../../core/fluent-editor'
+import { fontFamily } from 'html2canvas/dist/types/css/property-descriptors/font-family'
 import Quill from 'quill'
 import SimpleMindMap from 'simple-mind-map'
 import Drag from 'simple-mind-map/src/plugins/Drag.js'
@@ -209,6 +210,8 @@ class MindMapPlaceholderBlot extends BlockEmbed {
       height: '35px',
       padding: '5px',
       lineHeight: '1.2',
+      fontFamily: '微软雅黑',
+      fontSize: '16px',
       whiteSpace: 'pre',
       textAlign: 'center',
       background: '#fff',
