@@ -3,6 +3,11 @@ import type FlowChartPlaceholderBlot from '../formats/flow-chart-blot'
 import { CHANGE_LANGUAGE_EVENT } from '../../../config'
 import { I18N } from '../../../modules/i18n'
 import { registerFlowChartI18N } from '../i18n'
+import circleIcon from '../icons/circleIcon.png'
+import diamondIcon from '../icons/diamondIcon.png'
+import ellipseIcon from '../icons/ellipseIcon.png'
+import rectangleIcon from '../icons/rectangleIcon.png'
+import selectRegionIcon from '../icons/selectRegionIcon.png'
 
 class FlowChartControlPanelHandler {
   private texts: Record<string, string>
@@ -76,7 +81,7 @@ class FlowChartControlPanelHandler {
       (this.blot.flowChart.extension.dndPanel as any).setPatternItems([
         {
           label: this.texts.selection,
-          icon: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAAAXNSR0IArs4c6QAAASVJREFUOE+1VFEOgjAMpQvcA/9IGGeQo+hJjCdRb6JngCX8yT0gVN5CyUQJzCA/28r62tfXjoKNPwJekiRxGIYx9m3b1lVV1WJbOrs+2FvANE0vQRDkRFT3tnNZlnet9Qm2pTMzx0qpc1EU1zdApdRDjD5VQDKu75jhpoBZlh2YuQZVn+xwd+prM9zys4Ba61zU9AWf+v6nhlOlfLL8qjLSBoiPKEOfPiS4+P4sSg/I6AxjzM5lZAEhfdM0d4zcGrrDWD5nAdfWEDQxakSEuc8B2K+2d4noBtpeKoPmHIM+0NUYcxwBERURJRLK0HXdXs7yKkVRZAVkZjwoyOyIVUo2NvZAY/wB5WH7VtvFGq4Rwr3jAFqaHyr7Agp9rNPO+LkP55J4AUBcASTXtDeAAAAAAElFTkSuQmCC',
+          icon: selectRegionIcon,
           callback: () => {
             (this.blot.flowChart?.extension.selectionSelect as any).openSelectionSelect()
             this.blot.flowChart?.once('selection:selected', () => {
@@ -88,25 +93,25 @@ class FlowChartControlPanelHandler {
           type: 'rect',
           text: '矩形',
           label: this.texts.rectangle,
-          icon: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAAAXNSR0IArs4c6QAAAHNJREFUOE9jZKAyYKSyeQxgAzU0NBRYWFgUKDX8ypUrB8AG6ujo7P///z/ZBjIyMoL0Hrhy5Yoj3ECoQCM5rtTR0akH6ncYNRAcqKNhSFwiGk02kLxM9axH7cLBgbj4xK3qz58/D27cuPGANgUspa5D1g8A3buIFT4kLMIAAAAASUVORK5CYII=',
+          icon: rectangleIcon,
         },
         {
           type: 'circle',
           text: '圆形',
           label: this.texts.circle,
-          icon: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAAAXNSR0IArs4c6QAAAVZJREFUOE+tlFGugjAQRTvAQvCPhLIGdSXiStSV4FuJsAbahD9dSEPtNS0pvOLrS+CHUKZn7kxvh9jGD23MY6tAzvmBMbZnjOF90Fq/bPKWiH6EEG1ITBDIOb+Y4KvW+k5EAHXYTET5OI57s1bjvxDitoT+AnLOHwaUE9F5TUVRFHmapg/ApJQ7HzoDlmXZoLxlUKg0D9pKKc8uZgLaniHrcU3ZEgxolmVPf88EtOpQwpQtxgFoEeKEEMdPn92msiyfSZLc+r6/x4BcDA7QOKB2bfJL1kqp3TAMzh5RXLRKa93MgKFeRNEYY1VV1QAaC33E+QrRizbkrW9wCzyFetjAuO5HrMLlYc5sA+nfDL1MErLazNjLE/tLJZyBNgWNjc3+ldrk6jmocf8J3kL2JEk6TBql1AvrVvU1eji4Mq3aCw7KjjAGsPmG8bt/ja/QnY01/OYT+w3u97wVMeIzNwAAAABJRU5ErkJggg==',
+          icon: circleIcon,
         },
         {
           type: 'ellipse',
           text: '椭圆',
           label: this.texts.ellipse,
-          icon: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAAAXNSR0IArs4c6QAAAVxJREFUOE+tlFGOgyAQhgHxHGvfTMA72JPUnmTrSepN7J5BSHxrDwKZOgYMVrfibk2MROCbYeb/oeTDD/0wj0QB8zzPOOeZUuq2lcAq0AFOhJDSvRMHAB7Dv5u1tu77HsezZwGUUn4PKy64iRBSG2MefiMGStO0BICvAVxRShulVB0SZ0ApZQsAGaX0vHU8hCdJ0mJgrfXZQycgZoZRtdaHrTr5eQ8NMw2BQAg5bmX2GszV+26MOWBpRmBRFBUAnJRSx9jswnVYKqw3JjMChRBX/Ia12AN25cpw/wh0nSWvHYuFhgl5IErhuqchYTAhxJ0xVndd14xAX9i/NEVKieJvZ03xx0bZWGuPaw5YO/5b2QTNKWOFzTkfmxmqY+aUwMOXwTENY+wHveu16S8JlBiltEKLvrVe6ADO+XQ5IHRwQ4bzbrzw8MJ6v0kEs8K5f11fsfpbWxd1we4J8ARGasMVX8rnOgAAAABJRU5ErkJggg==',
+          icon: ellipseIcon,
         },
         {
           type: 'diamond',
           text: '菱形',
           label: this.texts.diamond,
-          icon: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAAAXNSR0IArs4c6QAAAjNJREFUOE+t1E2rElEYB/BnbkKCY9FnaHzBOSfaBIEiI1SroE2gGCqKuyAQIXAUTVoFLWx8QXCTXohA0KRNcGklhaC48cyIRNFCUsSP4MzUSF6uqTNyaZbnPM+PM3P+81Dwnx/qGI9lWR9FUSZCyJlRvSGIELoJAF0AoCiKco9Gox96qC7IcZxpuVx2E4nE3dVqBcVi8QshxHNpECH03u/3+zOZzNrIZrPQbrdPCSHhQ+jBE2KMX3k8nueVSmWrNxqNwmAweEEIye9D94Isyz612WylRqMBVqt1q282m0E4HIb5fB4mhJz+i+6ACKGHFovlY71eB4fDsffN+v0+xGIxbc9NCPl6sWgLxBhjVVW7giBc9/l8uglptVqQy+W+K4rikSRpvik+BxmGuWY2m7upVOpWMBg0itt6XxAEqNVqZ39O+WAHxBjf0PLG8zwbCASOAkulElSr1c+iKN7bAbUFl8t1++TkpFsul2mv16uLdjodSKfTP1erlXsymfzaC2qLGONHNE1/0G6YYZi96HA4hEgkAoqieCVJ0v6i82dvbBBCz+x2+xvtpmma3kIXiwWEQiGYTqdRSZLeGsZmU4AQes1xXLJYLG71xONx6PV6L0VRzB4d7E0hxrgZCAQe8zy/Xsrn89BsNt+Jovjk0AfWHQ4Mw1zVopRMJu/IsgyFQqH3dzjIlwK1JqfTaTeZTOvxJcuyezwef9O7fsN5qDUjhO6rqnpFFMVPRgE9CjRCLu7/BivoyhX8YXObAAAAAElFTkSuQmCC',
+          icon: diamondIcon,
         },
       ])
     }
