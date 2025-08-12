@@ -49,13 +49,13 @@ class FlowChartControlPanelHandler {
   }
 
   updateControlPanelTexts() {
-    const controlItems = this.blot.domNode.querySelectorAll('.flow-chart-control-item')
+    const controlItems = this.blot.domNode.querySelectorAll('.ql-flow-chart-control-item')
     controlItems.forEach((item) => {
       const icon = item.querySelector('i')
       if (icon) {
         const iconClass = icon.className.split('-')[3]
         if (this.texts[iconClass]) {
-          const textSpan = item.querySelector('.flow-chart-control-text')
+          const textSpan = item.querySelector('.ql-flow-chart-control-text')
           if (textSpan) {
             textSpan.textContent = this.texts[iconClass]
           }
@@ -120,10 +120,10 @@ const ENABLED_OPACITY = '1'
 export function createControlPanel(blot: FlowChartPlaceholderBlot, quill: FluentEditor): void {
   // 右上的控制面板
   const controlPanel = document.createElement('div')
-  controlPanel.className = 'flow-chart-control'
+  controlPanel.className = 'ql-flow-chart-control'
   // 左下的控制面板
   const controlLeftDownPanel = document.createElement('div')
-  controlLeftDownPanel.className = 'flow-chart-left-down-control'
+  controlLeftDownPanel.className = 'ql-flow-chart-left-down-control'
 
   const handler = new FlowChartControlPanelHandler(quill, blot)
   controlPanelHandlers.set(blot, handler)
@@ -199,14 +199,14 @@ function handleResetZoom(blot: FlowChartPlaceholderBlot): void {
 
 function createControlItem(iconClass: string, text: string, title: string, onClick: () => void, disabled = false) {
   const controlItem = document.createElement('div')
-  controlItem.className = 'flow-chart-control-item'
+  controlItem.className = 'ql-flow-chart-control-item'
   controlItem.title = title
   controlItem.style.cursor = disabled ? 'not-allowed' : 'pointer'
 
   const icon = document.createElement('i')
-  icon.className = `flow-chart-control-${iconClass}`
+  icon.className = `ql-flow-chart-control-${iconClass}`
   const textSpan = document.createElement('span')
-  textSpan.className = 'flow-chart-control-text'
+  textSpan.className = 'ql-flow-chart-control-text'
   textSpan.textContent = text
 
   controlItem.appendChild(icon)

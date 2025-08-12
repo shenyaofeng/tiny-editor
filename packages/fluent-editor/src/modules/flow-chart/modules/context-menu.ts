@@ -36,7 +36,7 @@ class FlowChartContextMenuHandler {
   updateContextMenuItems() {
     if (!this.blot.contextMenu) return
 
-    const menuItems = this.blot.contextMenu.querySelectorAll('.flow-chart-context-menu-item')
+    const menuItems = this.blot.contextMenu.querySelectorAll('.ql-flow-chart-context-menu-item')
     if (menuItems.length > 0) {
       Array.from(menuItems).forEach((item) => {
         const text = item.getAttribute('data-text-key')
@@ -52,7 +52,7 @@ const contextMenuHandlers = new WeakMap<FlowChartPlaceholderBlot, FlowChartConte
 
 export function initContextMenu(blot: FlowChartPlaceholderBlot, quill: FluentEditor): void {
   blot.contextMenu = document.createElement('div')
-  blot.contextMenu.className = 'flow-chart-context-menu'
+  blot.contextMenu.className = 'ql-flow-chart-context-menu'
   blot.contextMenu.style.position = 'fixed'
   blot.contextMenu.style.background = 'white'
   blot.contextMenu.style.borderRadius = '4px'
@@ -137,7 +137,7 @@ function showContextMenu(blot: FlowChartPlaceholderBlot, x: number, y: number): 
 
 function addContextMenuItem(blot: FlowChartPlaceholderBlot, text: string, textKey: string, onClick: () => void): void {
   const item = document.createElement('div')
-  item.className = 'flow-chart-context-menu-item'
+  item.className = 'ql-flow-chart-context-menu-item'
   item.textContent = text
   item.setAttribute('data-text-key', textKey)
   item.style.padding = '5px 15px'
