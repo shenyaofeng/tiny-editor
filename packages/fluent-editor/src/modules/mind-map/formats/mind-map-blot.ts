@@ -199,7 +199,7 @@ class MindMapPlaceholderBlot extends BlockEmbed {
   // 创建编辑输入框
   createEditInput(node: any, e: any) {
     const input = document.createElement('textarea')
-    input.className = 'mm-node-edit-input'
+    input.className = 'ql-mind-map-edit-input'
     input.value = node.nodeData.data.text || ''
     const autoResize = () => {
       input.style.height = 'auto'
