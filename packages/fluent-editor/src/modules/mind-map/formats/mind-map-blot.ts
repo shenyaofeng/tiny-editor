@@ -202,7 +202,10 @@ class MindMapPlaceholderBlot extends BlockEmbed {
     const input = document.createElement('textarea')
     input.className = 'mm-node-edit-input'
     input.value = node.nodeData.data.text || ''
-
+    const autoResize = () => {
+      input.style.height = 'auto'
+      input.style.height = `${input.scrollHeight}px`
+    }
     Object.assign(input.style, {
       position: 'absolute',
       boxSizing: 'border-box',
@@ -227,6 +230,12 @@ class MindMapPlaceholderBlot extends BlockEmbed {
     })
 
     document.body.appendChild(input)
+    autoResize()
+    input.addEventListener('keydown', (event) => {
+      if (event.key === 'Enter' && event.shiftKey) {
+        autoResize()
+      }
+    })
     input.focus()
 
     const currentNode = node
