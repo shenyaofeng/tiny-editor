@@ -58,7 +58,7 @@ class FlowChartControlPanelHandler {
     controlItems.forEach((item) => {
       const icon = item.querySelector('i')
       if (icon) {
-        const iconClass = icon.className.split('-')[3]
+        const iconClass = icon.className.split('-')[4]
         if (this.texts[iconClass]) {
           const textSpan = item.querySelector('.ql-flow-chart-control-text')
           if (textSpan) {
