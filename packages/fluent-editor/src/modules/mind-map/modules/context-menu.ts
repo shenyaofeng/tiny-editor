@@ -60,7 +60,7 @@ export function initContextMenu(blot: MindMapPlaceholderBlot, quill: FluentEdito
   blot.contextMenu.style.opacity = '1'
   blot.contextMenu.style.width = '120px'
   blot.contextMenu.style.height = 'auto'
-  document.body.appendChild(blot.contextMenu)
+  blot.domNode.appendChild(blot.contextMenu)
 
   const handler = new MindMapContextMenuHandler(quill, blot)
   contextMenuHandlers.set(blot, handler)
