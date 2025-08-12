@@ -196,7 +196,7 @@ class FlowChartPlaceholderBlot extends BlockEmbed {
   // 创建编辑输入框
   createEditInput(nodeData: any, position: any, e: any) {
     const input = document.createElement('textarea')
-    input.className = 'ql-flow-node-edit-input'
+    input.className = 'ql-flow-chart-edit-input'
     input.value = nodeData.text?.value || ''
     const autoResize = () => {
       input.style.height = 'auto'
@@ -260,7 +260,7 @@ class FlowChartPlaceholderBlot extends BlockEmbed {
       this.flowChart.destroy()
       this.flowChart = null
     }
-    const editInputs = document.querySelectorAll('.ql-flow-node-edit-input')
+    const editInputs = document.querySelectorAll('.ql-flow-chart-edit-input')
     editInputs.forEach(input => input.remove())
   }
 
