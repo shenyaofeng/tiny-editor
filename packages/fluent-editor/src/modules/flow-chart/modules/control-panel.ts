@@ -31,20 +31,8 @@ class FlowChartControlPanelHandler {
 
   resolveTexts() {
     return {
-      export: I18N.parserText('flowChart.controlPanel.export', this.lang),
-      import: I18N.parserText('flowChart.controlPanel.import', this.lang),
       exportTitle: I18N.parserText('flowChart.controlPanel.exportTitle', this.lang),
       importTitle: I18N.parserText('flowChart.controlPanel.importTitle', this.lang),
-      selection: I18N.parserText('flowChart.dndPanel.selection', this.lang),
-      rectangle: I18N.parserText('flowChart.dndPanel.rectangle', this.lang),
-      circle: I18N.parserText('flowChart.dndPanel.circle', this.lang),
-      ellipse: I18N.parserText('flowChart.dndPanel.ellipse', this.lang),
-      diamond: I18N.parserText('flowChart.dndPanel.diamond', this.lang),
-      zoomOut: I18N.parserText('flowChart.controlPanel.zoomOut', this.lang),
-      zoomIn: I18N.parserText('flowChart.controlPanel.zoomIn', this.lang),
-      fit: I18N.parserText('flowChart.controlPanel.fit', this.lang),
-      back: I18N.parserText('flowChart.controlPanel.back', this.lang),
-      forward: I18N.parserText('flowChart.controlPanel.forward', this.lang),
       zoomOutTitle: I18N.parserText('flowChart.controlPanel.zoomOutTitle', this.lang),
       zoomInTitle: I18N.parserText('flowChart.controlPanel.zoomInTitle', this.lang),
       fitTitle: I18N.parserText('flowChart.controlPanel.fitTitle', this.lang),
@@ -80,7 +68,6 @@ class FlowChartControlPanelHandler {
     if (this.blot.flowChart && this.blot.flowChart.extension.dndPanel) {
       (this.blot.flowChart.extension.dndPanel as any).setPatternItems([
         {
-          label: this.texts.selection,
           icon: selectRegionIcon,
           callback: () => {
             (this.blot.flowChart?.extension.selectionSelect as any).openSelectionSelect()
@@ -92,25 +79,21 @@ class FlowChartControlPanelHandler {
         {
           type: 'rect',
           text: '矩形',
-          label: this.texts.rectangle,
           icon: rectangleIcon,
         },
         {
           type: 'circle',
           text: '圆形',
-          label: this.texts.circle,
           icon: circleIcon,
         },
         {
           type: 'ellipse',
           text: '椭圆',
-          label: this.texts.ellipse,
           icon: ellipseIcon,
         },
         {
           type: 'diamond',
           text: '菱形',
-          label: this.texts.diamond,
           icon: diamondIcon,
         },
       ])
@@ -132,13 +115,13 @@ export function createControlPanel(blot: FlowChartPlaceholderBlot, quill: Fluent
 
   const handler = new FlowChartControlPanelHandler(quill, blot)
   controlPanelHandlers.set(blot, handler)
-  const zoomOutBtn = createControlItem('zoomOut', handler.getText('zoomOut'), handler.getText('zoomOutTitle'), () => handleZoomOut(blot))
-  const zoomInBtn = createControlItem('zoomIn', handler.getText('zoomIn'), handler.getText('zoomInTitle'), () => handleZoomIn(blot))
-  const resetBtn = createControlItem('fit', handler.getText('fit'), handler.getText('fitTitle'), () => handleResetZoom(blot))
-  const backBtn = createControlItem('back', handler.getText('back'), handler.getText('backTitle'), () => handleUndo(blot))
-  const forwardBtn = createControlItem('forward', handler.getText('forward'), handler.getText('forwardTitle'), () => handleRedo(blot))
-  const exportJSON = createControlItem('export', handler.getText('export'), handler.getText('exportTitle'), () => handleExport(blot))
-  const importJSON = createControlItem('import', handler.getText('import'), handler.getText('importTitle'), () => handleImport(blot))
+  const zoomOutBtn = createControlItem('zoomOut', handler.getText('zoomOutTitle'), () => handleZoomOut(blot))
+  const zoomInBtn = createControlItem('zoomIn', handler.getText('zoomInTitle'), () => handleZoomIn(blot))
+  const resetBtn = createControlItem('fit', handler.getText('fitTitle'), () => handleResetZoom(blot))
+  const backBtn = createControlItem('back', handler.getText('backTitle'), () => handleUndo(blot))
+  const forwardBtn = createControlItem('forward', handler.getText('forwardTitle'), () => handleRedo(blot))
+  const exportJSON = createControlItem('export', handler.getText('exportTitle'), () => handleExport(blot))
+  const importJSON = createControlItem('import', handler.getText('importTitle'), () => handleImport(blot))
 
   const updateButtonState = (historyData: any) => {
     if (!historyData.data) {
@@ -202,7 +185,7 @@ function handleResetZoom(blot: FlowChartPlaceholderBlot): void {
   }
 }
 
-function createControlItem(iconClass: string, text: string, title: string, onClick: () => void, disabled = false) {
+function createControlItem(iconClass: string, title: string, onClick: () => void, disabled = false) {
   const controlItem = document.createElement('div')
   controlItem.className = 'ql-flow-chart-control-item'
   controlItem.title = title
@@ -210,12 +193,7 @@ function createControlItem(iconClass: string, text: string, title: string, onCli
 
   const icon = document.createElement('i')
   icon.className = `ql-flow-chart-control-${iconClass}`
-  const textSpan = document.createElement('span')
-  textSpan.className = 'ql-flow-chart-control-text'
-  textSpan.textContent = text
-
   controlItem.appendChild(icon)
-  controlItem.appendChild(textSpan)
 
   if (!disabled) {
     controlItem.addEventListener('click', onClick)
