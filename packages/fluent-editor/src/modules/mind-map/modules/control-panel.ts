@@ -4,6 +4,12 @@ import { nodeIconList } from 'simple-mind-map/src/svg/icons'
 import { CHANGE_LANGUAGE_EVENT } from '../../../config'
 import { I18N } from '../../../modules/i18n'
 import { registerMindMapI18N } from '../i18n'
+import catalogOrganizationIcon from '../icons/catalogOrganizationIcon.png'
+import fishboneIcon from '../icons/fishboneIcon.png'
+import logicalStructureIcon from '../icons/logicalStructureIcon.png'
+import mindMapIcon from '../icons/mindMapIcon.png'
+import organizationStructureIcon from '../icons/organizationStructureIcon.png'
+import timelineIcon from '../icons/timelineIcon.png'
 
 class MindMapControlPanelHandler {
   private texts: Record<string, string>
@@ -24,20 +30,40 @@ class MindMapControlPanelHandler {
   }
 
   resolveTexts() {
-    return {
-      zoomOutTitle: I18N.parserText('mindMap.controlPanel.zoomOutTitle', this.lang),
-      zoomInTitle: I18N.parserText('mindMap.controlPanel.zoomInTitle', this.lang),
-      fitTitle: I18N.parserText('mindMap.controlPanel.fitTitle', this.lang),
-      backTitle: I18N.parserText('mindMap.controlPanel.backTitle', this.lang),
-      forwardTitle: I18N.parserText('mindMap.controlPanel.forwardTitle', this.lang),
-      exportTitle: I18N.parserText('mindMap.controlPanel.exportTitle', this.lang),
-      importTitle: I18N.parserText('mindMap.controlPanel.importTitle', this.lang),
-      inserChildNodeTitle: I18N.parserText('mindMap.controlPanel.inserChildNodeTitle', this.lang),
-      inserNodeTitle: I18N.parserText('mindMap.controlPanel.inserNodeTitle', this.lang),
-      inserParentNodeTitle: I18N.parserText('mindMap.controlPanel.inserParentNodeTitle', this.lang),
-      removeNodeTitle: I18N.parserText('mindMap.controlPanel.removeNodeTitle', this.lang),
-      insertIconTitle: I18N.parserText('mindMap.controlPanel.insertIconTitle', this.lang),
-    }
+    // 定义所有需要翻译的键
+    const textKeys = [
+      'zoomOutTitle',
+      'zoomInTitle',
+      'fitTitle',
+      'backTitle',
+      'forwardTitle',
+      'exportTitle',
+      'importTitle',
+      'inserChildNodeTitle',
+      'inserNodeTitle',
+      'inserParentNodeTitle',
+      'removeNodeTitle',
+      'insertIconTitle',
+      'setLayoutTitle',
+      'logicalStructureLayout',
+      'catalogOrganizationLayout',
+      'mindMapLayout',
+      'organizationStructureLayout',
+      'timelineLayout',
+      'fishboneLayout',
+    ]
+
+    // 使用reduce生成翻译对象
+    return textKeys.reduce((acc, key) => {
+      // 为布局键添加特殊处理
+      if (!key.includes('Title')) {
+        acc[key] = I18N.parserText(`mindMap.layout.${key.replace('Layout', '')}`, this.lang)
+      }
+      else {
+        acc[key] = I18N.parserText(`mindMap.controlPanel.${key}`, this.lang)
+      }
+      return acc
+    }, {} as Record<string, string>)
   }
 
   updateControlPanelTexts() {
@@ -102,6 +128,7 @@ export function createControlPanel(blot: MindMapPlaceholderBlot, quill: FluentEd
   const insertParentNode = createControlItem('inserParentNode', handler.getText('inserParentNodeTitle'), () => handleInsertParentNode(blot))
   const removeNode = createControlItem('removeNode', handler.getText('removeNodeTitle'), () => handleRemoveNode(blot))
   const insertIconBtn = createControlItem('insertIcon', handler.getText('insertIconTitle'), () => handleInsertIcon(blot, selectedNodes))
+  const setLayoutBtn = createControlItem('setLayoutIcon', handler.getText('setLayoutTitle'), () => handleSetLayoutBtn(blot))
   const updateButtonState = (index: number, len: number) => {
     isStart = index <= 0
     isEnd = index >= len - 1
@@ -118,7 +145,7 @@ export function createControlPanel(blot: MindMapPlaceholderBlot, quill: FluentEd
   blot.domNode.appendChild(controlPanel)
   controlLeftDownPanel.append(exportJSON, importJSON)
   blot.domNode.appendChild(controlLeftDownPanel)
-  controlLeftUpPanel.append(insertChildNode, insertNode, insertParentNode, removeNode, insertIconBtn)
+  controlLeftUpPanel.append(insertChildNode, insertNode, insertParentNode, removeNode, insertIconBtn, setLayoutBtn)
   blot.domNode.appendChild(controlLeftUpPanel)
 }
 
@@ -204,7 +231,7 @@ function handleInsertIcon(blot: MindMapPlaceholderBlot, selectedNodes: any[]): v
       iconItem.style.justifyContent = 'center'
       iconItem.style.cursor = 'pointer'
       iconItem.style.border = '1px solid #eee'
-      iconItem.style.borderRadius = '4px'
+      iconItem.style.borderRadius = 'inherit'
       iconItem.style.padding = '2px'
       iconItem.innerHTML = icon.icon
       iconItem.title = icon.name
@@ -220,7 +247,6 @@ function handleInsertIcon(blot: MindMapPlaceholderBlot, selectedNodes: any[]): v
           }
           blot.data = blot.mindMap.getData({})
           blot.domNode.setAttribute('data-mind-map', JSON.stringify(blot.data))
-          blot.scroll.update([], {})
         }
         leftUpControl.removeChild(iconPanel)
       })
@@ -267,7 +293,6 @@ function handleImport(blot: MindMapPlaceholderBlot): void {
           blot.mindMap.view.reset()
           blot.data = blot.mindMap.getData({})
           blot.domNode.setAttribute('data-mind-map', JSON.stringify(blot.data))
-          blot.scroll.update([], {})
         }
       }
       catch (error) {
@@ -319,4 +344,101 @@ function handleResetZoom(blot: MindMapPlaceholderBlot): void {
     }
   }
   blot.zoomCount = 0
+}
+function handleSetLayoutBtn(blot: MindMapPlaceholderBlot): void {
+  const handler = controlPanelHandlers.get(blot)
+  const leftUpControl = blot.domNode.querySelector('.ql-mind-map-left-up-control') as HTMLElement
+  const layoutPanel = document.createElement('div')
+  layoutPanel.className = 'ql-mind-map-layout-panel'
+  layoutPanel.style.display = 'none'
+  layoutPanel.style.borderRadius = 'inherit'
+  layoutPanel.style.width = '270px'
+  layoutPanel.style.position = 'absolute'
+  layoutPanel.style.left = '45px'
+  layoutPanel.style.top = '60px'
+  layoutPanel.style.backgroundColor = 'white'
+  layoutPanel.style.border = '1px solid #ccc'
+  layoutPanel.style.padding = '10px'
+  layoutPanel.style.zIndex = '1000'
+  layoutPanel.style.display = 'grid'
+  layoutPanel.style.gridTemplateColumns = 'repeat(2, 1fr)'
+  layoutPanel.style.gap = '10px'
+
+  const layouts = [
+    {
+      name: 'logicalStructure',
+      displayName: handler?.getText('logicalStructureLayout'),
+      icon: logicalStructureIcon,
+    },
+    {
+      name: 'catalogOrganization',
+      displayName: handler?.getText('catalogOrganizationLayout'),
+      icon: catalogOrganizationIcon,
+    },
+    {
+      name: 'mindMap',
+      displayName: handler?.getText('mindMapLayout'),
+      icon: mindMapIcon,
+    },
+    {
+      name: 'organizationStructure',
+      displayName: handler?.getText('organizationStructureLayout'),
+      icon: organizationStructureIcon,
+    },
+    {
+      name: 'timeline',
+      displayName: handler?.getText('timelineLayout'),
+      icon: timelineIcon,
+    },
+    {
+      name: 'fishbone',
+      displayName: handler?.getText('fishboneLayout'),
+      icon: fishboneIcon,
+    },
+  ]
+
+  layouts.forEach((layout) => {
+    const layoutItem = document.createElement('div')
+    layoutItem.style.display = 'flex'
+    layoutItem.style.flexDirection = 'column'
+    layoutItem.style.alignItems = 'center'
+    layoutItem.style.cursor = 'pointer'
+    layoutItem.style.border = '1px solid #eee'
+    layoutItem.style.borderRadius = 'inherit'
+    layoutItem.style.padding = '2px'
+    const iconContainer = document.createElement('div')
+    const img = document.createElement('div')
+    img.style.backgroundImage = `url(${layout.icon})`
+    img.style.backgroundSize = 'contain'
+    img.style.backgroundRepeat = 'no-repeat'
+    img.style.backgroundPosition = 'center'
+    img.style.width = '80px'
+    img.style.height = '60px'
+    iconContainer.appendChild(img)
+
+    const nameText = document.createElement('span')
+    nameText.textContent = layout.displayName
+    nameText.style.fontSize = '12px'
+    nameText.style.marginTop = '5px'
+    layoutItem.appendChild(iconContainer)
+    layoutItem.appendChild(nameText)
+    layoutItem.addEventListener('click', () => {
+      blot.mindMap.setLayout(layout.name)
+      blot.data = blot.mindMap.getData({})
+      blot.domNode.setAttribute('data-mind-map', JSON.stringify(blot.data))
+      leftUpControl.removeChild(layoutPanel)
+    })
+    layoutPanel.appendChild(layoutItem)
+  })
+  layoutPanel.style.display = 'grid'
+  leftUpControl.appendChild(layoutPanel)
+  const handleOutsideClick = (e: MouseEvent) => {
+    if (!layoutPanel.contains(e.target as Node)) {
+      layoutPanel.style.display = 'none'
+      document.removeEventListener('click', handleOutsideClick)
+    }
+  }
+  setTimeout(() => {
+    document.addEventListener('click', handleOutsideClick)
+  }, 0)
 }

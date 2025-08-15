@@ -135,7 +135,6 @@ export class MindMapResizeAction {
     this.blot.data.width = newWidth
     this.blot.data.height = newHeight
     container.setAttribute('data-mind-map', JSON.stringify(this.blot.data))
-    this.blot.scroll.update([], {})
   }
 
   onMouseUp() {

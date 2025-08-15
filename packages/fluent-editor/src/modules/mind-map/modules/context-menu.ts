@@ -139,7 +139,6 @@ function handleDeleteContent(blot: MindMapPlaceholderBlot): void {
     blot.currentNode.setText('')
     blot.data = blot.mindMap.getData({})
     blot.domNode.setAttribute('data-mind-map', JSON.stringify(blot.data))
-    blot.scroll.update([], {})
   }
   hideContextMenu(blot)
 }

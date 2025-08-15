@@ -28,27 +28,27 @@ class MindMapPlaceholderBlot extends BlockEmbed {
   constructor(scroll: Root, domNode: HTMLElement) {
     super(scroll, domNode)
     const data = MindMapPlaceholderBlot.value(domNode)
+    console.warn('data', data)
     this.width = data.width || 100
     this.height = data.height || 500
     this.domNode.style.width = `${this.width}${data.width ? 'px' : '%'}`
     this.domNode.style.height = `${this.height}px`
     this.domNode.style.maxWidth = '100%'
     this.domNode.style.border = '1px solid #e8e8e8'
-    this.data = MindMapPlaceholderBlot.value(this.domNode)
+    this.data = MindMapPlaceholderBlot.value(domNode)
     this.initMindMap()
   }
 
   static value(domNode: HTMLElement): any {
     const dataStr = JSON.parse(domNode.getAttribute('data-mind-map'))
-    const value = dataStr.root ? dataStr.root : dataStr
+    const value = dataStr
     if (domNode.hasAttribute('width')) {
       value.width = Number.parseInt(domNode.getAttribute('width'), 10)
     }
     if (domNode.hasAttribute('height')) {
       value.height = Number.parseInt(domNode.getAttribute('height'), 10)
     }
-
-    return dataStr.root ? dataStr.root : dataStr
+    return dataStr
   }
 
   static create(value: any): HTMLElement {
@@ -95,7 +95,8 @@ class MindMapPlaceholderBlot extends BlockEmbed {
       el: this.domNode,
       mousewheelAction: 'zoom',
       disableMouseWheelZoom: true,
-      data: this.data,
+      layout: this.data.layout,
+      data: this.data.root ? this.data.root : this.data,
     } as any)
 
     const handleScroll = () => {
@@ -117,12 +118,8 @@ class MindMapPlaceholderBlot extends BlockEmbed {
     this.mindMap.on('node_tree_render_end', () => {
       this.data = this.mindMap.getData({})
       this.domNode.setAttribute('data-mind-map', JSON.stringify(this.data))
-      this.scroll.update([], {})
     })
     this.mindMap.on('node_dblclick', this.handleNodeDblClick.bind(this))
-    if (this.mindMap) {
-      this.mindMap.setData(this.data)
-    }
   }
 
   // 监听父元素变化
@@ -271,7 +268,6 @@ class MindMapPlaceholderBlot extends BlockEmbed {
       })
       this.data = this.mindMap.getData({})
       this.domNode.setAttribute('data-mind-map', JSON.stringify(this.data))
-      this.scroll.update([], {})
     }
   }
 

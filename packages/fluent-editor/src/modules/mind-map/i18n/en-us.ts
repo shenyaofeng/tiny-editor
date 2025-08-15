@@ -11,4 +11,11 @@ export const MIND_MAP_EN_US = {
   'mindMap.controlPanel.inserParentNodeTitle': 'Insert Parent Node',
   'mindMap.controlPanel.removeNodeTitle': 'Delete Current Node',
   'mindMap.controlPanel.insertIconTitle': 'Insert Icon',
+  'mindMap.controlPanel.setLayoutTitle': 'Set Layout',
+  'mindMap.layout.logicalStructure': 'Logical Structure',
+  'mindMap.layout.catalogOrganization': 'Catalog Organization',
+  'mindMap.layout.mindMap': 'Mind Map',
+  'mindMap.layout.organizationStructure': 'Organization Structure',
+  'mindMap.layout.timeline': 'Timeline',
+  'mindMap.layout.fishbone': 'Fishbone Diagram',
 }
