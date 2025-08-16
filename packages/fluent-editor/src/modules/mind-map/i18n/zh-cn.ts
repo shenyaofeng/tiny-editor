@@ -18,4 +18,8 @@ export const MIND_MAP_ZH_CN = {
   'mindMap.layout.organizationStructure': '组织结构',
   'mindMap.layout.timeline': '时间轴',
   'mindMap.layout.fishbone': '鱼骨图',
+  'mindMap.contextMenu.copy': '复制',
+  'mindMap.contextMenu.cut': '剪切',
+  'mindMap.contextMenu.paste': '粘贴',
+  'mindMap.contextMenu.deleteContent': '删除',
 }

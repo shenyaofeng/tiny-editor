@@ -18,4 +18,8 @@ export const MIND_MAP_EN_US = {
   'mindMap.layout.organizationStructure': 'Organization Structure',
   'mindMap.layout.timeline': 'Timeline',
   'mindMap.layout.fishbone': 'Fishbone Diagram',
+  'mindMap.contextMenu.copy': 'Copy',
+  'mindMap.contextMenu.cut': 'Cut',
+  'mindMap.contextMenu.paste': 'Paste',
+  'mindMap.contextMenu.deleteContent': 'Delete',
 }
