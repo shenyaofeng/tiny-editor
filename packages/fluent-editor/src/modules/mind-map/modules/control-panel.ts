@@ -196,45 +196,20 @@ function handleInsertIcon(blot: MindMapPlaceholderBlot, selectedNodes: any[]): v
   const leftUpControl = blot.domNode.querySelector('.ql-mind-map-left-up-control') as HTMLElement
   const iconPanel = document.createElement('div')
   iconPanel.className = 'ql-mind-map-icon-panel'
-  iconPanel.style.display = 'none'
-  iconPanel.style.borderRadius = 'inherit'
-  iconPanel.style.width = '200px'
-  iconPanel.style.height = '270px'
-  iconPanel.style.position = 'absolute'
-  iconPanel.style.left = '45px'
-  iconPanel.style.top = '60px'
-  iconPanel.style.backgroundColor = 'white'
-  iconPanel.style.border = '1px solid #ccc'
-  iconPanel.style.padding = '10px'
-  iconPanel.style.zIndex = '1000'
-  iconPanel.style.maxHeight = '400px'
-  iconPanel.style.overflowY = 'auto'
 
   iconList.forEach((group) => {
     const groupTitle = document.createElement('h4')
     groupTitle.textContent = ''
-    groupTitle.style.margin = '10px 0 5px'
-    groupTitle.style.fontSize = '14px'
+    groupTitle.className = 'ql-mind-map-icon-group-title'
     iconPanel.appendChild(groupTitle)
 
     const groupContainer = document.createElement('div')
-    groupContainer.style.display = 'flex'
-    groupContainer.style.flexWrap = 'wrap'
-    groupContainer.style.gap = '10px'
+    groupContainer.className = 'ql-mind-map-icon-group-container'
 
     group.list.forEach((icon: { icon: string, name: string }) => {
       const iconItem = document.createElement('div')
-      iconItem.style.width = '25px'
-      iconItem.style.height = '25px'
-      iconItem.style.display = 'flex'
-      iconItem.style.alignItems = 'center'
-      iconItem.style.justifyContent = 'center'
-      iconItem.style.cursor = 'pointer'
-      iconItem.style.border = '1px solid #eee'
-      iconItem.style.borderRadius = 'inherit'
-      iconItem.style.padding = '2px'
+      iconItem.className = 'ql-mind-map-icon-item'
       iconItem.innerHTML = icon.icon
-      iconItem.title = icon.name
 
       iconItem.addEventListener('click', () => {
         if (selectedNodes.length > 0) {
@@ -350,19 +325,6 @@ function handleSetLayoutBtn(blot: MindMapPlaceholderBlot): void {
   const leftUpControl = blot.domNode.querySelector('.ql-mind-map-left-up-control') as HTMLElement
   const layoutPanel = document.createElement('div')
   layoutPanel.className = 'ql-mind-map-layout-panel'
-  layoutPanel.style.display = 'none'
-  layoutPanel.style.borderRadius = 'inherit'
-  layoutPanel.style.width = '270px'
-  layoutPanel.style.position = 'absolute'
-  layoutPanel.style.left = '45px'
-  layoutPanel.style.top = '60px'
-  layoutPanel.style.backgroundColor = 'white'
-  layoutPanel.style.border = '1px solid #ccc'
-  layoutPanel.style.padding = '10px'
-  layoutPanel.style.zIndex = '1000'
-  layoutPanel.style.display = 'grid'
-  layoutPanel.style.gridTemplateColumns = 'repeat(2, 1fr)'
-  layoutPanel.style.gap = '10px'
 
   const layouts = [
     {
@@ -399,27 +361,21 @@ function handleSetLayoutBtn(blot: MindMapPlaceholderBlot): void {
 
   layouts.forEach((layout) => {
     const layoutItem = document.createElement('div')
-    layoutItem.style.display = 'flex'
-    layoutItem.style.flexDirection = 'column'
-    layoutItem.style.alignItems = 'center'
-    layoutItem.style.cursor = 'pointer'
-    layoutItem.style.border = '1px solid #eee'
-    layoutItem.style.borderRadius = 'inherit'
-    layoutItem.style.padding = '2px'
+    layoutItem.className = 'ql-mind-map-layout-item'
+
     const iconContainer = document.createElement('div')
+    iconContainer.className = 'ql-mind-map-layout-icon-container'
+
     const img = document.createElement('div')
+    img.className = 'ql-mind-map-layout-icon'
     img.style.backgroundImage = `url(${layout.icon})`
-    img.style.backgroundSize = 'contain'
-    img.style.backgroundRepeat = 'no-repeat'
-    img.style.backgroundPosition = 'center'
-    img.style.width = '80px'
-    img.style.height = '60px'
+
     iconContainer.appendChild(img)
 
-    const nameText = document.createElement('span')
+    const nameText = document.createElement('div')
+    nameText.className = 'ql-mind-map-layout-name'
     nameText.textContent = layout.displayName
-    nameText.style.fontSize = '12px'
-    nameText.style.marginTop = '5px'
+
     layoutItem.appendChild(iconContainer)
     layoutItem.appendChild(nameText)
     layoutItem.addEventListener('click', () => {

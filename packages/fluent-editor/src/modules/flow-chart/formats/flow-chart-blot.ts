@@ -26,7 +26,6 @@ class FlowChartPlaceholderBlot extends BlockEmbed {
   constructor(scroll: Root, domNode: HTMLElement) {
     super(scroll, domNode)
     const data = FlowChartPlaceholderBlot.value(domNode)
-    console.warn('data', data)
     this.width = data.width || 100
     this.height = data.height || 500
     this.domNode.style.width = `${this.width}${data.width ? 'px' : '%'}`
