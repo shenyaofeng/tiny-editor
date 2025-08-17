@@ -96,8 +96,12 @@ export class MindMapResizeAction {
 
   updateDependentElementsHeight(newHeight: number) {
     const iconPanel = this.blot.domNode.querySelector('.ql-mind-map-icon-panel') as HTMLElement
+    const layoutPanel = this.blot.domNode.querySelector('.ql-mind-map-layout-panel') as HTMLElement
     if (iconPanel && newHeight < 395) {
       iconPanel.style.height = `${newHeight - 130}px`
+    }
+    if (layoutPanel && newHeight < 395) {
+      layoutPanel.style.height = `${newHeight - 130}px`
     }
   }
 

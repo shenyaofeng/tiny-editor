@@ -347,78 +347,109 @@ function handleResetZoom(blot: MindMapPlaceholderBlot): void {
 function handleSetLayoutBtn(blot: MindMapPlaceholderBlot): void {
   const handler = controlPanelHandlers.get(blot)
   const leftUpControl = blot.domNode.querySelector('.ql-mind-map-left-up-control') as HTMLElement
-  const layoutPanel = document.createElement('div')
-  layoutPanel.className = 'ql-mind-map-layout-panel'
+  let layoutPanel = leftUpControl.querySelector('.ql-mind-map-layout-panel') as HTMLElement
+  const heightStr = blot.domNode.getAttribute('height') || '500'
+  const height = Number.parseInt(heightStr.replace(/[^\d.]/g, ''), 10) || 500
 
-  const layouts = [
-    {
-      name: 'logicalStructure',
-      displayName: handler?.getText('logicalStructureLayout'),
-      icon: logicalStructureIcon,
-    },
-    {
-      name: 'catalogOrganization',
-      displayName: handler?.getText('catalogOrganizationLayout'),
-      icon: catalogOrganizationIcon,
-    },
-    {
-      name: 'mindMap',
-      displayName: handler?.getText('mindMapLayout'),
-      icon: mindMapIcon,
-    },
-    {
-      name: 'organizationStructure',
-      displayName: handler?.getText('organizationStructureLayout'),
-      icon: organizationStructureIcon,
-    },
-    {
-      name: 'timeline',
-      displayName: handler?.getText('timelineLayout'),
-      icon: timelineIcon,
-    },
-    {
-      name: 'fishbone',
-      displayName: handler?.getText('fishboneLayout'),
-      icon: fishboneIcon,
-    },
-  ]
+  if (!layoutPanel) {
+    layoutPanel = document.createElement('div')
+    layoutPanel.className = 'ql-mind-map-layout-panel'
 
-  layouts.forEach((layout) => {
-    const layoutItem = document.createElement('div')
-    layoutItem.className = 'ql-mind-map-layout-item'
+    const layouts = [
+      {
+        name: 'logicalStructure',
+        displayName: handler?.getText('logicalStructureLayout'),
+        icon: logicalStructureIcon,
+      },
+      {
+        name: 'catalogOrganization',
+        displayName: handler?.getText('catalogOrganizationLayout'),
+        icon: catalogOrganizationIcon,
+      },
+      {
+        name: 'mindMap',
+        displayName: handler?.getText('mindMapLayout'),
+        icon: mindMapIcon,
+      },
+      {
+        name: 'organizationStructure',
+        displayName: handler?.getText('organizationStructureLayout'),
+        icon: organizationStructureIcon,
+      },
+      {
+        name: 'timeline',
+        displayName: handler?.getText('timelineLayout'),
+        icon: timelineIcon,
+      },
+      {
+        name: 'fishbone',
+        displayName: handler?.getText('fishboneLayout'),
+        icon: fishboneIcon,
+      },
+    ]
 
-    const iconContainer = document.createElement('div')
-    iconContainer.className = 'ql-mind-map-layout-icon-container'
+    layouts.forEach((layout) => {
+      const layoutItem = document.createElement('div')
+      layoutItem.className = 'ql-mind-map-layout-item'
 
-    const img = document.createElement('div')
-    img.className = 'ql-mind-map-layout-icon'
-    img.style.backgroundImage = `url(${layout.icon})`
+      const iconContainer = document.createElement('div')
+      iconContainer.className = 'ql-mind-map-layout-icon-container'
 
-    iconContainer.appendChild(img)
+      const img = document.createElement('div')
+      img.className = 'ql-mind-map-layout-icon'
+      img.style.backgroundImage = `url(${layout.icon})`
 
-    const nameText = document.createElement('div')
-    nameText.className = 'ql-mind-map-layout-name'
-    nameText.textContent = layout.displayName
+      iconContainer.appendChild(img)
 
-    layoutItem.appendChild(iconContainer)
-    layoutItem.appendChild(nameText)
-    layoutItem.addEventListener('click', () => {
-      blot.mindMap.setLayout(layout.name)
-      blot.data = blot.mindMap.getData({})
-      blot.domNode.setAttribute('data-mind-map', JSON.stringify(blot.data))
-      leftUpControl.removeChild(layoutPanel)
+      const nameText = document.createElement('div')
+      nameText.className = 'ql-mind-map-layout-name'
+      nameText.textContent = layout.displayName
+
+      layoutItem.appendChild(iconContainer)
+      layoutItem.appendChild(nameText)
+      layoutItem.addEventListener('click', () => {
+        blot.mindMap.setLayout(layout.name)
+        blot.data = blot.mindMap.getData({})
+        blot.domNode.setAttribute('data-mind-map', JSON.stringify(blot.data))
+        layoutPanel.style.display = 'none'
+      })
+      layoutPanel.appendChild(layoutItem)
     })
-    layoutPanel.appendChild(layoutItem)
-  })
-  layoutPanel.style.display = 'grid'
-  leftUpControl.appendChild(layoutPanel)
+    leftUpControl.appendChild(layoutPanel)
+    if (height < 395) {
+      console.warn(height)
+      layoutPanel.style.height = `${height - 130}px`
+    }
+    else {
+      layoutPanel.style.height = '270px'
+    }
+  }
+  else {
+    if (height < 395) {
+      layoutPanel.style.height = `${height - 130}px`
+    }
+    else {
+      layoutPanel.style.height = '270px'
+    }
+    layoutPanel.style.display = 'block'
+  }
+
   const handleOutsideClick = (e: MouseEvent) => {
-    if (!layoutPanel.contains(e.target as Node)) {
+    let setLayoutBtn: HTMLElement | null = null
+    const controlItems = leftUpControl.querySelectorAll('.ql-mind-map-control-item')
+
+    controlItems.forEach((item) => {
+      const iconEl = item.querySelector('i')
+      if (iconEl && iconEl.className.includes('setLayoutIcon')) {
+        setLayoutBtn = item as HTMLElement
+      }
+    })
+
+    if (!layoutPanel.contains(e.target as Node) && (!setLayoutBtn || !setLayoutBtn.contains(e.target as Node))) {
       layoutPanel.style.display = 'none'
       document.removeEventListener('click', handleOutsideClick)
     }
   }
-  setTimeout(() => {
-    document.addEventListener('click', handleOutsideClick)
-  }, 0)
+  document.removeEventListener('click', handleOutsideClick)
+  document.addEventListener('click', handleOutsideClick)
 }

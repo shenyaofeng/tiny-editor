@@ -190,9 +190,8 @@
 }
 
 .ql-mind-map-layout-panel {
-  display: none;
   border-radius: inherit;
-  width: 280px;
+  width: 200px;
   position: absolute;
   left: 45px;
   top: 60px;
@@ -200,9 +199,11 @@
   border: 1px solid #ccc;
   padding: 10px;
   z-index: 1000;
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 10px;
+  max-height: 400px;
+  overflow-y: auto;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
   .ql-mind-map-layout-item {
     display: flex;
     flex-direction: column;
