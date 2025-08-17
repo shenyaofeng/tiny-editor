@@ -4,6 +4,11 @@ import type FluentEditor from '../../../core/fluent-editor'
 import LogicFlow from '@logicflow/core'
 import { DndPanel, SelectionSelect } from '@logicflow/extension'
 import Quill from 'quill'
+import circleIcon from '../icons/circleIcon.png'
+import diamondIcon from '../icons/diamondIcon.png'
+import ellipseIcon from '../icons/ellipseIcon.png'
+import rectangleIcon from '../icons/rectangleIcon.png'
+import selectRegionIcon from '../icons/selectRegionIcon.png'
 import { initContextMenu } from '../modules/context-menu'
 import { createControlPanel } from '../modules/control-panel'
 import { FlowChartResizeAction } from '../modules/custom-resize-action'
@@ -101,6 +106,37 @@ class FlowChartPlaceholderBlot extends BlockEmbed {
       },
       plugins: [DndPanel, SelectionSelect],
     })
+    this.flowChart.setPatternItems([
+      {
+        icon: selectRegionIcon,
+        callback: () => {
+          this.flowChart.openSelectionSelect()
+          this.flowChart.once('selection:selected', () => {
+            this.flowChart.closeSelectionSelect()
+          })
+        },
+      },
+      {
+        type: 'rect',
+        text: '矩形',
+        icon: rectangleIcon,
+      },
+      {
+        type: 'circle',
+        text: '圆形',
+        icon: circleIcon,
+      },
+      {
+        type: 'ellipse',
+        text: '椭圆',
+        icon: ellipseIcon,
+      },
+      {
+        type: 'diamond',
+        text: '菱形',
+        icon: diamondIcon,
+      },
+    ])
     new FlowChartResizeAction(this)
     const quill = this.scroll as unknown as FluentEditor
     createControlPanel(this, quill) // 创建控制面板

@@ -3,6 +3,7 @@ export const FLOW_CHART_EN_US = {
   'flowChart.controlPanel.import': 'Import',
   'flowChart.controlPanel.exportTitle': 'Export Flow Chart',
   'flowChart.controlPanel.importTitle': 'Import Flow Chart',
+  'flowChart.controlPanel.setEdgeTypeTitle': 'Set Edge Type',
   'flowChart.dndPanel.selection': 'Selection',
   'flowChart.dndPanel.rectangle': 'Rectangle',
   'flowChart.dndPanel.circle': 'Circle',
