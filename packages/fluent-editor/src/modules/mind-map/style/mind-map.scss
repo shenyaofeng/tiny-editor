@@ -156,10 +156,8 @@
 }
 
 .ql-mind-map-icon-panel {
-  display: none;
   border-radius: inherit;
   width: 200px;
-  height: 270px;
   position: absolute;
   left: 45px;
   top: 60px;
@@ -169,14 +167,10 @@
   z-index: 1000;
   max-height: 400px;
   overflow-y: auto;
-  .ql-mind-map-icon-group-title {
-    margin: 10px 0 5px;
-    font-size: 14px;
-  }
   .ql-mind-map-icon-group-container {
     display: flex;
     flex-wrap: wrap;
-    gap: 10px;
+    gap: 6px;
     .ql-mind-map-icon-item {
       width: 25px;
       height: 25px;

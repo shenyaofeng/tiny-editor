@@ -30,7 +30,6 @@ class MindMapControlPanelHandler {
   }
 
   resolveTexts() {
-    // 定义所有需要翻译的键
     const textKeys = [
       'zoomOutTitle',
       'zoomInTitle',
@@ -53,9 +52,7 @@ class MindMapControlPanelHandler {
       'fishboneLayout',
     ]
 
-    // 使用reduce生成翻译对象
     return textKeys.reduce((acc, key) => {
-      // 为布局键添加特殊处理
       if (!key.includes('Title')) {
         acc[key] = I18N.parserText(`mindMap.layout.${key.replace('Layout', '')}`, this.lang)
       }
@@ -191,56 +188,82 @@ function handleExport(blot: MindMapPlaceholderBlot): void {
 }
 
 function handleInsertIcon(blot: MindMapPlaceholderBlot, selectedNodes: any[]): void {
+  (blot as any).selectedNodes = selectedNodes
+  const heightStr = blot.domNode.getAttribute('height') || '500px'
+  const height = Number.parseInt(heightStr.replace(/[^\d.]/g, ''), 10) || 500
   let iconList = []
   iconList = nodeIconList
   const leftUpControl = blot.domNode.querySelector('.ql-mind-map-left-up-control') as HTMLElement
-  const iconPanel = document.createElement('div')
-  iconPanel.className = 'ql-mind-map-icon-panel'
+  let iconPanel = leftUpControl.querySelector('.ql-mind-map-icon-panel') as HTMLElement
+  if (!iconPanel) {
+    iconPanel = document.createElement('div')
+    iconPanel.className = 'ql-mind-map-icon-panel'
 
-  iconList.forEach((group) => {
-    const groupTitle = document.createElement('h4')
-    groupTitle.textContent = ''
-    groupTitle.className = 'ql-mind-map-icon-group-title'
-    iconPanel.appendChild(groupTitle)
+    iconList.forEach((group) => {
+      const groupContainer = document.createElement('div')
+      groupContainer.className = 'ql-mind-map-icon-group-container'
 
-    const groupContainer = document.createElement('div')
-    groupContainer.className = 'ql-mind-map-icon-group-container'
+      group.list.forEach((icon: { icon: string, name: string }) => {
+        const iconItem = document.createElement('div')
+        iconItem.className = 'ql-mind-map-icon-item'
+        iconItem.innerHTML = icon.icon
 
-    group.list.forEach((icon: { icon: string, name: string }) => {
-      const iconItem = document.createElement('div')
-      iconItem.className = 'ql-mind-map-icon-item'
-      iconItem.innerHTML = icon.icon
+        iconItem.addEventListener('click', () => {
+          const currentSelectedNodes = (blot as any).selectedNodes || []
+          if (currentSelectedNodes.length > 0) {
+            const node = currentSelectedNodes[0]
 
-      iconItem.addEventListener('click', () => {
-        if (selectedNodes.length > 0) {
-          const node = selectedNodes[0]
-          if (node.getData('icon') && node.getData('icon')[0] === `${group.type}_${icon.name}`) {
-            node.setIcon([])
+            if (node.getData('icon') && node.getData('icon')[0] === `${group.type}_${icon.name}`) {
+              node.setIcon([])
+            }
+            else {
+              node.setIcon([`${group.type}_${icon.name}`])
+            }
+            blot.data = blot.mindMap.getData({})
+            blot.domNode.setAttribute('data-mind-map', JSON.stringify(blot.data))
           }
-          else {
-            node.setIcon([`${group.type}_${icon.name}`])
-          }
-          blot.data = blot.mindMap.getData({})
-          blot.domNode.setAttribute('data-mind-map', JSON.stringify(blot.data))
-        }
-        leftUpControl.removeChild(iconPanel)
+          iconPanel.style.display = 'none'
+        })
+        groupContainer.appendChild(iconItem)
       })
-      groupContainer.appendChild(iconItem)
+      iconPanel.appendChild(groupContainer)
     })
-    iconPanel.appendChild(groupContainer)
-  })
+    if (height < 395) {
+      iconPanel.style.height = `${height - 130}px`
+    }
+    else {
+      iconPanel.style.height = '270px'
+    }
+    leftUpControl.appendChild(iconPanel)
+  }
+  else {
+    if (height < 395) {
+      iconPanel.style.height = `${height - 130}px`
+    }
+    else {
+      iconPanel.style.height = '270px'
+    }
+    iconPanel.style.display = 'block'
+  }
 
-  iconPanel.style.display = 'block'
-  leftUpControl.appendChild(iconPanel)
   const handleOutsideClick = (e: MouseEvent) => {
-    if (!iconPanel.contains(e.target as Node)) {
+    let insertIconBtn: HTMLElement | null = null
+    const controlItems = leftUpControl.querySelectorAll('.ql-mind-map-control-item')
+
+    controlItems.forEach((item) => {
+      const iconEl = item.querySelector('i')
+      if (iconEl && iconEl.className.includes('insertIcon')) {
+        insertIconBtn = item as HTMLElement
+      }
+    })
+
+    if (!iconPanel.contains(e.target as Node) && (!insertIconBtn || !insertIconBtn.contains(e.target as Node))) {
       iconPanel.style.display = 'none'
       document.removeEventListener('click', handleOutsideClick)
     }
   }
-  setTimeout(() => {
-    document.addEventListener('click', handleOutsideClick)
-  }, 0)
+  document.removeEventListener('click', handleOutsideClick)
+  document.addEventListener('click', handleOutsideClick)
 }
 
 function handleImport(blot: MindMapPlaceholderBlot): void {
@@ -304,6 +327,7 @@ function handleZoomOut(blot: MindMapPlaceholderBlot): void {
 }
 
 function handleResetZoom(blot: MindMapPlaceholderBlot): void {
+  blot.mindMap.renderer.setRootNodeCenter()
   if (!blot.mindMap || !blot.mindMap.view || blot.zoomCount === 0) return
   const containerRect = blot.mindMap.el.getBoundingClientRect()
   const centerX = containerRect.width / 2
