@@ -173,7 +173,6 @@ function handleDeleteContent(blot: FlowChartPlaceholderBlot): void {
     }
     blot.data = blot.flowChart.getGraphData()
     blot.domNode.setAttribute('data-flow-chart', JSON.stringify(blot.data))
-    blot.scroll.update([], {})
   }
   hideContextMenu(blot)
 }
@@ -183,7 +182,6 @@ function handleDeleteNode(blot: FlowChartPlaceholderBlot): void {
     blot.flowChart.deleteNode(blot.currentElement.data.id)
     blot.data = blot.flowChart.getGraphData()
     blot.domNode.setAttribute('data-flow-chart', JSON.stringify(blot.data))
-    blot.scroll.update([], {})
   }
   hideContextMenu(blot)
 }
@@ -193,7 +191,6 @@ function handleDeleteEdge(blot: FlowChartPlaceholderBlot): void {
     blot.flowChart.deleteEdge(blot.currentElement.data.id)
     blot.data = blot.flowChart.getGraphData()
     blot.domNode.setAttribute('data-flow-chart', JSON.stringify(blot.data))
-    blot.scroll.update([], {})
   }
   hideContextMenu(blot)
 }

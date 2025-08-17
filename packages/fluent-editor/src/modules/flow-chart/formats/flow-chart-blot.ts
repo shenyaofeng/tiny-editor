@@ -110,12 +110,10 @@ class FlowChartPlaceholderBlot extends BlockEmbed {
     this.flowChart.on('graph:updated', () => {
       this.data = this.flowChart.getGraphData()
       this.domNode.setAttribute('data-flow-chart', JSON.stringify(this.data))
-      this.scroll.update([], {})
     })
     this.flowChart.on('history:change', () => {
       this.data = this.flowChart.getGraphData()
       this.domNode.setAttribute('data-flow-chart', JSON.stringify(this.data))
-      this.scroll.update([], {})
     })
     this.flowChart.on('node:dbclick', this.handleNodeDblClick.bind(this))
     this.flowChart.on('edge:dbclick', this.handleNodeDblClick.bind(this))

@@ -135,7 +135,6 @@ export class FlowChartResizeAction {
     this.blot.data.width = newWidth
     this.blot.data.height = newHeight
     container.setAttribute('data-flow-chart', JSON.stringify(this.blot.data))
-    this.blot.scroll.update([], {})
   }
 
   onMouseUp() {

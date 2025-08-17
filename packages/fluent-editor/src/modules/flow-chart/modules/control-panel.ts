@@ -234,7 +234,6 @@ function handleImport(blot: FlowChartPlaceholderBlot): void {
           blot.flowChart.render(jsonData)
           blot.data = jsonData
           blot.domNode.setAttribute('data-flow-chart', JSON.stringify(jsonData))
-          blot.scroll.update([], {})
         }
       }
       catch (error) {
