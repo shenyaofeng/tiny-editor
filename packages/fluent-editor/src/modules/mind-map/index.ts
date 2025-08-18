@@ -15,6 +15,27 @@ export class MindMapModule {
         this.insertMindMapEditor()
       })
     }
+    this.quill.on('selection-change', (range: any, oldRange: any, source: string) => {
+      if (!range) return
+      const leaf = this.quill.getLeaf(range.index)[0] as any
+      if (source === 'user') {
+        const leftUpControl = document.querySelector('.ql-mind-map-left-up-control') as HTMLElement | null
+        const control = document.querySelector('.ql-mind-map-control') as HTMLElement | null
+        if (leaf?.mindMap) {
+          leftUpControl.style.display = 'block'
+          control.style.display = 'flex'
+          this.quill.blur()
+        }
+        else {
+          if (leftUpControl) {
+            leftUpControl.style.display = 'none'
+          }
+          if (control) {
+            control.style.display = 'none'
+          }
+        }
+      }
+    })
   }
 
   public insertMindMapEditor(): void {
@@ -41,8 +62,9 @@ export class MindMapModule {
         ],
         smmVersion: '0.14.0-fix.1',
       }
-      this.quill.insertEmbed(range.index, 'mind-map-placeholder', defaultData, 'user')
-      this.quill.setSelection(range.index + 1, 0)
+      this.quill.insertText(range.index, '\n', 'user')
+      this.quill.insertEmbed(range.index + 1, 'mind-map-placeholder', defaultData, 'user')
+      this.quill.insertText(range.index + 2, '\n', 'user')
     }
   }
 }
