@@ -5,6 +5,8 @@ import { CHANGE_LANGUAGE_EVENT } from '../../../config'
 import { I18N } from '../../../modules/i18n'
 import { registerMindMapI18N } from '../i18n'
 import catalogOrganizationIcon from '../icons/catalogOrganizationIcon.png'
+import contractIcon from '../icons/contractIcon.png'
+import expandIcon from '../icons/expandIcon.png'
 import fishboneIcon from '../icons/fishboneIcon.png'
 import logicalStructureIcon from '../icons/logicalStructureIcon.png'
 import mindMapIcon from '../icons/mindMapIcon.png'
@@ -90,9 +92,12 @@ export function createControlPanel(blot: MindMapPlaceholderBlot, quill: FluentEd
   blot.mindMap.on('node_active', (...args: unknown[]) => {
     selectedNodes = Array.isArray(args[1]) ? args[1] : []
   })
-  // 右上的控制面板
+  // 中间的控制面板
   const controlPanel = document.createElement('div')
   controlPanel.className = 'ql-mind-map-control'
+  // 右上的控制面板
+  const controlRightUpPanel = document.createElement('div')
+  controlRightUpPanel.className = 'ql-mind-map-right-up-control'
   // 左上的控制面板
   const controlLeftUpPanel = document.createElement('div')
   controlLeftUpPanel.className = 'ql-mind-map-left-up-control'
@@ -119,6 +124,7 @@ export function createControlPanel(blot: MindMapPlaceholderBlot, quill: FluentEd
   const removeNode = createControlItem('removeNode', handler.getText('removeNodeTitle'), () => handleRemoveNode(blot))
   const insertIconBtn = createControlItem('insertIcon', handler.getText('insertIconTitle'), () => handleInsertIcon(blot, selectedNodes))
   const setLayoutBtn = createControlItem('setLayoutIcon', handler.getText('setLayoutTitle'), () => handleSetLayoutBtn(blot))
+  const panelStatusBtn = createControlItem('panelStatus', handler.getText('panelStatusTitle'), () => handlePanelStatusBtn(blot))
   const updateButtonState = (index: number, len: number) => {
     isStart = index <= 0
     isEnd = index >= len - 1
@@ -133,6 +139,8 @@ export function createControlPanel(blot: MindMapPlaceholderBlot, quill: FluentEd
   })
   controlPanel.append(zoomOutBtn, zoomInBtn, resetBtn, backBtn, forwardBtn)
   blot.domNode.appendChild(controlPanel)
+  controlRightUpPanel.append(panelStatusBtn)
+  blot.domNode.appendChild(controlRightUpPanel)
   controlLeftUpPanel.append(insertChildNode, insertNode, insertParentNode, removeNode, insertIconBtn, setLayoutBtn)
   blot.domNode.appendChild(controlLeftUpPanel)
 }
@@ -396,4 +404,25 @@ function handleSetLayoutBtn(blot: MindMapPlaceholderBlot): void {
   }
   document.removeEventListener('click', handleOutsideClick)
   document.addEventListener('click', handleOutsideClick)
+}
+function handlePanelStatusBtn(blot: MindMapPlaceholderBlot): void {
+  const leftUpControl = document.querySelector('.ql-mind-map-left-up-control') as HTMLElement | null
+  const control = document.querySelector('.ql-mind-map-control') as HTMLElement | null
+  const panelStatusIcon = document.querySelector('.ql-mind-map-control-panelStatus') as HTMLElement | null
+  if (!leftUpControl || !control) return
+  const isVisible = leftUpControl.style.display !== 'none' && control.style.display !== 'none'
+  if (isVisible) {
+    leftUpControl.style.display = 'none'
+    control.style.display = 'none'
+    if (panelStatusIcon) {
+      panelStatusIcon.style.backgroundImage = `url(${contractIcon})`
+    }
+  }
+  else {
+    leftUpControl.style.display = 'inline-flex'
+    control.style.display = 'flex'
+    if (panelStatusIcon) {
+      panelStatusIcon.style.backgroundImage = `url(${expandIcon})`
+    }
+  }
 }
