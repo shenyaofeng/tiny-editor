@@ -36,8 +36,6 @@ class MindMapControlPanelHandler {
       'fitTitle',
       'backTitle',
       'forwardTitle',
-      'exportTitle',
-      'importTitle',
       'inserChildNodeTitle',
       'inserNodeTitle',
       'inserParentNodeTitle',
@@ -95,9 +93,6 @@ export function createControlPanel(blot: MindMapPlaceholderBlot, quill: FluentEd
   // 右上的控制面板
   const controlPanel = document.createElement('div')
   controlPanel.className = 'ql-mind-map-control'
-  // 左下的控制面板
-  const controlLeftDownPanel = document.createElement('div')
-  controlLeftDownPanel.className = 'ql-mind-map-left-down-control'
   // 左上的控制面板
   const controlLeftUpPanel = document.createElement('div')
   controlLeftUpPanel.className = 'ql-mind-map-left-up-control'
@@ -118,8 +113,6 @@ export function createControlPanel(blot: MindMapPlaceholderBlot, quill: FluentEd
       blot.mindMap.execCommand('FORWARD')
     }
   })
-  const exportJSON = createControlItem('export', handler.getText('exportTitle'), () => handleExport(blot))
-  const importJSON = createControlItem('import', handler.getText('importTitle'), () => handleImport(blot))
   const insertChildNode = createControlItem('inserChildNode', handler.getText('inserChildNodeTitle'), () => handleInsertChildNode(blot))
   const insertNode = createControlItem('inserNode', handler.getText('inserNodeTitle'), () => handleInsertNode(blot))
   const insertParentNode = createControlItem('inserParentNode', handler.getText('inserParentNodeTitle'), () => handleInsertParentNode(blot))
@@ -140,8 +133,6 @@ export function createControlPanel(blot: MindMapPlaceholderBlot, quill: FluentEd
   })
   controlPanel.append(zoomOutBtn, zoomInBtn, resetBtn, backBtn, forwardBtn)
   blot.domNode.appendChild(controlPanel)
-  controlLeftDownPanel.append(exportJSON, importJSON)
-  blot.domNode.appendChild(controlLeftDownPanel)
   controlLeftUpPanel.append(insertChildNode, insertNode, insertParentNode, removeNode, insertIconBtn, setLayoutBtn)
   blot.domNode.appendChild(controlLeftUpPanel)
 }
@@ -178,13 +169,6 @@ function handleInsertParentNode(blot: MindMapPlaceholderBlot): void {
 
 function handleRemoveNode(blot: MindMapPlaceholderBlot): void {
   blot.mindMap.execCommand('REMOVE_CURRENT_NODE')
-}
-
-function handleExport(blot: MindMapPlaceholderBlot): void {
-  blot.mindMap.getElRectInfo()
-  if (blot.mindMap) {
-    blot.mindMap.export('json', true, '思维导图')
-  }
 }
 
 function handleInsertIcon(blot: MindMapPlaceholderBlot, selectedNodes: any[]): void {
@@ -264,46 +248,6 @@ function handleInsertIcon(blot: MindMapPlaceholderBlot, selectedNodes: any[]): v
   }
   document.removeEventListener('click', handleOutsideClick)
   document.addEventListener('click', handleOutsideClick)
-}
-
-function handleImport(blot: MindMapPlaceholderBlot): void {
-  const fileInput = document.createElement('input')
-  fileInput.type = 'file'
-  fileInput.accept = '.json'
-  fileInput.style.display = 'none'
-
-  // 监听文件选择事件
-  fileInput.addEventListener('change', (e) => {
-    const file = (e.target as HTMLInputElement).files?.[0]
-    if (!file) return
-
-    const reader = new FileReader()
-    reader.onload = (event) => {
-      try {
-        const jsonData = JSON.parse(event.target?.result as string)
-        if (blot.mindMap) {
-          if (jsonData.root) {
-            blot.mindMap.setFullData(jsonData)
-          }
-          else {
-            blot.mindMap.setData(jsonData)
-          }
-          blot.mindMap.view.reset()
-          blot.data = blot.mindMap.getData({})
-          blot.domNode.setAttribute('data-mind-map', JSON.stringify(blot.data))
-        }
-      }
-      catch (error) {
-        alert('文件解析错误，请确保选择的是有效的JSON文件')
-      }
-    }
-    reader.readAsText(file)
-  })
-
-  // 触发文件选择对话框
-  document.body.appendChild(fileInput)
-  fileInput.click()
-  document.body.removeChild(fileInput)
 }
 
 function handleZoomIn(blot: MindMapPlaceholderBlot): void {
