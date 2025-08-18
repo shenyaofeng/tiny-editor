@@ -136,7 +136,6 @@ function handleResetZoom(blot: FlowChartPlaceholderBlot): void {
 function createControlItem(iconClass: string, title: string, onClick: () => void, disabled = false) {
   const controlItem = document.createElement('div')
   controlItem.className = 'ql-flow-chart-control-item'
-  console.warn(title)
   controlItem.title = title
   controlItem.style.cursor = disabled ? 'not-allowed' : 'pointer'
 
