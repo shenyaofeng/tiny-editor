@@ -20,4 +20,5 @@ export const MIND_MAP_ZH_CN = {
   'mindMap.contextMenu.cut': '剪切',
   'mindMap.contextMenu.paste': '粘贴',
   'mindMap.contextMenu.deleteContent': '删除',
+  'mindMap.controlPanel.panelStatusTitle': '面板状态',
 }

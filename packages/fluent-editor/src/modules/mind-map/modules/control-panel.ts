@@ -50,6 +50,7 @@ class MindMapControlPanelHandler {
       'organizationStructureLayout',
       'timelineLayout',
       'fishboneLayout',
+      'panelStatusTitle',
     ]
 
     return textKeys.reduce((acc, key) => {
