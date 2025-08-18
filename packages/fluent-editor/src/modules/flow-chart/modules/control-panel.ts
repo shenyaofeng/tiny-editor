@@ -28,13 +28,12 @@ class FlowChartControlPanelHandler {
   resolveTexts() {
     return {
       exportTitle: I18N.parserText('flowChart.controlPanel.exportTitle', this.lang),
-      importTitle: I18N.parserText('flowChart.controlPanel.importTitle', this.lang),
       zoomOutTitle: I18N.parserText('flowChart.controlPanel.zoomOutTitle', this.lang),
       zoomInTitle: I18N.parserText('flowChart.controlPanel.zoomInTitle', this.lang),
       fitTitle: I18N.parserText('flowChart.controlPanel.fitTitle', this.lang),
       backTitle: I18N.parserText('flowChart.controlPanel.backTitle', this.lang),
       forwardTitle: I18N.parserText('flowChart.controlPanel.forwardTitle', this.lang),
-      setEdgeTypeTitle: I18N.parserText('flowChart.controlPanel.setEdgeTypeTitle', this.lang), // 添加这一行
+      setEdgeTypeTitle: I18N.parserText('flowChart.controlPanel.setEdgeTypeTitle', this.lang),
     }
   }
 
@@ -73,7 +72,6 @@ export function createControlPanel(blot: FlowChartPlaceholderBlot, quill: Fluent
   const forwardBtn = createControlItem('forward', handler.getText('forwardTitle'), () => handleRedo(blot))
   const setEdgeTypeBtn = createControlItem('setEdgeType', handler.getText('setEdgeTypeTitle'), () => handleSetEdgeType(blot))
   const exportJSON = createControlItem('export', handler.getText('exportTitle'), () => handleExport(blot))
-  const importJSON = createControlItem('import', handler.getText('importTitle'), () => handleImport(blot))
 
   const updateButtonState = (historyData: any) => {
     if (!historyData.data) {
@@ -102,7 +100,7 @@ export function createControlPanel(blot: FlowChartPlaceholderBlot, quill: Fluent
   })
 
   controlPanel.append(zoomOutBtn, zoomInBtn, resetBtn, backBtn, forwardBtn)
-  controlLeftDownPanel.append(exportJSON, importJSON)
+  controlLeftDownPanel.append(exportJSON)
   setTimeout(() => {
     const controlLeftUpPanel = document.querySelector('.lf-dndpanel') as HTMLElement | null
     controlLeftUpPanel.append(setEdgeTypeBtn)
@@ -161,48 +159,8 @@ function createControlItem(iconClass: string, title: string, onClick: () => void
 
 function handleExport(blot: FlowChartPlaceholderBlot): void {
   if (blot.flowChart) {
-    const data = blot.flowChart.getGraphData()
-    const jsonString = JSON.stringify(data, null, 2)
-    const blob = new Blob([jsonString], { type: 'application/json' })
-    const url = URL.createObjectURL(blob)
-    const a = document.createElement('a')
-    a.href = url
-    a.download = '流程图.json'
-    a.click()
-    URL.revokeObjectURL(url)
+    blot.flowChart.getSnapshot()
   }
-}
-
-function handleImport(blot: FlowChartPlaceholderBlot): void {
-  const fileInput = document.createElement('input')
-  fileInput.type = 'file'
-  fileInput.accept = '.json'
-  fileInput.style.display = 'none'
-
-  fileInput.addEventListener('change', (e) => {
-    const file = (e.target as HTMLInputElement).files?.[0]
-    if (!file) return
-
-    const reader = new FileReader()
-    reader.onload = (event) => {
-      try {
-        const jsonData = JSON.parse(event.target?.result as string)
-        if (blot.flowChart) {
-          blot.flowChart.render(jsonData)
-          blot.data = jsonData
-          blot.domNode.setAttribute('data-flow-chart', JSON.stringify(jsonData))
-        }
-      }
-      catch (error) {
-        alert('文件解析错误，请确保选择的是有效的JSON文件')
-      }
-    }
-    reader.readAsText(file)
-  })
-
-  document.body.appendChild(fileInput)
-  fileInput.click()
-  document.body.removeChild(fileInput)
 }
 
 function handleSetEdgeType(blot: FlowChartPlaceholderBlot): void {

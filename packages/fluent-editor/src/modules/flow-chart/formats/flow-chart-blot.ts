@@ -2,7 +2,7 @@ import type { Root } from 'parchment'
 import type { BlockEmbed as TypeBlockEmbed } from 'quill/blots/block'
 import type FluentEditor from '../../../core/fluent-editor'
 import LogicFlow from '@logicflow/core'
-import { DndPanel, SelectionSelect } from '@logicflow/extension'
+import { DndPanel, SelectionSelect, Snapshot } from '@logicflow/extension'
 import Quill from 'quill'
 import circleIcon from '../icons/circleIcon.png'
 import diamondIcon from '../icons/diamondIcon.png'
@@ -12,6 +12,7 @@ import selectRegionIcon from '../icons/selectRegionIcon.png'
 import { initContextMenu } from '../modules/context-menu'
 import { createControlPanel } from '../modules/control-panel'
 import { FlowChartResizeAction } from '../modules/custom-resize-action'
+
 import '../style/flow-chart.scss'
 
 const BlockEmbed = Quill.import('blots/embed') as typeof TypeBlockEmbed
@@ -104,7 +105,7 @@ class FlowChartPlaceholderBlot extends BlockEmbed {
         type: 'dot',
         size: 20,
       },
-      plugins: [DndPanel, SelectionSelect],
+      plugins: [DndPanel, SelectionSelect, Snapshot],
     })
     this.flowChart.setPatternItems([
       {

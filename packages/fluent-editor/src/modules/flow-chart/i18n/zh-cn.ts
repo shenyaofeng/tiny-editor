@@ -1,8 +1,7 @@
 export const FLOW_CHART_ZH_CN = {
   'flowChart.controlPanel.export': '导出',
   'flowChart.controlPanel.import': '导入',
-  'flowChart.controlPanel.exportTitle': '导出流程图',
-  'flowChart.controlPanel.importTitle': '导入流程图',
+  'flowChart.controlPanel.exportTitle': '导出图片',
   'flowChart.controlPanel.setEdgeTypeTitle': '设置边类型',
   'flowChart.dndPanel.selection': '选区',
   'flowChart.dndPanel.rectangle': '矩形',
