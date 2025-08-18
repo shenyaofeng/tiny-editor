@@ -73,34 +73,6 @@
 .ql-mind-map-control-item:hover {
   background-color: #efefef;
 }
-
-.ql-mind-map-left-down-control {
-  position: absolute;
-  bottom: 6px;
-  left: 6px;
-  background-color: rgba(255, 255, 255, 0.85);
-  border-radius: 8px;
-  box-shadow: 0 3px 15px rgba(0, 0, 0, 0.15);
-  display: inline-flex;
-  gap: 6px;
-  white-space: nowrap;
-  pointer-events: auto;
-  padding: 5px 5px;
-  .ql-mind-map-control-item {
-    align-items: center;
-    cursor: pointer;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    padding: 5px 5px;
-    border-radius: inherit;
-    transition: all 0.2s ease;
-    .ql-mind-map-control-text {
-      height: 20px;
-      font-size: 12px;
-    }
-  }
-}
 .ql-mind-map-left-up-control {
   position: absolute;
   top: 2px;
@@ -129,12 +101,6 @@
       margin-top: 5px;
     }
   }
-}
-.ql-mind-map-control-export {
-  background-image: url('../icons/exportIcon.png');
-}
-.ql-mind-map-control-import {
-  background-image: url('../icons/importIcon.png');
 }
 .ql-mind-map-control-inserChildNode {
   background-image: url('../icons/childNodeIcon.png');
