@@ -59,9 +59,6 @@ export function createControlPanel(blot: FlowChartPlaceholderBlot, quill: Fluent
   // 右上的控制面板
   const controlPanel = document.createElement('div')
   controlPanel.className = 'ql-flow-chart-control'
-  // 左下的控制面板
-  const controlLeftDownPanel = document.createElement('div')
-  controlLeftDownPanel.className = 'ql-flow-chart-left-down-control'
 
   const handler = new FlowChartControlPanelHandler(quill, blot)
   controlPanelHandlers.set(blot, handler)
@@ -71,7 +68,6 @@ export function createControlPanel(blot: FlowChartPlaceholderBlot, quill: Fluent
   const backBtn = createControlItem('back', handler.getText('backTitle'), () => handleUndo(blot))
   const forwardBtn = createControlItem('forward', handler.getText('forwardTitle'), () => handleRedo(blot))
   const setEdgeTypeBtn = createControlItem('setEdgeType', handler.getText('setEdgeTypeTitle'), () => handleSetEdgeType(blot))
-  const exportJSON = createControlItem('export', handler.getText('exportTitle'), () => handleExport(blot))
 
   const updateButtonState = (historyData: any) => {
     if (!historyData.data) {
@@ -100,13 +96,11 @@ export function createControlPanel(blot: FlowChartPlaceholderBlot, quill: Fluent
   })
 
   controlPanel.append(zoomOutBtn, zoomInBtn, resetBtn, backBtn, forwardBtn)
-  controlLeftDownPanel.append(exportJSON)
   setTimeout(() => {
     const controlLeftUpPanel = document.querySelector('.lf-dndpanel') as HTMLElement | null
     controlLeftUpPanel.append(setEdgeTypeBtn)
   }, 0)
   blot.domNode.appendChild(controlPanel)
-  blot.domNode.appendChild(controlLeftDownPanel)
 }
 
 function handleUndo(blot: FlowChartPlaceholderBlot): void {
@@ -155,12 +149,6 @@ function createControlItem(iconClass: string, title: string, onClick: () => void
   }
 
   return controlItem
-}
-
-function handleExport(blot: FlowChartPlaceholderBlot): void {
-  if (blot.flowChart) {
-    blot.flowChart.getSnapshot()
-  }
 }
 
 function handleSetEdgeType(blot: FlowChartPlaceholderBlot): void {

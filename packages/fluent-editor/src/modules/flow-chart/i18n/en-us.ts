@@ -1,7 +1,6 @@
 export const FLOW_CHART_EN_US = {
   'flowChart.controlPanel.export': 'Export',
   'flowChart.controlPanel.import': 'Import',
-  'flowChart.controlPanel.exportTitle': 'Export Image',
   'flowChart.controlPanel.setEdgeTypeTitle': 'Set Edge Type',
   'flowChart.dndPanel.selection': 'Selection',
   'flowChart.dndPanel.rectangle': 'Rectangle',
