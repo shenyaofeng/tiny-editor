@@ -8,9 +8,11 @@ import catalogOrganizationIcon from '../icons/catalogOrganizationIcon.png'
 import contractIcon from '../icons/contractIcon.png'
 import expandIcon from '../icons/expandIcon.png'
 import fishboneIcon from '../icons/fishboneIcon.png'
+import fullScreenIcon from '../icons/fullScreenIcon.png'
 import logicalStructureIcon from '../icons/logicalStructureIcon.png'
 import mindMapIcon from '../icons/mindMapIcon.png'
 import organizationStructureIcon from '../icons/organizationStructureIcon.png'
+import smallScreenIcon from '../icons/smallScreenIcon.png'
 import timelineIcon from '../icons/timelineIcon.png'
 
 class MindMapControlPanelHandler {
@@ -51,6 +53,7 @@ class MindMapControlPanelHandler {
       'timelineLayout',
       'fishboneLayout',
       'panelStatusTitle',
+      'screenTypeTitle',
     ]
 
     return textKeys.reduce((acc, key) => {
@@ -126,6 +129,7 @@ export function createControlPanel(blot: MindMapPlaceholderBlot, quill: FluentEd
   const insertIconBtn = createControlItem('insertIcon', handler.getText('insertIconTitle'), () => handleInsertIcon(blot, selectedNodes))
   const setLayoutBtn = createControlItem('setLayoutIcon', handler.getText('setLayoutTitle'), () => handleSetLayoutBtn(blot))
   const panelStatusBtn = createControlItem('panelStatus', handler.getText('panelStatusTitle'), () => handlePanelStatusBtn(blot))
+  const screenTypeBtn = createControlItem('screenType', handler.getText('screenTypeTitle'), () => handleScreenTypeBtn(blot))
   const updateButtonState = (index: number, len: number) => {
     isStart = index <= 0
     isEnd = index >= len - 1
@@ -138,7 +142,7 @@ export function createControlPanel(blot: MindMapPlaceholderBlot, quill: FluentEd
   blot.mindMap.on('back_forward', (index: number, len: number) => {
     updateButtonState(index, len)
   })
-  controlPanel.append(zoomOutBtn, zoomInBtn, resetBtn, backBtn, forwardBtn)
+  controlPanel.append(zoomOutBtn, zoomInBtn, resetBtn, screenTypeBtn, backBtn, forwardBtn)
   blot.domNode.appendChild(controlPanel)
   controlRightUpPanel.append(panelStatusBtn)
   blot.domNode.appendChild(controlRightUpPanel)
@@ -426,4 +430,36 @@ function handlePanelStatusBtn(blot: MindMapPlaceholderBlot): void {
       panelStatusIcon.style.backgroundImage = `url(${expandIcon})`
     }
   }
+}
+
+function handleScreenTypeBtn(blot: MindMapPlaceholderBlot): void {
+  const screenTypeIconElement = document.querySelector('.ql-mind-map-control-screenType') as HTMLElement | null
+  const mindMapContainer = blot.domNode
+  if (!screenTypeIconElement || !mindMapContainer) return
+  const isFullscreen = mindMapContainer.style.position === 'fixed'
+  if (isFullscreen) {
+    const originalPosition = mindMapContainer.getAttribute('data-original-position')
+    const originalWidth = mindMapContainer.getAttribute('data-original-width')
+    const originalHeight = mindMapContainer.getAttribute('data-original-height')
+    if (originalPosition && originalWidth && originalHeight) {
+      mindMapContainer.style.position = originalPosition
+      mindMapContainer.style.width = originalWidth
+      mindMapContainer.style.height = originalHeight
+      mindMapContainer.style.zIndex = '0'
+    }
+    screenTypeIconElement.style.backgroundImage = `url(${fullScreenIcon})`
+  }
+  else {
+    mindMapContainer.setAttribute('data-original-position', mindMapContainer.style.position || '')
+    mindMapContainer.setAttribute('data-original-width', mindMapContainer.style.width || '')
+    mindMapContainer.setAttribute('data-original-height', mindMapContainer.style.height || '')
+    mindMapContainer.style.position = 'fixed'
+    mindMapContainer.style.top = '0'
+    mindMapContainer.style.left = '0'
+    mindMapContainer.style.width = '100vw'
+    mindMapContainer.style.height = '100vh'
+    mindMapContainer.style.zIndex = '9999'
+    screenTypeIconElement.style.backgroundImage = `url(${smallScreenIcon})`
+  }
+  blot.mindMap.resize()
 }

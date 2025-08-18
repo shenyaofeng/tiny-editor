@@ -21,4 +21,5 @@ export const MIND_MAP_EN_US = {
   'mindMap.contextMenu.paste': 'Paste',
   'mindMap.contextMenu.deleteContent': 'Delete',
   'mindMap.controlPanel.panelStatusTitle': 'Panel Status',
+  'mindMap.controlPanel.screenTypeTitle': 'Screen Type',
 }

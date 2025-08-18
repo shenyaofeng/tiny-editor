@@ -21,6 +21,7 @@ export class MindMapModule {
       if (!range) return
       const leaf = this.quill.getLeaf(range.index)[0] as any
       const data = this.quill.getLeaf(range.index) as any
+      console.warn(data)
       if (source === 'user') {
         const leftUpControl = document.querySelector('.ql-mind-map-left-up-control') as HTMLElement | null
         const control = document.querySelector('.ql-mind-map-control') as HTMLElement | null
