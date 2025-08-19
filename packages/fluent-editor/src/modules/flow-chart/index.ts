@@ -1,4 +1,6 @@
 import type Quill from 'quill'
+import contractIcon from './icons/contractIcon.png'
+import expandIcon from './icons/expandIcon.png'
 import './formats/flow-chart-blot'
 import '@logicflow/core/lib/style/index.css'
 import '@logicflow/extension/lib/style/index.css'
@@ -20,20 +22,48 @@ export class FlowChartModule {
     this.quill.on('selection-change', (range: any, oldRange: any, source: string) => {
       if (!range) return
       const leaf = this.quill.getLeaf(range.index)[0] as any
+      const data = this.quill.getLeaf(range.index) as any
       if (source === 'user') {
-        const dndpanel = document.querySelector('.lf-dndpanel') as HTMLElement | null
-        const control = document.querySelector('.ql-flow-chart-control') as HTMLElement | null
+        document.querySelectorAll('.ql-flow-chart-control').forEach((el) => {
+          (el as HTMLElement).style.display = 'none'
+        })
+        document.querySelectorAll('.lf-dndpanel').forEach((el) => {
+          (el as HTMLElement).style.display = 'none'
+        })
+        document.querySelectorAll('.ql-flow-chart-control-panelStatus').forEach((el) => {
+          (el as HTMLElement).style.backgroundImage = `url(${contractIcon})`
+        })
         if (leaf?.flowChart) {
-          dndpanel.style.display = 'block'
-          control.style.display = 'flex'
-          this.quill.blur()
-        }
-        else {
-          if (dndpanel) {
-            dndpanel.style.display = 'none'
+          let currentNode = leaf.domNode
+          let mindMapContainer = null
+          while (currentNode && !mindMapContainer) {
+            if (currentNode.querySelector('.lf-dndpanel')
+              && currentNode.querySelector('.ql-flow-chart-control')) {
+              mindMapContainer = currentNode
+            }
+            else {
+              currentNode = currentNode.parentNode
+            }
           }
-          if (control) {
-            control.style.display = 'none'
+
+          if (mindMapContainer) {
+            const leftUpControl = mindMapContainer.querySelector('.lf-dndpanel') as HTMLElement | null
+            const control = mindMapContainer.querySelector('.ql-flow-chart-control') as HTMLElement | null
+            const panelStatusIcon = mindMapContainer.querySelector('.ql-flow-chart-control-panelStatus') as HTMLElement | null
+
+            if (data[1] == 0 || data[1] == 1) {
+              if (leftUpControl) leftUpControl.style.display = 'block'
+              if (control) control.style.display = 'flex'
+            }
+            else {
+              if (leftUpControl) leftUpControl.style.display = 'block'
+              if (control) control.style.display = 'flex'
+              this.quill.blur()
+            }
+
+            if (panelStatusIcon) {
+              panelStatusIcon.style.backgroundImage = `url(${expandIcon})`
+            }
           }
         }
       }
@@ -52,9 +82,7 @@ export class FlowChartModule {
           { id: 'edge1', sourceNodeId: 'node1', targetNodeId: 'node2', type: 'polyline' },
         ],
       }
-      this.quill.insertText(range.index, '\n', 'user')
       this.quill.insertEmbed(range.index + 1, 'flow-chart-placeholder', defaultData, 'user')
-      this.quill.insertText(range.index + 2, '\n', 'user')
     }
   }
 }

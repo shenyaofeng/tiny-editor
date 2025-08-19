@@ -4,6 +4,8 @@ import { CHANGE_LANGUAGE_EVENT } from '../../../config'
 import { I18N } from '../../../modules/i18n'
 import { registerFlowChartI18N } from '../i18n'
 import bezierIcon from '../icons/bezierIcon.png'
+import contractIcon from '../icons/contractIcon.png'
+import expandIcon from '../icons/expandIcon.png'
 import lineIcon from '../icons/lineIcon.png'
 import polyLineIcon from '../icons/polyLineIcon.png'
 
@@ -34,6 +36,7 @@ class FlowChartControlPanelHandler {
       backTitle: I18N.parserText('flowChart.controlPanel.backTitle', this.lang),
       forwardTitle: I18N.parserText('flowChart.controlPanel.forwardTitle', this.lang),
       setEdgeTypeTitle: I18N.parserText('flowChart.controlPanel.setEdgeTypeTitle', this.lang),
+      panelStatusTitle: I18N.parserText('flowChart.controlPanel.panelStatusTitle', this.lang),
     }
   }
 
@@ -56,9 +59,12 @@ const controlPanelHandlers = new WeakMap<FlowChartPlaceholderBlot, FlowChartCont
 const DISABLED_OPACITY = '0.5'
 const ENABLED_OPACITY = '1'
 export function createControlPanel(blot: FlowChartPlaceholderBlot, quill: FluentEditor): void {
-  // 右上的控制面板
+  // 中间的控制面板
   const controlPanel = document.createElement('div')
   controlPanel.className = 'ql-flow-chart-control'
+  // 右上的控制面板
+  const controlRightUpPanel = document.createElement('div')
+  controlRightUpPanel.className = 'ql-flow-chart-right-up-control'
 
   const handler = new FlowChartControlPanelHandler(quill, blot)
   controlPanelHandlers.set(blot, handler)
@@ -68,6 +74,7 @@ export function createControlPanel(blot: FlowChartPlaceholderBlot, quill: Fluent
   const backBtn = createControlItem('back', handler.getText('backTitle'), () => handleUndo(blot))
   const forwardBtn = createControlItem('forward', handler.getText('forwardTitle'), () => handleRedo(blot))
   const setEdgeTypeBtn = createControlItem('setEdgeType', handler.getText('setEdgeTypeTitle'), () => handleSetEdgeType(blot))
+  const panelStatusBtn = createControlItem('panelStatus', handler.getText('panelStatusTitle'), () => handlePanelStatusBtn(blot))
 
   const updateButtonState = (historyData: any) => {
     if (!historyData.data) {
@@ -95,11 +102,13 @@ export function createControlPanel(blot: FlowChartPlaceholderBlot, quill: Fluent
     updateButtonState(data)
   })
 
-  controlPanel.append(zoomOutBtn, zoomInBtn, resetBtn, backBtn, forwardBtn)
   setTimeout(() => {
     const controlLeftUpPanel = document.querySelector('.lf-dndpanel') as HTMLElement | null
     controlLeftUpPanel.append(setEdgeTypeBtn)
   }, 0)
+  controlRightUpPanel.append(panelStatusBtn)
+  blot.domNode.appendChild(controlRightUpPanel)
+  controlPanel.append(zoomOutBtn, zoomInBtn, resetBtn, backBtn, forwardBtn)
   blot.domNode.appendChild(controlPanel)
 }
 
@@ -228,4 +237,25 @@ function handleSetEdgeType(blot: FlowChartPlaceholderBlot): void {
 
   document.removeEventListener('click', handleOutsideClick)
   document.addEventListener('click', handleOutsideClick)
+}
+function handlePanelStatusBtn(blot: FlowChartPlaceholderBlot): void {
+  const control = blot.domNode.querySelector('.ql-flow-chart-control') as HTMLElement | null
+  const leftUpControl = blot.domNode.querySelector('.lf-dndpanel') as HTMLElement | null
+  const panelStatusIcon = blot.domNode.querySelector('.ql-flow-chart-control-panelStatus') as HTMLElement | null
+  if (!leftUpControl || !control) return
+  const isVisible = leftUpControl.style.display !== 'none' && control.style.display !== 'none'
+  if (isVisible) {
+    leftUpControl.style.display = 'none'
+    control.style.display = 'none'
+    if (panelStatusIcon) {
+      panelStatusIcon.style.backgroundImage = `url(${contractIcon})`
+    }
+  }
+  else {
+    leftUpControl.style.display = 'block'
+    control.style.display = 'flex'
+    if (panelStatusIcon) {
+      panelStatusIcon.style.backgroundImage = `url(${expandIcon})`
+    }
+  }
 }

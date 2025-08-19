@@ -7,7 +7,7 @@
 .ql-flow-chart-control {
   position: absolute;
   top: 8px;
-  right: 13px;
+  right: 50px;
   background-color: rgba(255, 255, 255, 0.85);
   border-radius: 8px;
   box-shadow: 0 3px 15px rgba(0, 0, 0, 0.15);
@@ -86,6 +86,9 @@
 .ql-flow-chart-control-setEdgeType {
   background-image: url('../icons/lineIcon.png');
 }
+.ql-flow-chart-control-panelStatus {
+  background-image: url('../icons/expandIcon.png');
+}
 
 .ql-flow-chart-edge-panel {
   border-radius: inherit;
@@ -123,4 +126,31 @@
 }
 .ql-flow-chart .lf-text-input {
   display: none !important;
+}
+.ql-flow-chart-right-up-control {
+  position: absolute;
+  top: 8px;
+  right: 6px;
+  background-color: rgba(255, 255, 255, 0.85);
+  border-radius: 8px;
+  box-shadow: 0 3px 15px rgba(0, 0, 0, 0.15);
+  display: inline-flex;
+  gap: 6px;
+  white-space: nowrap;
+  pointer-events: auto;
+  padding: 5px 5px;
+  .ql-flow-chart-control-item {
+    align-items: center;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 5px 5px;
+    border-radius: inherit;
+    transition: all 0.2s ease;
+    .ql-flow-chart-control-text {
+      height: 20px;
+      font-size: 12px;
+    }
+  }
 }

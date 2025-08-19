@@ -21,4 +21,5 @@ export const FLOW_CHART_ZH_CN = {
   'flowChart.contextMenu.deleteContent': '删除',
   'flowChart.contextMenu.deleteNode': '删除节点',
   'flowChart.contextMenu.deleteEdge': '删除边',
+  'flowChart.controlPanel.panelStatusTitle': '面板状态',
 }
