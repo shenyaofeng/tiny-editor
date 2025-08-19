@@ -22,4 +22,5 @@ export const FLOW_CHART_EN_US = {
   'flowChart.contextMenu.deleteNode': 'Delete Node',
   'flowChart.contextMenu.deleteEdge': 'Delete Edge',
   'flowChart.controlPanel.panelStatusTitle': 'Panel Status',
+  'flowChart.controlPanel.screenTypeTitle': 'Screen Type',
 }

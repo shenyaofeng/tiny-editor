@@ -6,8 +6,10 @@ import { registerFlowChartI18N } from '../i18n'
 import bezierIcon from '../icons/bezierIcon.png'
 import contractIcon from '../icons/contractIcon.png'
 import expandIcon from '../icons/expandIcon.png'
+import fullScreenIcon from '../icons/fullScreenIcon.png'
 import lineIcon from '../icons/lineIcon.png'
 import polyLineIcon from '../icons/polyLineIcon.png'
+import smallScreenIcon from '../icons/smallScreenIcon.png'
 
 class FlowChartControlPanelHandler {
   private texts: Record<string, string>
@@ -37,6 +39,7 @@ class FlowChartControlPanelHandler {
       forwardTitle: I18N.parserText('flowChart.controlPanel.forwardTitle', this.lang),
       setEdgeTypeTitle: I18N.parserText('flowChart.controlPanel.setEdgeTypeTitle', this.lang),
       panelStatusTitle: I18N.parserText('flowChart.controlPanel.panelStatusTitle', this.lang),
+      screenTypeTitle: I18N.parserText('flowChart.controlPanel.screenTypeTitle', this.lang),
     }
   }
 
@@ -75,6 +78,7 @@ export function createControlPanel(blot: FlowChartPlaceholderBlot, quill: Fluent
   const forwardBtn = createControlItem('forward', handler.getText('forwardTitle'), () => handleRedo(blot))
   const setEdgeTypeBtn = createControlItem('setEdgeType', handler.getText('setEdgeTypeTitle'), () => handleSetEdgeType(blot))
   const panelStatusBtn = createControlItem('panelStatus', handler.getText('panelStatusTitle'), () => handlePanelStatusBtn(blot))
+  const screenTypeBtn = createControlItem('screenType', handler.getText('screenTypeTitle'), () => handleScreenTypeBtn(blot))
 
   const updateButtonState = (historyData: any) => {
     if (!historyData.data) {
@@ -108,7 +112,7 @@ export function createControlPanel(blot: FlowChartPlaceholderBlot, quill: Fluent
   }, 0)
   controlRightUpPanel.append(panelStatusBtn)
   blot.domNode.appendChild(controlRightUpPanel)
-  controlPanel.append(zoomOutBtn, zoomInBtn, resetBtn, backBtn, forwardBtn)
+  controlPanel.append(zoomOutBtn, zoomInBtn, resetBtn, screenTypeBtn, backBtn, forwardBtn)
   blot.domNode.appendChild(controlPanel)
 }
 
@@ -258,4 +262,35 @@ function handlePanelStatusBtn(blot: FlowChartPlaceholderBlot): void {
       panelStatusIcon.style.backgroundImage = `url(${expandIcon})`
     }
   }
+}
+function handleScreenTypeBtn(blot: FlowChartPlaceholderBlot): void {
+  const screenTypeIconElement = document.querySelector('.ql-flow-chart-control-screenType') as HTMLElement | null
+  const flowChartContainer = blot.domNode
+  if (!screenTypeIconElement || !flowChartContainer) return
+  const isFullscreen = flowChartContainer.style.position === 'fixed'
+  if (isFullscreen) {
+    const originalPosition = flowChartContainer.getAttribute('data-original-position')
+    const originalWidth = flowChartContainer.getAttribute('data-original-width')
+    const originalHeight = flowChartContainer.getAttribute('data-original-height')
+    if (originalPosition && originalWidth && originalHeight) {
+      flowChartContainer.style.position = originalPosition
+      flowChartContainer.style.width = originalWidth
+      flowChartContainer.style.height = originalHeight
+      flowChartContainer.style.zIndex = '0'
+    }
+    screenTypeIconElement.style.backgroundImage = `url(${fullScreenIcon})`
+  }
+  else {
+    flowChartContainer.setAttribute('data-original-position', flowChartContainer.style.position || '')
+    flowChartContainer.setAttribute('data-original-width', flowChartContainer.style.width || '')
+    flowChartContainer.setAttribute('data-original-height', flowChartContainer.style.height || '')
+    flowChartContainer.style.position = 'fixed'
+    flowChartContainer.style.top = '0'
+    flowChartContainer.style.left = '0'
+    flowChartContainer.style.width = '100vw'
+    flowChartContainer.style.height = '100vh'
+    flowChartContainer.style.zIndex = '100'
+    screenTypeIconElement.style.backgroundImage = `url(${smallScreenIcon})`
+  }
+  blot.flowChart.resize()
 }
