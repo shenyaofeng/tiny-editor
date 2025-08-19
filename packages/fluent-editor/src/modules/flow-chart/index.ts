@@ -35,21 +35,21 @@ export class FlowChartModule {
         })
         if (leaf?.flowChart) {
           let currentNode = leaf.domNode
-          let mindMapContainer = null
-          while (currentNode && !mindMapContainer) {
+          let flowChartContainer = null
+          while (currentNode && !flowChartContainer) {
             if (currentNode.querySelector('.lf-dndpanel')
               && currentNode.querySelector('.ql-flow-chart-control')) {
-              mindMapContainer = currentNode
+              flowChartContainer = currentNode
             }
             else {
               currentNode = currentNode.parentNode
             }
           }
 
-          if (mindMapContainer) {
-            const leftUpControl = mindMapContainer.querySelector('.lf-dndpanel') as HTMLElement | null
-            const control = mindMapContainer.querySelector('.ql-flow-chart-control') as HTMLElement | null
-            const panelStatusIcon = mindMapContainer.querySelector('.ql-flow-chart-control-panelStatus') as HTMLElement | null
+          if (flowChartContainer) {
+            const leftUpControl = flowChartContainer.querySelector('.lf-dndpanel') as HTMLElement | null
+            const control = flowChartContainer.querySelector('.ql-flow-chart-control') as HTMLElement | null
+            const panelStatusIcon = flowChartContainer.querySelector('.ql-flow-chart-control-panelStatus') as HTMLElement | null
 
             if (data[1] == 0 || data[1] == 1) {
               if (leftUpControl) leftUpControl.style.display = 'block'
