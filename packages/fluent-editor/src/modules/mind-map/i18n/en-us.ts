@@ -8,7 +8,6 @@ export const MIND_MAP_EN_US = {
   'mindMap.controlPanel.inserNodeTitle': 'Insert Sibling Node',
   'mindMap.controlPanel.inserParentNodeTitle': 'Insert Parent Node',
   'mindMap.controlPanel.removeNodeTitle': 'Delete Current Node',
-  'mindMap.controlPanel.insertIconTitle': 'Insert Icon',
   'mindMap.controlPanel.setLayoutTitle': 'Set Layout',
   'mindMap.layout.logicalStructure': 'Logical Structure',
   'mindMap.layout.catalogOrganization': 'Catalog Organization',

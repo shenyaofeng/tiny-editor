@@ -21,34 +21,47 @@ export class MindMapModule {
       if (!range) return
       const leaf = this.quill.getLeaf(range.index)[0] as any
       const data = this.quill.getLeaf(range.index) as any
-      console.warn(data)
       if (source === 'user') {
-        const leftUpControl = document.querySelector('.ql-mind-map-left-up-control') as HTMLElement | null
-        const control = document.querySelector('.ql-mind-map-control') as HTMLElement | null
-        const panelStatusIcon = document.querySelector('.ql-mind-map-control-panelStatus') as HTMLElement | null
+        document.querySelectorAll('.ql-mind-map-left-up-control').forEach((el) => {
+          (el as HTMLElement).style.display = 'none'
+        })
+        document.querySelectorAll('.ql-mind-map-control').forEach((el) => {
+          (el as HTMLElement).style.display = 'none'
+        })
+        document.querySelectorAll('.ql-mind-map-control-panelStatus').forEach((el) => {
+          (el as HTMLElement).style.backgroundImage = `url(${contractIcon})`
+        })
         if (leaf?.mindMap) {
-          if (data[1] == 0 || data[1] == 1) {
-            leftUpControl.style.display = 'inline-flex'
-            control.style.display = 'flex'
+          let currentNode = leaf.domNode
+          let mindMapContainer = null
+          while (currentNode && !mindMapContainer) {
+            if (currentNode.querySelector('.ql-mind-map-left-up-control')
+              && currentNode.querySelector('.ql-mind-map-control')) {
+              mindMapContainer = currentNode
+            }
+            else {
+              currentNode = currentNode.parentNode
+            }
           }
-          else {
-            leftUpControl.style.display = 'inline-flex'
-            control.style.display = 'flex'
-            this.quill.blur()
-          }
-          if (panelStatusIcon) {
-            panelStatusIcon.style.backgroundImage = `url(${expandIcon})`
-          }
-        }
-        else {
-          if (leftUpControl) {
-            leftUpControl.style.display = 'none'
-          }
-          if (control) {
-            control.style.display = 'none'
-          }
-          if (panelStatusIcon) {
-            panelStatusIcon.style.backgroundImage = `url(${contractIcon})`
+
+          if (mindMapContainer) {
+            const leftUpControl = mindMapContainer.querySelector('.ql-mind-map-left-up-control') as HTMLElement | null
+            const control = mindMapContainer.querySelector('.ql-mind-map-control') as HTMLElement | null
+            const panelStatusIcon = mindMapContainer.querySelector('.ql-mind-map-control-panelStatus') as HTMLElement | null
+
+            if (data[1] == 0 || data[1] == 1) {
+              if (leftUpControl) leftUpControl.style.display = 'inline-flex'
+              if (control) control.style.display = 'flex'
+            }
+            else {
+              if (leftUpControl) leftUpControl.style.display = 'inline-flex'
+              if (control) control.style.display = 'flex'
+              this.quill.blur()
+            }
+
+            if (panelStatusIcon) {
+              panelStatusIcon.style.backgroundImage = `url(${expandIcon})`
+            }
           }
         }
       }

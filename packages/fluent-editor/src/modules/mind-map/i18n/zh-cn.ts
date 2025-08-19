@@ -8,7 +8,6 @@ export const MIND_MAP_ZH_CN = {
   'mindMap.controlPanel.inserNodeTitle': '插入同级节点',
   'mindMap.controlPanel.inserParentNodeTitle': '插入父节点',
   'mindMap.controlPanel.removeNodeTitle': '删除当前节点',
-  'mindMap.controlPanel.insertIconTitle': '插入图标',
   'mindMap.controlPanel.setLayoutTitle': '设置布局',
   'mindMap.layout.logicalStructure': '逻辑结构',
   'mindMap.layout.catalogOrganization': '目录组织',
