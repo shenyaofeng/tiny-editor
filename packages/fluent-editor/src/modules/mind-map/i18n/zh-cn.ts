@@ -21,4 +21,5 @@ export const MIND_MAP_ZH_CN = {
   'mindMap.contextMenu.deleteContent': '删除',
   'mindMap.controlPanel.panelStatusTitle': '面板状态',
   'mindMap.controlPanel.screenTypeTitle': '屏幕类型',
+  'mindMap.controlPanel.insertIconTitle': '插入图标',
 }

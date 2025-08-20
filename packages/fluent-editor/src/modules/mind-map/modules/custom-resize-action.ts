@@ -44,7 +44,7 @@ export class MindMapResizeAction {
     box.style.background = '#4285f4'
     box.style.border = '1px solid white'
     box.style.borderRadius = '50%'
-    box.style.zIndex = '100'
+    box.style.zIndex = '99'
     box.style.userSelect = 'none'
     box.addEventListener('mousedown', this.onMouseDown.bind(this))
     return box
