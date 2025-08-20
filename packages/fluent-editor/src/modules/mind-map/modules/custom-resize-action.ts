@@ -1,5 +1,5 @@
-const MIN_WIDTH = 300
-const MIN_HEIGHT = 200
+const MIN_WIDTH = 350
+const MIN_HEIGHT = 290
 
 export class MindMapResizeAction {
   topLeftHandle: HTMLElement
@@ -44,7 +44,7 @@ export class MindMapResizeAction {
     box.style.background = '#4285f4'
     box.style.border = '1px solid white'
     box.style.borderRadius = '50%'
-    box.style.zIndex = '100'
+    box.style.zIndex = '99'
     box.style.userSelect = 'none'
     box.addEventListener('mousedown', this.onMouseDown.bind(this))
     return box
@@ -94,6 +94,17 @@ export class MindMapResizeAction {
     document.addEventListener('mouseup', this.onMouseUp.bind(this))
   }
 
+  updateDependentElementsHeight(newHeight: number) {
+    const iconPanel = this.blot.domNode.querySelector('.ql-mind-map-icon-panel') as HTMLElement
+    const layoutPanel = this.blot.domNode.querySelector('.ql-mind-map-layout-panel') as HTMLElement
+    if (iconPanel && newHeight < 395) {
+      iconPanel.style.height = `${newHeight - 130}px`
+    }
+    if (layoutPanel && newHeight < 395) {
+      layoutPanel.style.height = `${newHeight - 130}px`
+    }
+  }
+
   onDrag(event: MouseEvent) {
     if (!this.dragHandle) return
 
@@ -127,15 +138,12 @@ export class MindMapResizeAction {
     container.style.height = `${newHeight}px`
     container.setAttribute('width', String(newWidth))
     container.setAttribute('height', String(newHeight))
-
+    this.updateDependentElementsHeight(newHeight)
     if (this.blot.mindMap) {
       this.blot.mindMap.resize(newWidth, newHeight)
     }
 
-    this.blot.data.width = newWidth
-    this.blot.data.height = newHeight
     container.setAttribute('data-mind-map', JSON.stringify(this.blot.data))
-    this.blot.scroll.update([], {})
   }
 
   onMouseUp() {

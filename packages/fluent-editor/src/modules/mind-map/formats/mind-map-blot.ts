@@ -5,6 +5,8 @@ import Quill from 'quill'
 import SimpleMindMap from 'simple-mind-map'
 import Drag from 'simple-mind-map/src/plugins/Drag.js'
 import Export from 'simple-mind-map/src/plugins/Export.js'
+import contractIcon from '../icons/contractIcon.png'
+import expandIcon from '../icons/expandIcon.png'
 import { initContextMenu } from '../modules/context-menu'
 import { createControlPanel } from '../modules/control-panel'
 import { MindMapResizeAction } from '../modules/custom-resize-action'
@@ -24,6 +26,7 @@ class MindMapPlaceholderBlot extends BlockEmbed {
   width: number = 100
   height: number = 500
   parentObserver: MutationObserver | null = null
+  nextPObserver: MutationObserver | null = null
 
   constructor(scroll: Root, domNode: HTMLElement) {
     super(scroll, domNode)
@@ -34,21 +37,21 @@ class MindMapPlaceholderBlot extends BlockEmbed {
     this.domNode.style.height = `${this.height}px`
     this.domNode.style.maxWidth = '100%'
     this.domNode.style.border = '1px solid #e8e8e8'
-    this.data = MindMapPlaceholderBlot.value(this.domNode)
+    this.domNode.setAttribute('contenteditable', 'false')
+    this.data = MindMapPlaceholderBlot.value(domNode)
     this.initMindMap()
   }
 
   static value(domNode: HTMLElement): any {
     const dataStr = JSON.parse(domNode.getAttribute('data-mind-map'))
-    const value = dataStr.root ? dataStr.root : dataStr
+    const value = dataStr
     if (domNode.hasAttribute('width')) {
       value.width = Number.parseInt(domNode.getAttribute('width'), 10)
     }
     if (domNode.hasAttribute('height')) {
       value.height = Number.parseInt(domNode.getAttribute('height'), 10)
     }
-
-    return dataStr.root ? dataStr.root : dataStr
+    return dataStr
   }
 
   static create(value: any): HTMLElement {
@@ -64,6 +67,7 @@ class MindMapPlaceholderBlot extends BlockEmbed {
       node.setAttribute('height', String(value.height))
       node.style.height = `${value.height}px`
     }
+    node.setAttribute('contenteditable', 'false')
     return node
   }
 
@@ -95,7 +99,8 @@ class MindMapPlaceholderBlot extends BlockEmbed {
       el: this.domNode,
       mousewheelAction: 'zoom',
       disableMouseWheelZoom: true,
-      data: this.data,
+      layout: this.data.layout,
+      data: this.data.root ? this.data.root : this.data,
     } as any)
 
     const handleScroll = () => {
@@ -114,14 +119,48 @@ class MindMapPlaceholderBlot extends BlockEmbed {
     createControlPanel(this, quill) // 创建控制面板
     initContextMenu(this, quill) // 初始化右键菜单
     this.observeOwnParentChange()
+    this.observeNextPElement()
+    this.addMouseHoverEvents()
     this.mindMap.on('node_tree_render_end', () => {
       this.data = this.mindMap.getData({})
       this.domNode.setAttribute('data-mind-map', JSON.stringify(this.data))
-      this.scroll.update([], {})
     })
     this.mindMap.on('node_dblclick', this.handleNodeDblClick.bind(this))
-    if (this.mindMap) {
-      this.mindMap.setData(this.data)
+  }
+
+  addMouseHoverEvents(): void {
+    this.domNode.addEventListener('mouseenter', () => {
+      this.showControlPanel()
+    })
+
+    this.domNode.addEventListener('mouseleave', () => {
+      this.hideControlPanel()
+    })
+  }
+
+  showControlPanel(): void {
+    const leftUpControl = this.domNode.querySelector('.ql-mind-map-left-up-control') as HTMLElement | null
+    const control = this.domNode.querySelector('.ql-mind-map-control') as HTMLElement | null
+    const panelStatusIcon = this.domNode.querySelector('.ql-mind-map-control-panelStatus') as HTMLElement | null
+    if (!leftUpControl || !control) return
+
+    leftUpControl.style.display = 'inline-flex'
+    control.style.display = 'flex'
+    if (panelStatusIcon) {
+      panelStatusIcon.style.backgroundImage = `url(${expandIcon})`
+    }
+  }
+
+  hideControlPanel(): void {
+    const leftUpControl = this.domNode.querySelector('.ql-mind-map-left-up-control') as HTMLElement | null
+    const control = this.domNode.querySelector('.ql-mind-map-control') as HTMLElement | null
+    const panelStatusIcon = this.domNode.querySelector('.ql-mind-map-control-panelStatus') as HTMLElement | null
+    if (!leftUpControl || !control) return
+
+    leftUpControl.style.display = 'none'
+    control.style.display = 'none'
+    if (panelStatusIcon) {
+      panelStatusIcon.style.backgroundImage = `url(${contractIcon})`
     }
   }
 
@@ -187,6 +226,33 @@ class MindMapPlaceholderBlot extends BlockEmbed {
       this.domNode.style.marginLeft = '0'
       this.domNode.style.marginRight = 'auto'
     }
+  }
+
+  observeNextPElement(): void {
+    if (this.nextPObserver) {
+      this.nextPObserver.disconnect()
+    }
+    const parentElement = this.domNode.parentElement
+    if (!parentElement) {
+      return
+    }
+    const trackedParentElement = parentElement
+    const parentElementId = parentElement.getAttribute('id') || `flow-chart-parent-${Date.now()}`
+    parentElement.setAttribute('id', parentElementId)
+    const observer = new MutationObserver(() => {
+      if (!document.contains(trackedParentElement)) {
+        const elementById = document.getElementById(parentElementId)
+        if (!elementById) {
+          this.remove()
+          observer.disconnect()
+        }
+      }
+    })
+    observer.observe(document.body, {
+      childList: true,
+      subtree: true,
+    })
+    this.nextPObserver = observer
   }
 
   handleNodeDblClick(node: any, e: any) {
@@ -271,12 +337,15 @@ class MindMapPlaceholderBlot extends BlockEmbed {
       })
       this.data = this.mindMap.getData({})
       this.domNode.setAttribute('data-mind-map', JSON.stringify(this.data))
-      this.scroll.update([], {})
     }
   }
 
   remove() {
     this.mindMap.destroy()
+    if (this.nextPObserver) {
+      this.nextPObserver.disconnect()
+      this.nextPObserver = null
+    }
     super.remove()
   }
 }

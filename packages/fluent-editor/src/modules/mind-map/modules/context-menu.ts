@@ -2,7 +2,7 @@ import type FluentEditor from '../../../core/fluent-editor'
 import type MindMapPlaceholderBlot from '../formats/mind-map-blot'
 import { CHANGE_LANGUAGE_EVENT } from '../../../config'
 import { I18N } from '../../../modules/i18n'
-import { registerMindMapI18N } from '../i18n/index'
+import { registerMindMapI18N } from '../i18n'
 
 class MindMapContextMenuHandler {
   private texts: Record<string, string>
@@ -139,7 +139,6 @@ function handleDeleteContent(blot: MindMapPlaceholderBlot): void {
     blot.currentNode.setText('')
     blot.data = blot.mindMap.getData({})
     blot.domNode.setAttribute('data-mind-map', JSON.stringify(blot.data))
-    blot.scroll.update([], {})
   }
   hideContextMenu(blot)
 }
