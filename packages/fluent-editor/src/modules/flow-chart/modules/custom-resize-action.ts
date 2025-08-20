@@ -1,5 +1,5 @@
 const MIN_WIDTH = 300
-const MIN_HEIGHT = 200
+const MIN_HEIGHT = 290
 
 export class FlowChartResizeAction {
   topLeftHandle: HTMLElement
