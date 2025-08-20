@@ -42,9 +42,9 @@ class MindMapControlPanelHandler {
       'forwardTitle',
       'inserChildNodeTitle',
       'inserNodeTitle',
+      'insertIconTitle',
       'inserParentNodeTitle',
       'removeNodeTitle',
-      'insertIconTitle',
       'setLayoutTitle',
       'logicalStructureLayout',
       'catalogOrganizationLayout',
@@ -184,6 +184,45 @@ function handleRemoveNode(blot: MindMapPlaceholderBlot): void {
   blot.mindMap.execCommand('REMOVE_CURRENT_NODE')
 }
 
+function handleZoomIn(blot: MindMapPlaceholderBlot): void {
+  if (blot.mindMap && blot.mindMap.view) {
+    const containerRect = blot.mindMap.el.getBoundingClientRect()
+    const cx = containerRect.width / 2
+    const cy = containerRect.height / 2
+    blot.mindMap.view.enlarge(cx, cy, false)
+    blot.zoomCount++
+  }
+}
+
+function handleZoomOut(blot: MindMapPlaceholderBlot): void {
+  if (blot.mindMap && blot.mindMap.view) {
+    const containerRect = blot.mindMap.el.getBoundingClientRect()
+    const cx = containerRect.width / 2
+    const cy = containerRect.height / 2
+    blot.mindMap.view.narrow(cx, cy, false)
+    blot.zoomCount--
+  }
+}
+
+function handleResetZoom(blot: MindMapPlaceholderBlot): void {
+  blot.mindMap.renderer.setRootNodeCenter()
+  if (!blot.mindMap || !blot.mindMap.view || blot.zoomCount === 0) return
+  const containerRect = blot.mindMap.el.getBoundingClientRect()
+  const centerX = containerRect.width / 2
+  const centerY = containerRect.height / 2
+  const operationCount = Math.abs(blot.zoomCount)
+  const isEnlarge = blot.zoomCount < 0
+  for (let i = 0; i < operationCount; i++) {
+    if (isEnlarge) {
+      blot.mindMap.view.enlarge(centerX, centerY, false)
+    }
+    else {
+      blot.mindMap.view.narrow(centerX, centerY, false)
+    }
+  }
+  blot.zoomCount = 0
+}
+
 function handleInsertIcon(blot: MindMapPlaceholderBlot, selectedNodes: any[]): void {
   (blot as any).selectedNodes = selectedNodes
   const heightStr = blot.domNode.getAttribute('height') || '500px'
@@ -263,44 +302,6 @@ function handleInsertIcon(blot: MindMapPlaceholderBlot, selectedNodes: any[]): v
   document.addEventListener('click', handleOutsideClick)
 }
 
-function handleZoomIn(blot: MindMapPlaceholderBlot): void {
-  if (blot.mindMap && blot.mindMap.view) {
-    const containerRect = blot.mindMap.el.getBoundingClientRect()
-    const cx = containerRect.width / 2
-    const cy = containerRect.height / 2
-    blot.mindMap.view.enlarge(cx, cy, false)
-    blot.zoomCount++
-  }
-}
-
-function handleZoomOut(blot: MindMapPlaceholderBlot): void {
-  if (blot.mindMap && blot.mindMap.view) {
-    const containerRect = blot.mindMap.el.getBoundingClientRect()
-    const cx = containerRect.width / 2
-    const cy = containerRect.height / 2
-    blot.mindMap.view.narrow(cx, cy, false)
-    blot.zoomCount--
-  }
-}
-
-function handleResetZoom(blot: MindMapPlaceholderBlot): void {
-  blot.mindMap.renderer.setRootNodeCenter()
-  if (!blot.mindMap || !blot.mindMap.view || blot.zoomCount === 0) return
-  const containerRect = blot.mindMap.el.getBoundingClientRect()
-  const centerX = containerRect.width / 2
-  const centerY = containerRect.height / 2
-  const operationCount = Math.abs(blot.zoomCount)
-  const isEnlarge = blot.zoomCount < 0
-  for (let i = 0; i < operationCount; i++) {
-    if (isEnlarge) {
-      blot.mindMap.view.enlarge(centerX, centerY, false)
-    }
-    else {
-      blot.mindMap.view.narrow(centerX, centerY, false)
-    }
-  }
-  blot.zoomCount = 0
-}
 function handleSetLayoutBtn(blot: MindMapPlaceholderBlot): void {
   const handler = controlPanelHandlers.get(blot)
   const leftUpControl = blot.domNode.querySelector('.ql-mind-map-left-up-control') as HTMLElement
@@ -410,10 +411,11 @@ function handleSetLayoutBtn(blot: MindMapPlaceholderBlot): void {
   document.removeEventListener('click', handleOutsideClick)
   document.addEventListener('click', handleOutsideClick)
 }
+
 function handlePanelStatusBtn(blot: MindMapPlaceholderBlot): void {
-  const leftUpControl = document.querySelector('.ql-mind-map-left-up-control') as HTMLElement | null
-  const control = document.querySelector('.ql-mind-map-control') as HTMLElement | null
-  const panelStatusIcon = document.querySelector('.ql-mind-map-control-panelStatus') as HTMLElement | null
+  const leftUpControl = blot.domNode.querySelector('.ql-mind-map-left-up-control') as HTMLElement | null
+  const control = blot.domNode.querySelector('.ql-mind-map-control') as HTMLElement | null
+  const panelStatusIcon = blot.domNode.querySelector('.ql-mind-map-control-panelStatus') as HTMLElement | null
   if (!leftUpControl || !control) return
   const isVisible = leftUpControl.style.display !== 'none' && control.style.display !== 'none'
   if (isVisible) {
@@ -458,8 +460,9 @@ function handleScreenTypeBtn(blot: MindMapPlaceholderBlot): void {
     mindMapContainer.style.left = '0'
     mindMapContainer.style.width = '100vw'
     mindMapContainer.style.height = '100vh'
-    mindMapContainer.style.zIndex = '9999'
+    mindMapContainer.style.zIndex = '100'
     screenTypeIconElement.style.backgroundImage = `url(${smallScreenIcon})`
   }
+  blot.mindMap.renderer.setRootNodeCenter()
   blot.mindMap.resize()
 }

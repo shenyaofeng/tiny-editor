@@ -6,7 +6,7 @@
   border-radius: 8px;
   box-shadow: 0 3px 15px rgba(0, 0, 0, 0.15);
   padding: 0 15px;
-  display: inline-flex;
+  display: none;
   gap: 6px;
   white-space: nowrap;
   pointer-events: auto;
@@ -77,7 +77,7 @@
   position: absolute;
   top: 2px;
   left: 2px;
-  display: inline-flex;
+  display: none;
   gap: 6px;
   white-space: nowrap;
   pointer-events: auto;
@@ -121,7 +121,7 @@
   background-image: url('../icons/setLayoutIcon.png');
 }
 .ql-mind-map-control-panelStatus {
-  background-image: url('../icons/expandIcon.png');
+  background-image: url('../icons/contractIcon.png');
 }
 .ql-mind-map-control-screenType {
   background-image: url('../icons/fullScreenIcon.png');
