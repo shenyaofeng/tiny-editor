@@ -28,6 +28,7 @@ class FlowChartPlaceholderBlot extends BlockEmbed {
   width: number = 100
   height: number = 500
   parentObserver: MutationObserver | null = null
+  nextPObserver: MutationObserver | null = null
 
   constructor(scroll: Root, domNode: HTMLElement) {
     super(scroll, domNode)
@@ -38,7 +39,7 @@ class FlowChartPlaceholderBlot extends BlockEmbed {
     this.domNode.style.height = `${this.height}px`
     this.domNode.style.maxWidth = '100%'
     this.domNode.style.border = '1px solid #e8e8e8'
-
+    this.domNode.setAttribute('contenteditable', 'false')
     this.data = FlowChartPlaceholderBlot.value(this.domNode)
     this.initFlowChart()
   }
@@ -69,6 +70,7 @@ class FlowChartPlaceholderBlot extends BlockEmbed {
       node.setAttribute('height', String(value.height))
       node.style.height = `${value.height}px`
     }
+    node.setAttribute('contenteditable', 'false')
     return node
   }
 
@@ -143,6 +145,7 @@ class FlowChartPlaceholderBlot extends BlockEmbed {
     createControlPanel(this, quill) // 创建控制面板
     initContextMenu(this, quill) // 初始化右键菜单
     this.observeOwnParentChange()
+    this.observeNextPElement()
     this.flowChart.render(this.data)
     this.flowChart.on('graph:updated', () => {
       this.data = this.flowChart.getGraphData()
@@ -173,7 +176,6 @@ class FlowChartPlaceholderBlot extends BlockEmbed {
   }
 
   observeParentAlignment(): void {
-    // 移除旧的监听器
     if (this.parentObserver) {
       this.parentObserver.disconnect()
     }
@@ -186,7 +188,6 @@ class FlowChartPlaceholderBlot extends BlockEmbed {
       })
     })
 
-    // 保存新的监听器引用
     this.parentObserver = observer
 
     const parent = this.domNode.parentElement
@@ -195,7 +196,6 @@ class FlowChartPlaceholderBlot extends BlockEmbed {
         attributes: true,
         attributeFilter: ['class'],
       })
-      // 强制更新一次对齐样式
       this.updateAlignmentStyle()
     }
   }
@@ -218,6 +218,39 @@ class FlowChartPlaceholderBlot extends BlockEmbed {
       this.domNode.style.marginLeft = '0'
       this.domNode.style.marginRight = 'auto'
     }
+  }
+
+  observeNextPElement(): void {
+    if (this.nextPObserver) {
+      this.nextPObserver.disconnect()
+    }
+
+    const parentElement = this.domNode.parentElement
+    if (!parentElement) {
+      return
+    }
+
+    const trackedParentElement = parentElement
+
+    const parentElementId = parentElement.getAttribute('id') || `flow-chart-parent-${Date.now()}`
+    parentElement.setAttribute('id', parentElementId)
+
+    const observer = new MutationObserver(() => {
+      if (!document.contains(trackedParentElement)) {
+        const elementById = document.getElementById(parentElementId)
+        if (!elementById) {
+          this.remove()
+          observer.disconnect()
+        }
+      }
+    })
+
+    observer.observe(document.body, {
+      childList: true,
+      subtree: true,
+    })
+
+    this.nextPObserver = observer
   }
 
   // 处理节点双击事件
@@ -297,6 +330,10 @@ class FlowChartPlaceholderBlot extends BlockEmbed {
     }
     const editInputs = document.querySelectorAll('.ql-flow-chart-edit-input')
     editInputs.forEach(input => input.remove())
+    if (this.nextPObserver) {
+      this.nextPObserver.disconnect()
+      this.nextPObserver = null
+    }
   }
 
   remove() {

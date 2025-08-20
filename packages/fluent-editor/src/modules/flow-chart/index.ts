@@ -82,7 +82,9 @@ export class FlowChartModule {
           { id: 'edge1', sourceNodeId: 'node1', targetNodeId: 'node2', type: 'polyline' },
         ],
       }
+      this.quill.insertText(range.index, '\n', 'user')
       this.quill.insertEmbed(range.index + 1, 'flow-chart-placeholder', defaultData, 'user')
+      this.quill.insertText(range.index + 2, '\n', 'user')
     }
   }
 }
