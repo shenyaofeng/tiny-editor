@@ -1,6 +1,5 @@
 import type Quill from 'quill'
 import contractIcon from './icons/contractIcon.png'
-import expandIcon from './icons/expandIcon.png'
 import './formats/flow-chart-blot'
 import '@logicflow/core/lib/style/index.css'
 import '@logicflow/extension/lib/style/index.css'
@@ -22,7 +21,6 @@ export class FlowChartModule {
     this.quill.on('selection-change', (range: any, oldRange: any, source: string) => {
       if (!range) return
       const leaf = this.quill.getLeaf(range.index)[0] as any
-      const data = this.quill.getLeaf(range.index) as any
       if (source === 'user') {
         document.querySelectorAll('.ql-flow-chart-control').forEach((el) => {
           (el as HTMLElement).style.display = 'none'
@@ -43,26 +41,6 @@ export class FlowChartModule {
             }
             else {
               currentNode = currentNode.parentNode
-            }
-          }
-
-          if (flowChartContainer) {
-            const leftUpControl = flowChartContainer.querySelector('.lf-dndpanel') as HTMLElement | null
-            const control = flowChartContainer.querySelector('.ql-flow-chart-control') as HTMLElement | null
-            const panelStatusIcon = flowChartContainer.querySelector('.ql-flow-chart-control-panelStatus') as HTMLElement | null
-
-            if (data[1] == 0 || data[1] == 1) {
-              if (leftUpControl) leftUpControl.style.display = 'block'
-              if (control) control.style.display = 'flex'
-            }
-            else {
-              if (leftUpControl) leftUpControl.style.display = 'block'
-              if (control) control.style.display = 'flex'
-              this.quill.blur()
-            }
-
-            if (panelStatusIcon) {
-              panelStatusIcon.style.backgroundImage = `url(${expandIcon})`
             }
           }
         }
