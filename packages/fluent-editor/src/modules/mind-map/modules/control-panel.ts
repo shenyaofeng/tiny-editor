@@ -380,5 +380,6 @@ function handleScreenTypeBtn(blot: MindMapPlaceholderBlot): void {
     mindMapContainer.style.zIndex = '100'
     screenTypeIconElement.style.backgroundImage = `url(${smallScreenIcon})`
   }
+  blot.mindMap.renderer.setRootNodeCenter()
   blot.mindMap.resize()
 }
