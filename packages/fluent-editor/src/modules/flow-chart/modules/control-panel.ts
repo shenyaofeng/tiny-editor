@@ -293,4 +293,5 @@ function handleScreenTypeBtn(blot: FlowChartPlaceholderBlot): void {
     screenTypeIconElement.style.backgroundImage = `url(${smallScreenIcon})`
   }
   blot.flowChart.resize()
+  blot.flowChart.translateCenter()
 }
