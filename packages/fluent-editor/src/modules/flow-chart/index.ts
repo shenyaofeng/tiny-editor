@@ -1,5 +1,4 @@
 import type Quill from 'quill'
-import contractIcon from './icons/contractIcon.png'
 import './formats/flow-chart-blot'
 import '@logicflow/core/lib/style/index.css'
 import '@logicflow/extension/lib/style/index.css'
@@ -18,34 +17,6 @@ export class FlowChartModule {
         this.insertFlowChartEditor()
       })
     }
-    this.quill.on('selection-change', (range: any, oldRange: any, source: string) => {
-      if (!range) return
-      const leaf = this.quill.getLeaf(range.index)[0] as any
-      if (source === 'user') {
-        document.querySelectorAll('.ql-flow-chart-control').forEach((el) => {
-          (el as HTMLElement).style.display = 'none'
-        })
-        document.querySelectorAll('.lf-dndpanel').forEach((el) => {
-          (el as HTMLElement).style.display = 'none'
-        })
-        document.querySelectorAll('.ql-flow-chart-control-panelStatus').forEach((el) => {
-          (el as HTMLElement).style.backgroundImage = `url(${contractIcon})`
-        })
-        if (leaf?.flowChart) {
-          let currentNode = leaf.domNode
-          let flowChartContainer = null
-          while (currentNode && !flowChartContainer) {
-            if (currentNode.querySelector('.lf-dndpanel')
-              && currentNode.querySelector('.ql-flow-chart-control')) {
-              flowChartContainer = currentNode
-            }
-            else {
-              currentNode = currentNode.parentNode
-            }
-          }
-        }
-      }
-    })
   }
 
   public insertFlowChartEditor(): void {

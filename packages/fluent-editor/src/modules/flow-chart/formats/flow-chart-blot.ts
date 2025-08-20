@@ -5,8 +5,10 @@ import LogicFlow from '@logicflow/core'
 import { DndPanel, SelectionSelect, Snapshot } from '@logicflow/extension'
 import Quill from 'quill'
 import circleIcon from '../icons/circleIcon.png'
+import contractIcon from '../icons/contractIcon.png'
 import diamondIcon from '../icons/diamondIcon.png'
 import ellipseIcon from '../icons/ellipseIcon.png'
+import expandIcon from '../icons/expandIcon.png'
 import rectangleIcon from '../icons/rectangleIcon.png'
 import selectRegionIcon from '../icons/selectRegionIcon.png'
 import { initContextMenu } from '../modules/context-menu'
@@ -146,6 +148,7 @@ class FlowChartPlaceholderBlot extends BlockEmbed {
     initContextMenu(this, quill) // 初始化右键菜单
     this.observeOwnParentChange()
     this.observeNextPElement()
+    this.addMouseHoverEvents()
     this.flowChart.render(this.data)
     this.flowChart.on('graph:updated', () => {
       this.data = this.flowChart.getGraphData()
@@ -157,6 +160,42 @@ class FlowChartPlaceholderBlot extends BlockEmbed {
     })
     this.flowChart.on('node:dbclick', this.handleNodeDblClick.bind(this))
     this.flowChart.on('edge:dbclick', this.handleNodeDblClick.bind(this))
+  }
+
+  addMouseHoverEvents(): void {
+    this.domNode.addEventListener('mouseenter', () => {
+      this.showControlPanel()
+    })
+
+    this.domNode.addEventListener('mouseleave', () => {
+      this.hideControlPanel()
+    })
+  }
+
+  showControlPanel(): void {
+    const leftUpControl = this.domNode.querySelector('.lf-dndpanel') as HTMLElement | null
+    const control = this.domNode.querySelector('.ql-flow-chart-control') as HTMLElement | null
+    const panelStatusIcon = this.domNode.querySelector('.ql-flow-chart-control-panelStatus') as HTMLElement | null
+    if (!leftUpControl || !control) return
+
+    leftUpControl.style.display = 'block'
+    control.style.display = 'flex'
+    if (panelStatusIcon) {
+      panelStatusIcon.style.backgroundImage = `url(${expandIcon})`
+    }
+  }
+
+  hideControlPanel(): void {
+    const leftUpControl = this.domNode.querySelector('.lf-dndpanel') as HTMLElement | null
+    const control = this.domNode.querySelector('.ql-flow-chart-control') as HTMLElement | null
+    const panelStatusIcon = this.domNode.querySelector('.ql-flow-chart-control-panelStatus') as HTMLElement | null
+    if (!leftUpControl || !control) return
+
+    leftUpControl.style.display = 'none'
+    control.style.display = 'none'
+    if (panelStatusIcon) {
+      panelStatusIcon.style.backgroundImage = `url(${contractIcon})`
+    }
   }
 
   observeOwnParentChange(): void {
