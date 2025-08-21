@@ -88,7 +88,7 @@ export function createControlPanel(blot: FlowChartPlaceholderBlot, quill: Fluent
       forwardBtn.style.cursor = 'not-allowed'
       return
     }
-    const isUndoAvailable = historyData.data.undoAble || historyData.data.undos.length > 0
+    const isUndoAvailable = historyData.data.undoAble || historyData.data.undos.length < 0
     const isRedoAvailable = historyData.data.redoAble || historyData.data.redos.length > 0
 
     if (backBtn) {
