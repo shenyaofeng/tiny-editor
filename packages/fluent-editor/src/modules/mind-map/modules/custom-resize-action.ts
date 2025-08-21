@@ -23,6 +23,11 @@ export class MindMapResizeAction {
     this.init()
   }
 
+  isFullscreen(): boolean {
+    const container = this.blot.domNode
+    return container.style.position === 'fixed' && container.style.width === '100vw' && container.style.height === '100vh'
+  }
+
   init() {
     const container = this.blot.domNode
     container.style.position = 'relative'
@@ -73,6 +78,9 @@ export class MindMapResizeAction {
   }
 
   onMouseDown(event: MouseEvent) {
+    if (this.isFullscreen()) {
+      return
+    }
     if (!(event.target instanceof HTMLElement)) {
       return
     }
