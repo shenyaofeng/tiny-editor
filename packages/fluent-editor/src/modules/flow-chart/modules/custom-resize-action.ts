@@ -1,4 +1,4 @@
-const MIN_WIDTH = 300
+const MIN_WIDTH = 350
 const MIN_HEIGHT = 290
 
 export class FlowChartResizeAction {
@@ -21,6 +21,11 @@ export class FlowChartResizeAction {
     this.bottomRightHandle = this.createHandle('bottom-right', 'nwse-resize')
     this.bottomLeftHandle = this.createHandle('bottom-left', 'nesw-resize')
     this.init()
+  }
+
+  isFullscreen(): boolean {
+    const container = this.blot.domNode
+    return container.style.position === 'fixed' && container.style.width === '100vw' && container.style.height === '100vh'
   }
 
   init() {
@@ -73,6 +78,9 @@ export class FlowChartResizeAction {
   }
 
   onMouseDown(event: MouseEvent) {
+    if (this.isFullscreen()) {
+      return
+    }
     if (!(event.target instanceof HTMLElement)) {
       return
     }
