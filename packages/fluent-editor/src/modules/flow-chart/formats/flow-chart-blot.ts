@@ -175,7 +175,7 @@ class FlowChartPlaceholderBlot extends BlockEmbed {
   getControlElements(): { leftUpControl: HTMLElement | null, control: HTMLElement | null, panelStatusIcon: HTMLElement | null } {
     const leftUpControl = this.domNode.querySelector('.lf-dndpanel') as HTMLElement | null
     const control = this.domNode.querySelector('.ql-flow-chart-control') as HTMLElement | null
-    const panelStatusIcon = this.domNode.querySelector('.ql-flow-chart-control-panelStatus') as HTMLElement | null
+    const panelStatusIcon = this.domNode.querySelector('.ql-flow-chart-control-panel-status') as HTMLElement | null
     return { leftUpControl, control, panelStatusIcon }
   }
 

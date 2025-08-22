@@ -76,9 +76,9 @@ export function createControlPanel(blot: FlowChartPlaceholderBlot, quill: Fluent
   const resetBtn = createControlItem('fit', handler.getText('fitTitle'), () => handleResetZoom(blot))
   const backBtn = createControlItem('back', handler.getText('backTitle'), () => handleUndo(blot))
   const forwardBtn = createControlItem('forward', handler.getText('forwardTitle'), () => handleRedo(blot))
-  const setEdgeTypeBtn = createControlItem('setEdgeType', handler.getText('setEdgeTypeTitle'), () => handleSetEdgeType(blot))
-  const panelStatusBtn = createControlItem('panelStatus', handler.getText('panelStatusTitle'), () => handlePanelStatusBtn(blot))
-  const screenTypeBtn = createControlItem('screenType', handler.getText('screenTypeTitle'), () => handleScreenTypeBtn(blot))
+  const setEdgeTypeBtn = createControlItem('set-edge-type', handler.getText('setEdgeTypeTitle'), () => handleSetEdgeType(blot))
+  const panelStatusBtn = createControlItem('panel-status', handler.getText('panelStatusTitle'), () => handlePanelStatusBtn(blot))
+  const screenTypeBtn = createControlItem('screen-type', handler.getText('screenTypeTitle'), () => handleScreenTypeBtn(blot))
 
   const updateButtonState = (historyData: any) => {
     if (!historyData.data) {
@@ -228,7 +228,7 @@ function handleSetEdgeType(blot: FlowChartPlaceholderBlot): void {
     const controlItems = controlLeftUpPanel.querySelectorAll('.ql-flow-chart-control-item')
     controlItems.forEach((item) => {
       const iconEl = item.querySelector('i')
-      if (iconEl && iconEl.className.includes('setEdgeType')) {
+      if (iconEl && iconEl.className.includes('set-edge-type')) {
         setEdgeTypeBtn = item as HTMLElement
       }
     })
@@ -245,7 +245,7 @@ function handleSetEdgeType(blot: FlowChartPlaceholderBlot): void {
 function handlePanelStatusBtn(blot: FlowChartPlaceholderBlot): void {
   const control = blot.domNode.querySelector('.ql-flow-chart-control') as HTMLElement | null
   const leftUpControl = blot.domNode.querySelector('.lf-dndpanel') as HTMLElement | null
-  const panelStatusIcon = blot.domNode.querySelector('.ql-flow-chart-control-panelStatus') as HTMLElement | null
+  const panelStatusIcon = blot.domNode.querySelector('.ql-flow-chart-control-panel-status') as HTMLElement | null
   if (!leftUpControl || !control) return
   const isVisible = leftUpControl.style.display !== 'none' && control.style.display !== 'none'
   if (isVisible) {
@@ -264,7 +264,7 @@ function handlePanelStatusBtn(blot: FlowChartPlaceholderBlot): void {
   }
 }
 function handleScreenTypeBtn(blot: FlowChartPlaceholderBlot): void {
-  const screenTypeIconElement = document.querySelector('.ql-flow-chart-control-screenType') as HTMLElement | null
+  const screenTypeIconElement = document.querySelector('.ql-flow-chart-control-screen-type') as HTMLElement | null
   const flowChartContainer = blot.domNode
   if (!screenTypeIconElement || !flowChartContainer) return
   const isFullscreen = flowChartContainer.style.position === 'fixed'
