@@ -42,15 +42,17 @@ export class MindMapResizeAction {
     const box = document.createElement('div')
     box.classList.add('ql-flow-chart-resize-handle')
     box.setAttribute('data-position', position)
-    box.style.cursor = cursor
-    box.style.position = 'absolute'
-    box.style.width = '10px'
-    box.style.height = '10px'
-    box.style.background = '#4285f4'
-    box.style.border = '1px solid white'
-    box.style.borderRadius = '50%'
-    box.style.zIndex = '99'
-    box.style.userSelect = 'none'
+    Object.assign(box.style, {
+      cursor,
+      position: 'absolute',
+      width: '10px',
+      height: '10px',
+      background: '#4285f4',
+      border: '1px solid white',
+      borderRadius: '50%',
+      zIndex: '99',
+      userSelect: 'none',
+    })
     box.addEventListener('mousedown', this.onMouseDown.bind(this))
     return box
   }
