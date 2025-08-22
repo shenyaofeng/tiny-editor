@@ -1,3 +1,18 @@
+@mixin flowChartControlBackground {
+  background-color: rgba(255, 255, 255, 0.85);
+  border-radius: 8px;
+  box-shadow: 0 3px 15px rgba(0, 0, 0, 0.15);
+}
+@mixin flowChartControlItem {
+  align-items: center;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 5px 5px;
+  border-radius: inherit;
+  transition: all 0.2s ease;
+}
 .ql-flow-chart {
   position: relative;
   width: 100%;
@@ -8,24 +23,15 @@
   position: absolute;
   top: 8px;
   right: 50px;
-  background-color: rgba(255, 255, 255, 0.85);
-  border-radius: 8px;
-  box-shadow: 0 3px 15px rgba(0, 0, 0, 0.15);
   padding: 0 15px;
   display: none;
   gap: 6px;
   white-space: nowrap;
   pointer-events: auto;
   padding: 5px 5px;
+  @include flowChartControlBackground;
   .ql-flow-chart-control-item {
-    align-items: center;
-    cursor: pointer;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    padding: 5px 5px;
-    border-radius: inherit;
-    transition: all 0.2s ease;
+    @include flowChartControlItem;
   }
 }
 .ql-flow-chart {
@@ -34,14 +40,7 @@
     top: 15%;
     .ql-flow-chart-control-item {
       height: 35.99px;
-      align-items: center;
-      cursor: pointer;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      padding: 5px 5px;
-      border-radius: inherit;
-      transition: all 0.2s ease;
+      @include flowChartControlItem;
     }
   }
 }
@@ -73,42 +72,15 @@
   font-size: 12px;
 }
 
-.ql-flow-chart-control-zoomOut {
-  background-image: url('../icons/zoomOutIcon.png');
-}
-.ql-flow-chart-control-zoomIn {
-  background-image: url('../icons/zoomInIcon.png');
-}
-.ql-flow-chart-control-fit {
-  background-image: url('../icons/fitIcon.png');
-}
-.ql-flow-chart-control-back {
-  background-image: url('../icons/backIcon.png');
-}
-.ql-flow-chart-control-forward {
-  background-image: url('../icons/forwardIcon.png');
-}
-.ql-flow-chart-control-set-edge-type {
-  background-image: url('../icons/lineIcon.png');
-}
-.ql-flow-chart-control-panel-status {
-  background-image: url('../icons/contractIcon.png');
-}
-.ql-flow-chart-control-screen-type {
-  background-image: url('../icons/fullScreenIcon.png');
-}
-
 .ql-flow-chart-edge-panel {
-  border-radius: inherit;
   width: 130px;
   position: absolute;
   left: 50px;
   top: 220px;
-  background-color: white;
-  border: 1px solid #ccc;
   padding: 3px;
   z-index: 1000;
   max-height: 400px;
+  @include flowChartControlBackground;
   .ql-flow-chart-edge-item {
     width: 30px;
     height: 30px;
@@ -139,26 +111,38 @@
   position: absolute;
   top: 8px;
   right: 6px;
-  background-color: rgba(255, 255, 255, 0.85);
-  border-radius: 8px;
-  box-shadow: 0 3px 15px rgba(0, 0, 0, 0.15);
   display: inline-flex;
   gap: 6px;
   white-space: nowrap;
   pointer-events: auto;
   padding: 5px 5px;
+  @include flowChartControlBackground;
   .ql-flow-chart-control-item {
-    align-items: center;
-    cursor: pointer;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    padding: 5px 5px;
-    border-radius: inherit;
-    transition: all 0.2s ease;
-    .ql-flow-chart-control-text {
-      height: 20px;
-      font-size: 12px;
-    }
+    @include flowChartControlItem;
   }
+}
+
+.ql-flow-chart-control-zoomOut {
+  background-image: url('../icons/zoomOutIcon.png');
+}
+.ql-flow-chart-control-zoomIn {
+  background-image: url('../icons/zoomInIcon.png');
+}
+.ql-flow-chart-control-fit {
+  background-image: url('../icons/fitIcon.png');
+}
+.ql-flow-chart-control-back {
+  background-image: url('../icons/backIcon.png');
+}
+.ql-flow-chart-control-forward {
+  background-image: url('../icons/forwardIcon.png');
+}
+.ql-flow-chart-control-set-edge-type {
+  background-image: url('../icons/lineIcon.png');
+}
+.ql-flow-chart-control-panel-status {
+  background-image: url('../icons/contractIcon.png');
+}
+.ql-flow-chart-control-screen-type {
+  background-image: url('../icons/fullScreenIcon.png');
 }
