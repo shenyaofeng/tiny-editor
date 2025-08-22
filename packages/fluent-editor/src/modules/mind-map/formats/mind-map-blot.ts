@@ -141,7 +141,7 @@ class MindMapPlaceholderBlot extends BlockEmbed {
   showControlPanel(): void {
     const leftUpControl = this.domNode.querySelector('.ql-mind-map-left-up-control') as HTMLElement | null
     const control = this.domNode.querySelector('.ql-mind-map-control') as HTMLElement | null
-    const panelStatusIcon = this.domNode.querySelector('.ql-mind-map-control-panelStatus') as HTMLElement | null
+    const panelStatusIcon = this.domNode.querySelector('.ql-mind-map-control-panel-status') as HTMLElement | null
     if (!leftUpControl || !control) return
 
     leftUpControl.style.display = 'inline-flex'
@@ -154,7 +154,7 @@ class MindMapPlaceholderBlot extends BlockEmbed {
   hideControlPanel(): void {
     const leftUpControl = this.domNode.querySelector('.ql-mind-map-left-up-control') as HTMLElement | null
     const control = this.domNode.querySelector('.ql-mind-map-control') as HTMLElement | null
-    const panelStatusIcon = this.domNode.querySelector('.ql-mind-map-control-panelStatus') as HTMLElement | null
+    const panelStatusIcon = this.domNode.querySelector('.ql-mind-map-control-panel-status') as HTMLElement | null
     if (!leftUpControl || !control) return
 
     leftUpControl.style.display = 'none'

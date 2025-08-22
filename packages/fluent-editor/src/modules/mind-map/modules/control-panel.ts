@@ -109,8 +109,8 @@ export function createControlPanel(blot: MindMapPlaceholderBlot, quill: FluentEd
   const handler = new MindMapControlPanelHandler(quill, blot)
   controlPanelHandlers.set(blot, handler)
 
-  const zoomOutBtn = createControlItem('zoomOut', handler.getText('zoomOutTitle'), () => handleZoomOut(blot))
-  const zoomInBtn = createControlItem('zoomIn', handler.getText('zoomInTitle'), () => handleZoomIn(blot))
+  const zoomOutBtn = createControlItem('zoom-out', handler.getText('zoomOutTitle'), () => handleZoomOut(blot))
+  const zoomInBtn = createControlItem('zoom-in', handler.getText('zoomInTitle'), () => handleZoomIn(blot))
   const resetBtn = createControlItem('fit', handler.getText('fitTitle'), () => handleResetZoom(blot))
   const backBtn = createControlItem('back', handler.getText('backTitle'), () => {
     if (!isStart) {
@@ -122,14 +122,14 @@ export function createControlPanel(blot: MindMapPlaceholderBlot, quill: FluentEd
       blot.mindMap.execCommand('FORWARD')
     }
   })
-  const insertChildNode = createControlItem('inserChildNode', handler.getText('inserChildNodeTitle'), () => handleInsertChildNode(blot))
-  const insertNode = createControlItem('inserNode', handler.getText('inserNodeTitle'), () => handleInsertNode(blot))
-  const insertParentNode = createControlItem('inserParentNode', handler.getText('inserParentNodeTitle'), () => handleInsertParentNode(blot))
-  const removeNode = createControlItem('removeNode', handler.getText('removeNodeTitle'), () => handleRemoveNode(blot))
-  const insertIconBtn = createControlItem('insertIcon', handler.getText('insertIconTitle'), () => handleInsertIcon(blot, selectedNodes))
-  const setLayoutBtn = createControlItem('setLayoutIcon', handler.getText('setLayoutTitle'), () => handleSetLayoutBtn(blot))
-  const panelStatusBtn = createControlItem('panelStatus', handler.getText('panelStatusTitle'), () => handlePanelStatusBtn(blot))
-  const screenTypeBtn = createControlItem('screenType', handler.getText('screenTypeTitle'), () => handleScreenTypeBtn(blot))
+  const insertChildNode = createControlItem('insert-child-node', handler.getText('inserChildNodeTitle'), () => handleInsertChildNode(blot))
+  const insertNode = createControlItem('insert-node', handler.getText('inserNodeTitle'), () => handleInsertNode(blot))
+  const insertParentNode = createControlItem('insert-parent-node', handler.getText('inserParentNodeTitle'), () => handleInsertParentNode(blot))
+  const removeNode = createControlItem('remove-node', handler.getText('removeNodeTitle'), () => handleRemoveNode(blot))
+  const insertIconBtn = createControlItem('insert-icon', handler.getText('insertIconTitle'), () => handleInsertIcon(blot, selectedNodes))
+  const setLayoutBtn = createControlItem('set-layout-icon', handler.getText('setLayoutTitle'), () => handleSetLayoutBtn(blot))
+  const panelStatusBtn = createControlItem('panel-status', handler.getText('panelStatusTitle'), () => handlePanelStatusBtn(blot))
+  const screenTypeBtn = createControlItem('screen-type', handler.getText('screenTypeTitle'), () => handleScreenTypeBtn(blot))
   const updateButtonState = (index: number, len: number) => {
     isStart = index <= 0
     isEnd = index >= len - 1
@@ -288,7 +288,7 @@ function handleInsertIcon(blot: MindMapPlaceholderBlot, selectedNodes: any[]): v
 
     controlItems.forEach((item) => {
       const iconEl = item.querySelector('i')
-      if (iconEl && iconEl.className.includes('insertIcon')) {
+      if (iconEl && iconEl.className.includes('insert-icon')) {
         insertIconBtn = item as HTMLElement
       }
     })
@@ -398,7 +398,7 @@ function handleSetLayoutBtn(blot: MindMapPlaceholderBlot): void {
 
     controlItems.forEach((item) => {
       const iconEl = item.querySelector('i')
-      if (iconEl && iconEl.className.includes('setLayoutIcon')) {
+      if (iconEl && iconEl.className.includes('set-layout-icon')) {
         setLayoutBtn = item as HTMLElement
       }
     })
@@ -415,7 +415,7 @@ function handleSetLayoutBtn(blot: MindMapPlaceholderBlot): void {
 function handlePanelStatusBtn(blot: MindMapPlaceholderBlot): void {
   const leftUpControl = blot.domNode.querySelector('.ql-mind-map-left-up-control') as HTMLElement | null
   const control = blot.domNode.querySelector('.ql-mind-map-control') as HTMLElement | null
-  const panelStatusIcon = blot.domNode.querySelector('.ql-mind-map-control-panelStatus') as HTMLElement | null
+  const panelStatusIcon = blot.domNode.querySelector('.ql-mind-map-control-panel-status') as HTMLElement | null
   if (!leftUpControl || !control) return
   const isVisible = leftUpControl.style.display !== 'none' && control.style.display !== 'none'
   if (isVisible) {
@@ -435,7 +435,7 @@ function handlePanelStatusBtn(blot: MindMapPlaceholderBlot): void {
 }
 
 function handleScreenTypeBtn(blot: MindMapPlaceholderBlot): void {
-  const screenTypeIconElement = document.querySelector('.ql-mind-map-control-screenType') as HTMLElement | null
+  const screenTypeIconElement = document.querySelector('.ql-mind-map-control-screen-type') as HTMLElement | null
   const mindMapContainer = blot.domNode
   if (!screenTypeIconElement || !mindMapContainer) return
   const isFullscreen = mindMapContainer.style.position === 'fixed'
