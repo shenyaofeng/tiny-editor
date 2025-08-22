@@ -172,10 +172,15 @@ class FlowChartPlaceholderBlot extends BlockEmbed {
     })
   }
 
-  showControlPanel(): void {
+  getControlElements(): { leftUpControl: HTMLElement | null, control: HTMLElement | null, panelStatusIcon: HTMLElement | null } {
     const leftUpControl = this.domNode.querySelector('.lf-dndpanel') as HTMLElement | null
     const control = this.domNode.querySelector('.ql-flow-chart-control') as HTMLElement | null
     const panelStatusIcon = this.domNode.querySelector('.ql-flow-chart-control-panelStatus') as HTMLElement | null
+    return { leftUpControl, control, panelStatusIcon }
+  }
+
+  showControlPanel(): void {
+    const { leftUpControl, control, panelStatusIcon } = this.getControlElements()
     if (!leftUpControl || !control) return
 
     leftUpControl.style.display = 'block'
@@ -186,9 +191,7 @@ class FlowChartPlaceholderBlot extends BlockEmbed {
   }
 
   hideControlPanel(): void {
-    const leftUpControl = this.domNode.querySelector('.lf-dndpanel') as HTMLElement | null
-    const control = this.domNode.querySelector('.ql-flow-chart-control') as HTMLElement | null
-    const panelStatusIcon = this.domNode.querySelector('.ql-flow-chart-control-panelStatus') as HTMLElement | null
+    const { leftUpControl, control, panelStatusIcon } = this.getControlElements()
     if (!leftUpControl || !control) return
 
     leftUpControl.style.display = 'none'
