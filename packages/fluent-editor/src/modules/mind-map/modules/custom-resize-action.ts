@@ -1,5 +1,7 @@
 const MIN_WIDTH = 350
 const MIN_HEIGHT = 290
+const HEIGHT_THRESHOLD = 395
+const PANEL_HEIGHT_OFFSET = 130
 
 export class MindMapResizeAction {
   topLeftHandle: HTMLElement
@@ -107,11 +109,11 @@ export class MindMapResizeAction {
   updateDependentElementsHeight(newHeight: number) {
     const iconPanel = this.blot.domNode.querySelector('.ql-mind-map-icon-panel') as HTMLElement
     const layoutPanel = this.blot.domNode.querySelector('.ql-mind-map-layout-panel') as HTMLElement
-    if (iconPanel && newHeight < 395) {
-      iconPanel.style.height = `${newHeight - 130}px`
+    if (iconPanel && newHeight < HEIGHT_THRESHOLD) {
+      iconPanel.style.height = `${newHeight - PANEL_HEIGHT_OFFSET}px`
     }
-    if (layoutPanel && newHeight < 395) {
-      layoutPanel.style.height = `${newHeight - 130}px`
+    if (layoutPanel && newHeight < HEIGHT_THRESHOLD) {
+      layoutPanel.style.height = `${newHeight - PANEL_HEIGHT_OFFSET}px`
     }
   }
 
