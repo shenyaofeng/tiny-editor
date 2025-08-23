@@ -7,6 +7,7 @@ import Drag from 'simple-mind-map/src/plugins/Drag.js'
 import Export from 'simple-mind-map/src/plugins/Export.js'
 import contractIcon from '../icons/contractIcon.png'
 import expandIcon from '../icons/expandIcon.png'
+import { MindMapModule } from '../index'
 import { initContextMenu } from '../modules/context-menu'
 import { createControlPanel } from '../modules/control-panel'
 import { MindMapResizeAction } from '../modules/custom-resize-action'
@@ -27,6 +28,7 @@ class MindMapPlaceholderBlot extends BlockEmbed {
   height: number = 500
   parentObserver: MutationObserver | null = null
   nextPObserver: MutationObserver | null = null
+  quill: FluentEditor | null = null
 
   constructor(scroll: Root, domNode: HTMLElement) {
     super(scroll, domNode)
@@ -39,6 +41,7 @@ class MindMapPlaceholderBlot extends BlockEmbed {
     this.domNode.style.border = '1px solid #e8e8e8'
     this.domNode.setAttribute('contenteditable', 'false')
     this.data = MindMapPlaceholderBlot.value(domNode)
+    this.quill = MindMapModule.currentQuill as FluentEditor
     this.initMindMap()
   }
 
@@ -115,9 +118,8 @@ class MindMapPlaceholderBlot extends BlockEmbed {
       window.removeEventListener('scroll', handleScroll)
     })
     new MindMapResizeAction(this)
-    const quill = this.scroll as unknown as FluentEditor
-    createControlPanel(this, quill) // 创建控制面板
-    initContextMenu(this, quill) // 初始化右键菜单
+    createControlPanel(this, this.quill) // 创建控制面板
+    initContextMenu(this, this.quill) // 初始化右键菜单
     this.observeOwnParentChange()
     this.observeNextPElement()
     this.addMouseHoverEvents()
@@ -126,6 +128,15 @@ class MindMapPlaceholderBlot extends BlockEmbed {
       this.domNode.setAttribute('data-mind-map', JSON.stringify(this.data))
     })
     this.mindMap.on('node_dblclick', this.handleNodeDblClick.bind(this))
+    this.domNode.addEventListener('click', (e) => {
+      if (this.quill) {
+        const mindMapBlot = Quill.find(this.domNode)
+        const index = this.quill.getIndex(mindMapBlot as MindMapPlaceholderBlot)
+        if (index && typeof index === 'number') {
+          this.quill.setSelection(index + 1, 0)
+        }
+      }
+    })
   }
 
   addMouseHoverEvents(): void {

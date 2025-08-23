@@ -4,10 +4,12 @@ import './formats/mind-map-blot'
 export class MindMapModule {
   quill: Quill
   toolbar: any
+  static currentQuill: Quill | null = null
 
   constructor(quill: Quill, options: any) {
     this.quill = quill
     this.toolbar = quill.getModule('toolbar')
+    MindMapModule.currentQuill = quill
     const domNode = document.querySelector('.ql-mind-map')
 
     if (domNode) {

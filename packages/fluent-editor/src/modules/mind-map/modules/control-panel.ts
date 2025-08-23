@@ -375,7 +375,6 @@ function handleSetLayoutBtn(blot: MindMapPlaceholderBlot): void {
     })
     leftUpControl.appendChild(layoutPanel)
     if (height < 395) {
-      console.warn(height)
       layoutPanel.style.height = `${height - 130}px`
     }
     else {
