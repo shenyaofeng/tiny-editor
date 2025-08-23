@@ -6,10 +6,12 @@ import '@logicflow/extension/lib/style/index.css'
 export class FlowChartModule {
   quill: Quill
   toolbar: any
+  static currentQuill: Quill | null = null
 
   constructor(quill: Quill, options: any) {
     this.quill = quill
     this.toolbar = quill.getModule('toolbar')
+    FlowChartModule.currentQuill = quill
     const domNode = document.querySelector('.ql-flow-chart')
 
     if (domNode) {

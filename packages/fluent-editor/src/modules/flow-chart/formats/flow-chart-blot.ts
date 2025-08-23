@@ -11,6 +11,7 @@ import ellipseIcon from '../icons/ellipseIcon.png'
 import expandIcon from '../icons/expandIcon.png'
 import rectangleIcon from '../icons/rectangleIcon.png'
 import selectRegionIcon from '../icons/selectRegionIcon.png'
+import { FlowChartModule } from '../index'
 import { initContextMenu } from '../modules/context-menu'
 import { createControlPanel } from '../modules/control-panel'
 import { FlowChartResizeAction } from '../modules/custom-resize-action'
@@ -31,6 +32,7 @@ class FlowChartPlaceholderBlot extends BlockEmbed {
   height: number = 500
   parentObserver: MutationObserver | null = null
   nextPObserver: MutationObserver | null = null
+  quill: FluentEditor | null = null
 
   constructor(scroll: Root, domNode: HTMLElement) {
     super(scroll, domNode)
@@ -43,6 +45,8 @@ class FlowChartPlaceholderBlot extends BlockEmbed {
     this.domNode.style.border = '1px solid #e8e8e8'
     this.domNode.setAttribute('contenteditable', 'false')
     this.data = FlowChartPlaceholderBlot.value(this.domNode)
+    this.quill = FlowChartModule.currentQuill as FluentEditor
+    console.warn('this.quill', this.quill)
     this.initFlowChart()
   }
 
@@ -143,9 +147,8 @@ class FlowChartPlaceholderBlot extends BlockEmbed {
       },
     ])
     new FlowChartResizeAction(this)
-    const quill = this.scroll as unknown as FluentEditor
-    createControlPanel(this, quill) // 创建控制面板
-    initContextMenu(this, quill) // 初始化右键菜单
+    createControlPanel(this, this.quill) // 创建控制面板
+    initContextMenu(this, this.quill) // 初始化右键菜单
     this.observeOwnParentChange()
     this.observeNextPElement()
     this.addMouseHoverEvents()
@@ -160,6 +163,15 @@ class FlowChartPlaceholderBlot extends BlockEmbed {
     })
     this.flowChart.on('node:dbclick', this.handleNodeDblClick.bind(this))
     this.flowChart.on('edge:dbclick', this.handleNodeDblClick.bind(this))
+    this.domNode.addEventListener('click', (e) => {
+      if (this.quill) {
+        const flowChartBlot = Quill.find(this.domNode)
+        const index = this.quill.getIndex(flowChartBlot as FlowChartPlaceholderBlot)
+        if (index && typeof index === 'number') {
+          this.quill.setSelection(index + 1, 0)
+        }
+      }
+    })
   }
 
   addMouseHoverEvents(): void {
