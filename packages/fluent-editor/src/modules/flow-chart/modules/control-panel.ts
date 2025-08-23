@@ -71,8 +71,8 @@ export function createControlPanel(blot: FlowChartPlaceholderBlot, quill: Fluent
 
   const handler = new FlowChartControlPanelHandler(quill, blot)
   controlPanelHandlers.set(blot, handler)
-  const zoomOutBtn = createControlItem('zoomOut', handler.getText('zoomOutTitle'), () => handleZoomOut(blot))
-  const zoomInBtn = createControlItem('zoomIn', handler.getText('zoomInTitle'), () => handleZoomIn(blot))
+  const zoomOutBtn = createControlItem('zoom-out', handler.getText('zoomOutTitle'), () => handleZoomOut(blot))
+  const zoomInBtn = createControlItem('zoom-in', handler.getText('zoomInTitle'), () => handleZoomIn(blot))
   const resetBtn = createControlItem('fit', handler.getText('fitTitle'), () => handleResetZoom(blot))
   const backBtn = createControlItem('back', handler.getText('backTitle'), () => handleUndo(blot))
   const forwardBtn = createControlItem('forward', handler.getText('forwardTitle'), () => handleRedo(blot))
