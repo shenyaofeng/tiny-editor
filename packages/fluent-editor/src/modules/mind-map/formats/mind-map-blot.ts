@@ -354,6 +354,9 @@ class MindMapPlaceholderBlot extends BlockEmbed {
     }
   }
 
+  format(name: string, value: any) {
+  }
+
   remove() {
     this.mindMap.destroy()
     if (this.nextPObserver) {
