@@ -12,8 +12,9 @@ class FlowChartContextMenuHandler {
   }
 
   constructor(private quill: FluentEditor, private blot: FlowChartPlaceholderBlot) {
+    const i18nModule = this.quill.getModule('i18n') as I18N
     registerFlowChartI18N(I18N)
-    this.lang = 'en-US'
+    this.lang = i18nModule.options.lang
     this.texts = this.resolveTexts()
     this.quill.emitter.on(CHANGE_LANGUAGE_EVENT, (lang: string) => {
       this.lang = lang

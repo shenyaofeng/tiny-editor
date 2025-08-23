@@ -19,8 +19,9 @@ class FlowChartControlPanelHandler {
   }
 
   constructor(private quill: FluentEditor, private blot: FlowChartPlaceholderBlot) {
+    const i18nModule = this.quill.getModule('i18n') as I18N
     registerFlowChartI18N(I18N)
-    this.lang = 'en-US'
+    this.lang = i18nModule.options.lang
     this.texts = this.resolveTexts()
     this.quill.emitter.on(CHANGE_LANGUAGE_EVENT, (lang: string) => {
       this.lang = lang
@@ -45,13 +46,22 @@ class FlowChartControlPanelHandler {
 
   updateControlPanelTexts() {
     const controlItems = this.blot.domNode.querySelectorAll('.ql-flow-chart-control-item')
+
+    const controlItemMap: Record<string, string> = {
+      'zoom-out': 'zoomOutTitle',
+      'zoom-in': 'zoomInTitle',
+      'fit': 'fitTitle',
+      'back': 'backTitle',
+      'forward': 'forwardTitle',
+      'set-edge-type': 'setEdgeTypeTitle',
+      'panel-status': 'panelStatusTitle',
+      'screen-type': 'screenTypeTitle',
+    }
+
     controlItems.forEach((item) => {
-      const icon = item.querySelector('i')
-      if (icon) {
-        const iconClass = icon.className.replace('ql-flow-chart-control-', '')
-        if (this.texts[`${iconClass}Title`]) {
-          (item as HTMLElement).title = this.texts[`${iconClass}Title`]
-        }
+      const controlType = (item as HTMLElement).dataset.controlType
+      if (controlType && controlItemMap[controlType] && this.texts[controlItemMap[controlType]]) {
+        (item as HTMLElement).title = this.texts[controlItemMap[controlType]]
       }
     })
   }
@@ -150,6 +160,7 @@ function createControlItem(iconClass: string, title: string, onClick: () => void
   const controlItem = document.createElement('div')
   controlItem.className = 'ql-flow-chart-control-item'
   controlItem.title = title
+  controlItem.dataset.controlType = iconClass
   controlItem.style.cursor = disabled ? 'not-allowed' : 'pointer'
 
   const icon = document.createElement('i')
