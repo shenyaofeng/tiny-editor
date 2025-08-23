@@ -23,8 +23,9 @@ class MindMapControlPanelHandler {
   }
 
   constructor(private quill: FluentEditor, private blot: MindMapPlaceholderBlot) {
+    const i18nModule = this.quill.getModule('i18n') as I18N
     registerMindMapI18N(I18N)
-    this.lang = 'en-US'
+    this.lang = i18nModule.options.lang
     this.texts = this.resolveTexts()
     this.quill.emitter.on(CHANGE_LANGUAGE_EVENT, (lang: string) => {
       this.lang = lang
@@ -69,17 +70,27 @@ class MindMapControlPanelHandler {
 
   updateControlPanelTexts() {
     const controlItems = this.blot.domNode.querySelectorAll('.ql-mind-map-control-item')
+
+    const controlItemMap: Record<string, string> = {
+      'zoom-out': 'zoomOutTitle',
+      'zoom-in': 'zoomInTitle',
+      'fit': 'fitTitle',
+      'back': 'backTitle',
+      'forward': 'forwardTitle',
+      'insert-child-node': 'inserChildNodeTitle',
+      'insert-node': 'inserNodeTitle',
+      'insert-icon': 'insertIconTitle',
+      'insert-parent-node': 'inserParentNodeTitle',
+      'remove-node': 'removeNodeTitle',
+      'set-layout-icon': 'setLayoutTitle',
+      'panel-status': 'panelStatusTitle',
+      'screen-type': 'screenTypeTitle',
+    }
+
     controlItems.forEach((item) => {
-      const icon = item.querySelector('i')
-      if (icon) {
-        const iconClass = icon.className.split('-')[4]
-        if (this.texts[iconClass]) {
-          const textSpan = item.querySelector('.ql-mind-map-control-text')
-          if (textSpan) {
-            textSpan.textContent = this.texts[iconClass]
-          }
-          (item as HTMLElement).title = this.texts[`${iconClass}Title`] || ''
-        }
+      const controlType = (item as HTMLElement).dataset.controlType
+      if (controlType && controlItemMap[controlType] && this.texts[controlItemMap[controlType]]) {
+        (item as HTMLElement).title = this.texts[controlItemMap[controlType]]
       }
     })
   }
@@ -154,6 +165,7 @@ function createControlItem(iconClass: string, title: string, onClick: () => void
   const controlItem = document.createElement('div')
   controlItem.className = 'ql-mind-map-control-item'
   controlItem.title = title
+  controlItem.dataset.controlType = iconClass
   controlItem.style.cursor = disabled ? 'not-allowed' : 'pointer'
   controlItem.style.opacity = disabled ? DISABLED_OPACITY : ENABLED_OPACITY
 
