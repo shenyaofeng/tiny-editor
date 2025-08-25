@@ -24,6 +24,7 @@ export class FileModule {
         this.fileBar.destroy()
       }
       this.fileBar = new FileBar(this.quill, fileDom)
+      console.warn('this.fileBar', this.fileBar)
     }
     else if (this.fileBar && !target.closest('.ql-file-bar')) {
       this.fileBar.destroy()

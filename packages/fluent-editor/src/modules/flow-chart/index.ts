@@ -1,22 +1,40 @@
+// 需要实际创建Quill实例时
 import type Quill from 'quill'
-import './formats/flow-chart-blot'
+
+import type { FlowChartOptions } from './options'
+import Quills from 'quill'
+import { fcBlot } from './formats/flow-chart-blot'
+
 import '@logicflow/core/lib/style/index.css'
 import '@logicflow/extension/lib/style/index.css'
 
 export class FlowChartModule {
   quill: Quill
   toolbar: any
-  static currentQuill: Quill | null = null
+  options: FlowChartOptions
+  currentQuill: Quill | null = null
+  static currentOptions: FlowChartOptions = {}
 
   constructor(quill: Quill, options: any) {
+    // FlowChartPlaceholderBlot.quill = quill
+    // Quills.register(FlowChartPlaceholderBlot)
+    const MyFlowChartBlot = fcBlot(quill)
+    Quills.register(MyFlowChartBlot)
+    console.warn(quill)
     this.quill = quill
+    this.options = options
+    // this.currentQuill = quill
     this.toolbar = quill.getModule('toolbar')
-    FlowChartModule.currentQuill = quill
-    const domNode = document.querySelector('.ql-flow-chart')
-
-    if (domNode) {
-      domNode.addEventListener('click', () => {
-        this.insertFlowChartEditor()
+    const toolbarContainer = this.toolbar?.container
+      || document.querySelector('.ql-toolbar')
+    if (toolbarContainer) {
+      toolbarContainer.addEventListener('click', (event) => {
+        const target = event.target as HTMLElement
+        const flowChartButton = target.closest('.ql-flow-chart')
+        if (flowChartButton) {
+          event.preventDefault()
+          this.insertFlowChartEditor()
+        }
       })
     }
   }

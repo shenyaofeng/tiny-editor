@@ -117,7 +117,7 @@ export function createControlPanel(blot: FlowChartPlaceholderBlot, quill: Fluent
   })
 
   setTimeout(() => {
-    const controlLeftUpPanel = document.querySelector('.lf-dndpanel') as HTMLElement | null
+    const controlLeftUpPanel = blot.domNode.querySelector('.lf-dndpanel') as HTMLElement | null
     controlLeftUpPanel.append(setEdgeTypeBtn)
   }, 0)
   controlRightUpPanel.append(panelStatusBtn)
