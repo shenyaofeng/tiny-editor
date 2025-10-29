@@ -1,13 +1,33 @@
 <script setup lang="ts">
-import FluentEditor, { generateTableUp, generateTableUpShortKeyMenu } from '@opentiny/fluent-editor'
+import LogicFlow from '@logicflow/core'
+import { DndPanel, SelectionSelect, Snapshot } from '@logicflow/extension'
+import FluentEditor, {
+  generateTableUp,
+  generateTableUpShortKeyMenu,
+} from '@opentiny/fluent-editor'
 import HeaderList from 'quill-header-list'
-import { createSelectBox, defaultCustomSelect, TableMenuContextmenu, TableResizeLine, TableResizeScale, TableSelection, TableUp } from 'quill-table-up'
+import {
+  createSelectBox,
+  defaultCustomSelect,
+  TableMenuContextmenu,
+  TableResizeLine,
+  TableResizeScale,
+  TableSelection,
+  TableUp,
+} from 'quill-table-up'
+import SimpleMindMap from 'simple-mind-map'
+import Themes from 'simple-mind-map-plugin-themes'
+import Drag from 'simple-mind-map/src/plugins/Drag.js'
+import Export from 'simple-mind-map/src/plugins/Export.js'
 import { onMounted, ref } from 'vue'
+import '@logicflow/core/lib/style/index.css'
+import '@logicflow/extension/lib/style/index.css'
 
 FluentEditor.register({ 'modules/header-list': HeaderList }, true)
 FluentEditor.register({ 'modules/table-up': generateTableUp(TableUp) }, true)
 
-const { tableUpConfig, tableUpKeyboardControl } = generateTableUpShortKeyMenu(createSelectBox)
+const { tableUpConfig, tableUpKeyboardControl }
+  = generateTableUpShortKeyMenu(createSelectBox)
 tableUpConfig.title = '_i18n"table"'
 
 let editor: FluentEditor
@@ -74,8 +94,22 @@ onMounted(() => {
           return result
         },
       },
-      'mind-map': true,
-      'flow-chart': true,
+      'mind-map': {
+        deps: {
+          SimpleMindMap,
+          Themes,
+          Drag,
+          Export,
+        },
+      },
+      'flow-chart': {
+        deps: {
+          LogicFlow,
+          DndPanel,
+          SelectionSelect,
+          Snapshot,
+        },
+      },
     },
   })
 })
@@ -92,7 +126,11 @@ onMounted(() => {
   </div>
   <div class="!mt-[94px]">
     <div class="flex justify-center pt-[33px] pb-[26px]">
-      <textarea v-model="title" placeholder="请输入标题" class="w-[750px] text-[#262626] h-[54px] outline-none resize-none text-[36px] font-bold placeholder-[#bfbfbf]" />
+      <textarea
+        v-model="title"
+        placeholder="请输入标题"
+        class="w-[750px] text-[#262626] h-[54px] outline-none resize-none text-[36px] font-bold placeholder-[#bfbfbf]"
+      />
     </div>
     <div id="editor" class="!border-0 max-w-[750px] !ml-auto !mr-auto">
       <p>
